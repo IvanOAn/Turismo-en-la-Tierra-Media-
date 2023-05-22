@@ -9,14 +9,14 @@ public class Main {
 
 	public static void main(String[] args) {
 		Atraccion vec[] = new Atraccion[5];
-		Set<Atraccion> atracciones = new TreeSet<Atraccion>(new ComparadorAtracciones(TipoDeAtraccion.Paisajes));
+		Set<Atraccion> atracciones = new TreeSet<Atraccion>(new ComparadorAtracciones(TipoDeAtraccion.PAISAJES));
 		// List<Atraccion>atracciones=new LinkedList<>();
 
-		vec[0] = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.Aventura);
-		vec[1] = new Atraccion("Minas Tirith", 140, 2, 6, TipoDeAtraccion.Aventura);
-		vec[2] = new Atraccion("La Comarca", 10, 22, 6, TipoDeAtraccion.Degustacion);
-		vec[3] = new Atraccion("Mordor", 1, 1, 6, TipoDeAtraccion.Aventura);
-		vec[4] = new Atraccion("Abismo de Helm", 100, 25, 6, TipoDeAtraccion.Paisajes);
+		vec[0] = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
+		vec[1] = new Atraccion("Minas Tirith", 140, 2, 6, TipoDeAtraccion.AVENTURA);
+		vec[2] = new Atraccion("La Comarca", 10, 22, 6, TipoDeAtraccion.DEGUSTACION);
+		vec[3] = new Atraccion("Mordor", 1, 1, 6, TipoDeAtraccion.AVENTURA);
+		vec[4] = new Atraccion("Abismo de Helm", 100, 25, 6, TipoDeAtraccion.PAISAJES);
 
 		Archivo arUsuarios = new Archivo("Usuarios");
 		System.out.println(arUsuarios.leerArchivoUsuarios().toString());
@@ -48,14 +48,14 @@ public class Main {
 		atrac.add(vec[2]);
 		Promocion proAxB = new PromocionesAxB(atrac);
 
-		Set<Promocion> promociones = new TreeSet<Promocion>(new ComparadorPromociones(TipoDeAtraccion.Degustacion));
+		Set<Promocion> promociones = new TreeSet<Promocion>(new ComparadorPromociones(TipoDeAtraccion.DEGUSTACION));
 		promociones.add(proAxB);
 		promociones.add(proP);
 		promociones.add(proA);
 
 		// System.out.println(proAxB);
 
-		Usuario user = new Usuario("Galardier", 300, 50, TipoDeAtraccion.Aventura);
+		Usuario user = new Usuario("Galardier", 300, 50, TipoDeAtraccion.AVENTURA);
 		Iterator<Atraccion> itAtracciones = atracciones.iterator();
 		Iterator<Promocion> itPromociones = promociones.iterator();
 

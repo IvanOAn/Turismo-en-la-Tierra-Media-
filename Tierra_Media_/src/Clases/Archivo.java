@@ -6,9 +6,6 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.LinkedList;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 public class Archivo {
 	private String nombre;
 

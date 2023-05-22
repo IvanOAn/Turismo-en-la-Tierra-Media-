@@ -14,5 +14,11 @@ public class PromocionPorcentual extends Promocion{
 	public String toString() {
 		return super.toString()+"PromocionPorcentual [porcentajeDescuento=" + porcentajeDescuento + "]";
 	}
+
+	@Override
+	public int compareTo(Promocion o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

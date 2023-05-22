@@ -15,5 +15,11 @@ public class PromocionesAxB extends Promocion {
 	public String toString() {
 		return super.toString()+"PromocionesAxB [atraccionGratis=" + atraccionGratis + "]";
 	}
+
+	@Override
+	public int compareTo(Promocion o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

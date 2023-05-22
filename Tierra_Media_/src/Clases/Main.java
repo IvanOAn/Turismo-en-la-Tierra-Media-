@@ -9,7 +9,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		Atraccion vec[] = new Atraccion[5];
-		Set<Atraccion> atracciones = new TreeSet<Atraccion>(new ComparadorAtracciones(TipoDeAtraccion.PAISAJES));
+		Set<Atraccion> atracciones = new TreeSet<Atraccion>();
 		// List<Atraccion>atracciones=new LinkedList<>();
 
 		vec[0] = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
@@ -48,7 +48,7 @@ public class Main {
 		atrac.add(vec[2]);
 		Promocion proAxB = new PromocionesAxB(atrac);
 
-		Set<Promocion> promociones = new TreeSet<Promocion>(new ComparadorPromociones(TipoDeAtraccion.DEGUSTACION));
+		Set<Promocion> promociones = new TreeSet<Promocion>();
 		promociones.add(proAxB);
 		promociones.add(proP);
 		promociones.add(proA);

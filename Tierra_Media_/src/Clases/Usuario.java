@@ -1,8 +1,6 @@
 package Clases;
 
 import java.util.HashMap;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class Usuario {
 	private String nombre;
@@ -20,6 +18,10 @@ public class Usuario {
 		this.tipoDeAtraccionPreferida = tipoDeAtraccionPreferida;
 		//itinerario =new TreeSet<>(new ComparadorAtracciones(tipoDeAtraccionPreferida));
 		itinerario =new HashMap<>();
+	}
+	
+	public String getNombre() {
+		return nombre;
 	}
 
 	public double getPresupuesto() {
@@ -69,4 +71,12 @@ public class Usuario {
 	public boolean promocionValida(Promocion promocion) {
 		return promocion.atraccionEstaEnPromocion(itinerario);
 	}
+
+	@Override
+	public String toString() {
+		return "Usuario [nombre=" + nombre + ", presupuesto=" + presupuesto + ", tiempoDisponible=" + tiempoDisponible
+				+ ", tipoDeAtraccionPreferida=" + tipoDeAtraccionPreferida + ", itinerario=" + itinerario + "]";
+	}
+	
+	
 }

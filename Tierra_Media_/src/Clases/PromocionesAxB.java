@@ -1,7 +1,6 @@
 package Clases;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PromocionesAxB extends Promocion {
 	private Atraccion atraccionGratis;
@@ -15,6 +14,12 @@ public class PromocionesAxB extends Promocion {
 	@Override
 	public String toString() {
 		return super.toString()+"PromocionesAxB [atraccionGratis=" + atraccionGratis + "]";
+	}
+
+	@Override
+	public int compareTo(Promocion o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

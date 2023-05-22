@@ -1,7 +1,6 @@
 package Clases;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PromocionPorcentual extends Promocion{
 	private double porcentajeDescuento;
@@ -14,6 +13,12 @@ public class PromocionPorcentual extends Promocion{
 	@Override
 	public String toString() {
 		return super.toString()+"PromocionPorcentual [porcentajeDescuento=" + porcentajeDescuento + "]";
+	}
+
+	@Override
+	public int compareTo(Promocion o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

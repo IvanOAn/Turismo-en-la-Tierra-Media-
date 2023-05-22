@@ -1,0 +1,19 @@
+package Clases;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class PromocionPorcentual extends Promocion{
+	private double porcentajeDescuento;
+	
+	public PromocionPorcentual(ArrayList<Atraccion> atraccionesIncluidas,double porcentajeDescuento) {
+		super(atraccionesIncluidas);
+		this.precio = this.precio-(this.precio*porcentajeDescuento/100);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString()+"PromocionPorcentual [porcentajeDescuento=" + porcentajeDescuento + "]";
+	}
+	
+}

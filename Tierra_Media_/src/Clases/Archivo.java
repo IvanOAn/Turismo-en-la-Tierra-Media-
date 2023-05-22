@@ -50,9 +50,11 @@ public class Archivo {
 		return listaUsuarios;
 	}
 
-	public Set<Atraccion> leerArchivoAtracciones() {
+	public LinkedList<Atraccion> leerArchivoAtracciones() {
 		Scanner scanner = null;
-		Set<Atraccion> setAtracciones = new TreeSet<Atraccion>();
+		// Set<Atraccion> setAtracciones = new TreeSet<Atraccion>(new
+		// ComparadorAtracciones(null));
+		LinkedList<Atraccion> listaAtraccion = new LinkedList<Atraccion>();
 
 		try {
 			File file = new File("casos de prueba/in/" + this.nombre + ".in");
@@ -71,7 +73,7 @@ public class Archivo {
 				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, nombreTipo);
 
 				Atraccion atraccionAux = new Atraccion(nombre, precio, duracion, cupoMaximo, tipo);
-				setAtracciones.add(atraccionAux);
+				listaAtraccion.add(atraccionAux);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,6 +81,6 @@ public class Archivo {
 			scanner.close();
 		}
 
-		return setAtracciones;
+		return listaAtraccion;
 	}
 }

@@ -1,10 +1,7 @@
 package Clases;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -20,6 +17,9 @@ public class Main {
 		vec[2]=new Atraccion("La Comarca",10, 22 ,6 ,TipoDeAtraccion.Degustacion);
 		vec[3]=new Atraccion("Mordor",1, 1 ,6 ,TipoDeAtraccion.Aventura);
 		vec[4]=new Atraccion("Abismo de Helm",100, 25 ,6 ,TipoDeAtraccion.Paisajes);
+		
+		Archivo ar = new Archivo("Usuarios");
+		System.out.println(ar.leerArchivoUsuarios().toString());;
 		
 		for(int i=0;i<vec.length;i++) {
 			atracciones.add(vec[i]);
@@ -44,7 +44,7 @@ public class Main {
 		Promocion proAxB=new PromocionesAxB(atrac);
 		
 		
-		Set<Promocion> promociones=new TreeSet(new ComparadorPromociones(TipoDeAtraccion.Degustacion));
+		Set<Promocion> promociones=new TreeSet<Promocion>(new ComparadorPromociones(TipoDeAtraccion.Degustacion));
 		promociones.add(proAxB);
 		promociones.add(proP);
 		promociones.add(proA);

@@ -1,7 +1,6 @@
 package Clases;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PromocionesAbsolutas extends Promocion {
 

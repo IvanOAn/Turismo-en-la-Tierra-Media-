@@ -1,7 +1,6 @@
 package Clases;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PromocionPorcentual extends Promocion{
 	private double porcentajeDescuento;

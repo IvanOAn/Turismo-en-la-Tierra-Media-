@@ -17,7 +17,7 @@ public class PromocionPorcentual extends Promocion{
 
 	@Override
 	public int compareTo(Promocion o) {
-		// TODO Auto-generated method stub
+		//TODO: definir como se ordenan las promociones
 		return 0;
 	}
 	

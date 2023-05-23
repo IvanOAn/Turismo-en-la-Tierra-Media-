@@ -11,6 +11,7 @@ public class Atraccion implements Comparable<Atraccion> {
 	private int cupo;
 	private TipoDeAtraccion tipoDeAtraccion;
 
+	//-- Constructor --
 	public Atraccion(String nombre, double costo, double tiempo, int cupo, TipoDeAtraccion tipoDeAtraccion) {
 		this.nombre = nombre;
 		this.costo = costo;
@@ -18,13 +19,8 @@ public class Atraccion implements Comparable<Atraccion> {
 		this.cupo = cupo;
 		this.tipoDeAtraccion = tipoDeAtraccion;
 	}
-
-	@Override
-	public String toString() {
-		return "Atraccion [nombre=" + nombre + ", costo=" + costo + ", tiempo=" + tiempo + ", cupo=" + cupo
-				+ ", tipoDeAtraccion=" + tipoDeAtraccion + "]";
-	}
-
+	
+	//-- Getters --
 	public double getCosto() {
 		return costo;
 	}
@@ -41,34 +37,41 @@ public class Atraccion implements Comparable<Atraccion> {
 		return cupo;
 	}
 
-	public void setCupo(int cupo) {
-		this.cupo = cupo;
-	}
-
 	public String getNombre() {
 		return nombre;
 	}
 
+	//-- Métodos --
 	public static Set<Atraccion> atraccionesDisponibles(Usuario usuario, Set<Atraccion> treeSet) {
 
 		Set<Atraccion> res = new TreeSet<>();
 
 		for (Atraccion atraccion : treeSet) {
-			if (atraccion.getCosto() < usuario.getPresupuesto() && atraccion.getTiempo() < usuario.getTiempoDisponible()
-					&& atraccion.getCupo() > 0 && !usuario.atraccionYaElegida(atraccion))
+			if (atraccion.getCosto() <= usuario.getPresupuesto()
+					&& atraccion.getTiempo() <= usuario.getTiempoDisponible() && atraccion.getCupo() > 0
+					&& !usuario.atraccionYaElegida(atraccion))
 				res.add(atraccion);
 		}
 		return res;
 	}
 
+	//Esto podría ser una excepción en vez de un if
 	public void decrementarCupo() {
-		this.cupo = this.cupo - 1;
+		if (this.cupo > 0)
+			this.cupo = this.cupo - 1;
 	}
 
+	//-- Overrides --
+	
+	//El orden natural de las atracciones será de mayor a menor costo
 	@Override
-	// TODO: Cambiar esto a algo que tenga más sentido, de momento se comparan las
-	// atracciones de acuerdo a su precio
 	public int compareTo(Atraccion o) {
-		return (int) (this.costo - o.costo);
+		return (int) (o.costo - this.costo);
+	}
+	
+	@Override
+	public String toString() {
+		return "Atraccion [nombre=" + nombre + ", costo=" + costo + ", tiempo=" + tiempo + ", cupo=" + cupo
+				+ ", tipoDeAtraccion=" + tipoDeAtraccion + "]";
 	}
 }

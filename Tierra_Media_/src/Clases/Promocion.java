@@ -6,13 +6,13 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public abstract class Promocion implements Comparable<Promocion> {
-
 	protected int cupo;
 	protected double tiempoRequerido;
 	protected TipoDeAtraccion tipoDeAtraccion;
 	protected HashMap<String, Atraccion> atraccionesIncluidas;
 	protected double precio;
 
+	//-- Constructor --
 	public Promocion(ArrayList<Atraccion> atraccionesIncluidas) {
 		this.atraccionesIncluidas = new HashMap<>();
 		this.tipoDeAtraccion = atraccionesIncluidas.get(0).getTipoDeAtraccion();
@@ -27,6 +27,7 @@ public abstract class Promocion implements Comparable<Promocion> {
 		}
 	}
 
+	///-- Gettters --
 	public TipoDeAtraccion getTipoDeAtraccion() {
 		return tipoDeAtraccion;
 	}
@@ -43,18 +44,14 @@ public abstract class Promocion implements Comparable<Promocion> {
 		return cupo;
 	}
 
-	public void setCupo(int cupo) {
+	//-- Setters --
+	protected void setCupo(int cupo) {
 		this.cupo = cupo;
 	}
 
+	//-- Métodos --
 	public HashMap<String, Atraccion> getAtraccionesIncluidas() {
 		return atraccionesIncluidas;
-	}
-
-	@Override
-	public String toString() {
-		return "Promocion [cupo=" + cupo + ", tiempoRequerido=" + tiempoRequerido + ", tipoDeAtraccion="
-				+ tipoDeAtraccion + ", atraccionesIncluidas=" + atraccionesIncluidas + ", precio=" + precio + "]";
 	}
 
 	public static Set<Promocion> promocionesDisponibles(Usuario usuario, Set<Promocion> treeSet) {
@@ -81,5 +78,13 @@ public abstract class Promocion implements Comparable<Promocion> {
 		for (String nombre : this.atraccionesIncluidas.keySet()) {
 			atraccionesIncluidas.get(nombre).decrementarCupo();
 		}
+	}
+	
+	//-- Overrides --
+	
+	@Override
+	public String toString() {
+		return "Promocion [cupo=" + cupo + ", tiempoRequerido=" + tiempoRequerido + ", tipoDeAtraccion="
+				+ tipoDeAtraccion + ", atraccionesIncluidas=" + atraccionesIncluidas + ", precio=" + precio + "]";
 	}
 }

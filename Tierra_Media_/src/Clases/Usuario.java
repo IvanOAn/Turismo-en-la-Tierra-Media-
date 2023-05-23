@@ -10,6 +10,7 @@ public class Usuario {
 	//private Set<Atraccion> itinerario;	
 	private HashMap<String, Atraccion> itinerario;
 	
+	//-- Constructor --
 	public Usuario(String nombre, double presupuesto, double tiempoDisponible,
 			TipoDeAtraccion tipoDeAtraccionPreferida) {
 		this.nombre = nombre;
@@ -20,6 +21,7 @@ public class Usuario {
 		itinerario =new HashMap<>();
 	}
 	
+	//-- Getters --
 	public String getNombre() {
 		return nombre;
 	}
@@ -28,22 +30,24 @@ public class Usuario {
 		return presupuesto;
 	}
 
-	public void setPresupuesto(double presupuesto) {
-		this.presupuesto = presupuesto;
-	}
-
 	public double getTiempoDisponible() {
 		return tiempoDisponible;
 	}
-
-	public void setTiempoDisponible(double tiempoDisponible) {
-		this.tiempoDisponible = tiempoDisponible;
-	}
-
+	
 	public TipoDeAtraccion getTipoDeAtraccionPreferida() {
 		return tipoDeAtraccionPreferida;
 	}
 	
+	//-- Setters --
+	protected void setPresupuesto(double presupuesto) {
+		this.presupuesto = presupuesto;
+	}
+
+	protected void setTiempoDisponible(double tiempoDisponible) {
+		this.tiempoDisponible = tiempoDisponible;
+	}	
+	
+	//-- Métodos --
 	public boolean estado() {
 		return this.getPresupuesto()>0 && this.getTiempoDisponible()>0;
 	}
@@ -72,11 +76,12 @@ public class Usuario {
 		return promocion.atraccionEstaEnPromocion(itinerario);
 	}
 
+	//-- Overrides --
+	
 	@Override
 	public String toString() {
 		return "Usuario [nombre=" + nombre + ", presupuesto=" + presupuesto + ", tiempoDisponible=" + tiempoDisponible
 				+ ", tipoDeAtraccionPreferida=" + tipoDeAtraccionPreferida + ", itinerario=" + itinerario + "]";
 	}
-	
 	
 }

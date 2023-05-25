@@ -1,12 +1,13 @@
 package Clases;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PromocionesAbsolutas extends Promocion {
 
-	public PromocionesAbsolutas(ArrayList<Atraccion> atraccionesIncluidas,double precio) {
-		super(atraccionesIncluidas);
-		this.precio = precio;
+	public PromocionesAbsolutas(String nombre,int cupo, double tiempoRequerido, TipoDeAtraccion tipoDeAtraccion,
+			List<String> atraccionesIncluidas, double precio) {
+		super(nombre,cupo, tiempoRequerido, tipoDeAtraccion, atraccionesIncluidas, precio);
 	}
 
 	@Override

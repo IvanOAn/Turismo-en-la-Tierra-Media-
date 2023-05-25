@@ -28,11 +28,13 @@ public class Main {
 		Recomendador recom=new Recomendador();
 		
 		recom.cargarUsuarios();
+		recom.cargarAtracciones();
+		recom.cargarPromociones();
 
 		for (int i = 0; i < vec.length; i++) {
 			atracciones.add(vec[i]);
 		}
-
+ 
 		// Collections.sort(atracciones, new
 		// ComparadorAtracciones(TipoDeAtraccion.Aventura));
 
@@ -43,25 +45,25 @@ public class Main {
 		ArrayList<Atraccion> atrac = new ArrayList<>();
 		atrac.add(vec[0]);
 		atrac.add(vec[1]);
-		Promocion proA = new PromocionesAbsolutas(atrac, 120);
+		//Promocion proA = new PromocionesAbsolutas(atrac, 120);
 
 		atrac.clear();
 		atrac.add(vec[4]);
-		Promocion proP = new PromocionPorcentual(atrac, 10);
+		//Promocion proP = new PromocionPorcentual(atrac, 10);
 
 		atrac.add(vec[2]);
-		Promocion proAxB = new PromocionesAxB(atrac);
+		//Promocion proAxB = new PromocionesAxB(atrac);
 
-		Set<Promocion> promociones = new TreeSet<Promocion>();
+		/*Set<Promocion> promociones = new TreeSet<Promocion>();
 		promociones.add(proAxB);
 		promociones.add(proP);
-		promociones.add(proA);
+		promociones.add(proA);*/
 
 		// System.out.println(proAxB);
 
 		Usuario user = new Usuario("Galardier", 300, 50, TipoDeAtraccion.AVENTURA);
 		Iterator<Atraccion> itAtracciones = atracciones.iterator();
-		Iterator<Promocion> itPromociones = promociones.iterator();
+		//Iterator<Promocion> itPromociones = promociones.iterator();
 
 		/*
 		 * while(user.estado() && itAtracciones.hasNext()) {
@@ -77,7 +79,7 @@ public class Main {
 		Promocion auxP = null;
 		Atraccion auxA = null;
 		boolean band = false;
-
+/*
 		while (user.estado() && (promociones.size() != 0 || atracciones.size() != 0)) {
 
 			promociones = Promocion.promocionesDisponibles(user, promociones);
@@ -112,6 +114,6 @@ public class Main {
 
 			if (!band)
 				band = true;
-		}
+		}*/
 	}
 }

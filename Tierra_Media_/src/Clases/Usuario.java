@@ -64,6 +64,7 @@ public class Usuario {
 		return this.itinerario.containsKey(atraccion.getNombre());
 	}
 	
+	/*
 	public void agregarPromocion(Promocion promocion) {
 		this.itinerario.putAll(promocion.getAtraccionesIncluidas());
 		this.setPresupuesto(this.getPresupuesto()-promocion.getPrecio());
@@ -74,7 +75,7 @@ public class Usuario {
 	
 	public boolean promocionValida(Promocion promocion) {
 		return promocion.atraccionEstaEnPromocion(itinerario);
-	}
+	}*/
 
 	//-- Overrides --
 	

@@ -18,12 +18,16 @@ public class Main {
 		vec[3] = new Atraccion("Mordor", 1, 1, 6, TipoDeAtraccion.AVENTURA);
 		vec[4] = new Atraccion("Abismo de Helm", 100, 25, 6, TipoDeAtraccion.PAISAJES);
 
-		Archivo arUsuarios = new Archivo("Usuarios");
+		/*Archivo arUsuarios = new Archivo("Usuarios");
 		System.out.println(arUsuarios.leerArchivoUsuarios().toString());
 
 		Archivo arAtracciones = new Archivo("Atracciones");
 		System.out.println(arAtracciones.leerArchivoAtracciones().toString());
-		;
+		;*/
+		
+		Recomendador recom=new Recomendador();
+		
+		recom.cargarUsuarios();
 
 		for (int i = 0; i < vec.length; i++) {
 			atracciones.add(vec[i]);

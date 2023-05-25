@@ -3,6 +3,7 @@ package Clases;
 import java.io.File;
 
 import java.util.Locale;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.LinkedList;
 
@@ -13,38 +14,38 @@ public class Archivo {
 		this.nombre = nombre;
 	}
 
-	public LinkedList<Usuario> leerArchivoUsuarios() {
+	public Queue<Usuario> cargarArchivoUsuarios() {
+
+		Queue<Usuario> colaDeUsuarios = new LinkedList<Usuario>();
 		Scanner scanner = null;
-		LinkedList<Usuario> listaUsuarios = new LinkedList<Usuario>();
 
 		try {
 			File file = new File("casos de prueba/in/" + this.nombre + ".in");
-			scanner = new Scanner(file);
 
+			scanner = new Scanner(file);
 			scanner.useLocale(Locale.ENGLISH);
 
-			// int cant = scanner.nextInt();
-			// scanner.nextLine(); // lees el salto de linea
-
 			while (scanner.hasNextLine()) {
-				String nombre = scanner.nextLine(); // esto leeria el nombre
-				double presupuesto = scanner.nextDouble();
-				double tiempoDisponible = scanner.nextDouble();
-				scanner.nextLine(); // salto de linea
+				String lineaDeDatos = scanner.nextLine();
 
-				String nombreTipo = scanner.nextLine(); // esto leeria el enum como string??
-				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, nombreTipo);
+				String vectordeDatos[] = lineaDeDatos.split("\t");
 
-				Usuario usuarioAux = new Usuario(nombre, presupuesto, tiempoDisponible, tipo);
-				listaUsuarios.add(usuarioAux);
+				String nombre = vectordeDatos[0];
+				double presupuesto = Double.parseDouble(vectordeDatos[1]);
+				double tiempoDisponible = Double.parseDouble(vectordeDatos[2]);
+				String tipoAtraccionPreferida = vectordeDatos[3].toUpperCase();
+
+				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, tipoAtraccionPreferida);
+
+				Usuario usuario = new Usuario(nombre, presupuesto, tiempoDisponible, tipo);
+				colaDeUsuarios.add(usuario);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			scanner.close();
 		}
-
-		return listaUsuarios;
+		return colaDeUsuarios;
 	}
 
 	public LinkedList<Atraccion> leerArchivoAtracciones() {

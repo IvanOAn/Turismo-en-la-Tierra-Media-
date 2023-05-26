@@ -10,26 +10,10 @@ public class Main {
 	public static void main(String[] args) {
 		Atraccion vec[] = new Atraccion[5];
 		Set<Atraccion> atracciones = new TreeSet<Atraccion>();
-		// List<Atraccion>atracciones=new LinkedList<>();
-
-		vec[0] = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
-		vec[1] = new Atraccion("Minas Tirith", 140, 2, 6, TipoDeAtraccion.AVENTURA);
-		vec[2] = new Atraccion("La Comarca", 10, 22, 6, TipoDeAtraccion.DEGUSTACION);
-		vec[3] = new Atraccion("Mordor", 1, 1, 6, TipoDeAtraccion.AVENTURA);
-		vec[4] = new Atraccion("Abismo de Helm", 100, 25, 6, TipoDeAtraccion.PAISAJES);
-
-		/*Archivo arUsuarios = new Archivo("Usuarios");
-		System.out.println(arUsuarios.leerArchivoUsuarios().toString());
-
-		Archivo arAtracciones = new Archivo("Atracciones");
-		System.out.println(arAtracciones.leerArchivoAtracciones().toString());
-		;*/
 		
-		Recomendador recom=new Recomendador();
+		Recomendador recom = new Recomendador();
 		
-		recom.cargarUsuarios();
-		recom.cargarAtracciones();
-		recom.cargarPromociones();
+		recom.realizarSugerencia();
 
 		for (int i = 0; i < vec.length; i++) {
 			atracciones.add(vec[i]);

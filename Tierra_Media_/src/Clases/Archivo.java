@@ -138,7 +138,6 @@ public class Archivo {
 					String atraccionGratis =vectordeDatos[vectordeDatos.length-1];
 					for(Atraccion atraccion: listaDeAtracciones) {
 						if(atraccion.getNombre().equals(atraccionGratis)) {
-							precio+=atraccion.getCosto();
 							tiempo+=atraccion.getTiempo();
 							cupo=Math.min(cupo, atraccion.getCupo());
 						}

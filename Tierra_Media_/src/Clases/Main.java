@@ -27,9 +27,7 @@ public class Main {
 		
 		Recomendador recom=new Recomendador();
 		
-		recom.cargarUsuarios();
-		recom.cargarAtracciones();
-		recom.cargarPromociones();
+		recom.realizarSugerencia();
 
 		for (int i = 0; i < vec.length; i++) {
 			atracciones.add(vec[i]);

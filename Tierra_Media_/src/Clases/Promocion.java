@@ -2,6 +2,7 @@ package Clases;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -32,15 +33,13 @@ public abstract class Promocion implements Comparable<Promocion> {
 	
 	//Esto seria si calculamos precio y cupo en la clase archivo
 	public Promocion(String nombre,int cupo, double tiempoRequerido, TipoDeAtraccion tipoDeAtraccion,
-			List<String> atraccionesIncluidas, double precio) {
+			List<String> atraccionesIncluidas) {
 		this.nombre= nombre;
 		this.cupo = cupo;
 		this.tiempoRequerido = tiempoRequerido;
 		this.tipoDeAtraccion = tipoDeAtraccion;
 		this.atraccionesIncluidas = atraccionesIncluidas;
-		this.precio = precio;
 	}
-	
 	
 
 	///-- Gettters --
@@ -52,12 +51,16 @@ public abstract class Promocion implements Comparable<Promocion> {
 		return tiempoRequerido;
 	}
 
-	public double getPrecio() {
-		return precio;
-	}
-
 	public int getCupo() {
 		return cupo;
+	}
+
+	public List<String> getAtraccionesIncluidas() {
+		return atraccionesIncluidas;
+	}
+
+	public double getPrecio() {
+		return precio;
 	}
 
 	//-- Setters --
@@ -81,26 +84,33 @@ public abstract class Promocion implements Comparable<Promocion> {
 		}
 		return res;
 	}*/
-/*
-	public boolean atraccionEstaEnPromocion(HashMap<String, Atraccion> itinerario) {
-		for (String palabra : atraccionesIncluidas.keySet()) {
-			if (itinerario.containsKey(palabra))
-				return true;
-		}
-		return false;
-	}
 
+	public boolean atraccionEstaEnPromocion(HashSet<String> itinerario) {
+		for (String palabra : atraccionesIncluidas) {
+			if (itinerario.contains(palabra))
+				return false;
+		}
+		return true;
+	}
+/*
 	public void actualizarAtracciones() {
 		for (String nombre : this.atraccionesIncluidas.keySet()) {
 			atraccionesIncluidas.get(nombre).decrementarCupo();
 		}
 	}*/
 	
+	public void actualizarCupoAtraccionesEnPromocion(HashMap<String, Atraccion> mapaAtracciones) {
+		for (String Nombreatraccion : this.atraccionesIncluidas) {
+			mapaAtracciones.get(Nombreatraccion).decrementarCupo();
+		}
+	}
+	
 	//-- Overrides --
 	
 	@Override
 	public String toString() {
-		return "Promocion [cupo=" + cupo + ", tiempoRequerido=" + tiempoRequerido + ", tipoDeAtraccion="
-				+ tipoDeAtraccion + ", atraccionesIncluidas=" + atraccionesIncluidas + ", precio=" + precio + "]";
+		return "Promocion: "+ nombre + "\n" +
+				"-Tiempo requerido: " + tiempoRequerido + "\n" + 
+				"-Atracciones incluidas: " + atraccionesIncluidas;		
 	}
 }

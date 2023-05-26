@@ -49,12 +49,12 @@ public class Atraccion implements Comparable<Atraccion> {
 		for (Atraccion atraccion : treeSet) {
 			if (atraccion.getCosto() <= usuario.getPresupuesto()
 					&& atraccion.getTiempo() <= usuario.getTiempoDisponible() && atraccion.getCupo() > 0
-					&& !usuario.atraccionYaElegida(atraccion))
+					&& !usuario.atraccionValida(atraccion))
 				res.add(atraccion);
 		}
 		return res;
 	}
-
+	
 	//Esto podría ser una excepción en vez de un if
 	public void decrementarCupo() {
 		if (this.cupo > 0)
@@ -71,7 +71,9 @@ public class Atraccion implements Comparable<Atraccion> {
 	
 	@Override
 	public String toString() {
-		return "Atraccion [nombre=" + nombre + ", costo=" + costo + ", tiempo=" + tiempo + ", cupo=" + cupo
-				+ ", tipoDeAtraccion=" + tipoDeAtraccion + "]";
+		return "Atraccion\n" +
+				"Nombre: [" + nombre + "]\n" +
+				"-Precio: $" + costo + "\n" +
+				"-Duración: " + tiempo + " horas";
 	}
 }

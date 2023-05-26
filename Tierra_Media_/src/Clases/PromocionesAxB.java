@@ -8,13 +8,14 @@ public class PromocionesAxB extends Promocion {
 	
 	public PromocionesAxB(String nombre,int cupo, double tiempoRequerido, TipoDeAtraccion tipoDeAtraccion,
 			List<String> atraccionesIncluidas, double precio, String atraccionGratis) {
-		super(nombre,cupo, tiempoRequerido, tipoDeAtraccion, atraccionesIncluidas, precio);
+		super(nombre,cupo, tiempoRequerido, tipoDeAtraccion, atraccionesIncluidas);
 		this.atraccionGratis = atraccionGratis;
+		this.precio=precio;
 	}
 	
 	@Override
 	public String toString() {
-		return super.toString()+"PromocionesAxB [atraccionGratis=" + atraccionGratis + "]";
+		return super.toString()+"\n-AtraccionGratis: " + atraccionGratis;
 	}
 
 	@Override

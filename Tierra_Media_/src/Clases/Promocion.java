@@ -3,11 +3,13 @@ package Clases;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public abstract class Promocion implements Comparable<Promocion> {
+public class Promocion implements Recomendacion {
+	
 	protected String nombre;
 	protected int cupo;
 	protected double tiempoRequerido;
@@ -51,16 +53,12 @@ public abstract class Promocion implements Comparable<Promocion> {
 		return tiempoRequerido;
 	}
 
-	public int getCupo() {
-		return cupo;
+	public String getNombre() {
+		return nombre;
 	}
 
 	public List<String> getAtraccionesIncluidas() {
 		return atraccionesIncluidas;
-	}
-
-	public double getPrecio() {
-		return precio;
 	}
 
 	//-- Setters --
@@ -92,13 +90,7 @@ public abstract class Promocion implements Comparable<Promocion> {
 		}
 		return true;
 	}
-/*
-	public void actualizarAtracciones() {
-		for (String nombre : this.atraccionesIncluidas.keySet()) {
-			atraccionesIncluidas.get(nombre).decrementarCupo();
-		}
-	}*/
-	
+
 	//-- Overrides --
 	
 	@Override
@@ -107,4 +99,96 @@ public abstract class Promocion implements Comparable<Promocion> {
 				"-Tiempo requerido: " + tiempoRequerido + "\n" + 
 				"-Atracciones incluidas: " + atraccionesIncluidas + "\n";		
 	}
+
+
+@Override
+public double getPrecio() { 
+	return this.precio;
 }
+
+
+@Override
+public double getTiempo() {
+	return this.tiempoRequerido;
+}
+
+
+@Override
+public int getCupo() {
+	return this.cupo;
+}
+
+
+@Override
+public TipoDeAtraccion getTipoDeRecomendacion() {
+	return this.tipoDeAtraccion;
+}
+
+@Override
+public void actualizarRecomendaciones(List<Atraccion> listaAtracciones,List<Promocion> listaPromociones) {
+	Iterator<Atraccion> iterador=listaAtracciones.iterator();
+	
+	for(String nombre: this.atraccionesIncluidas) {
+		while(iterador.hasNext()) {
+			Atraccion atraccion=iterador.next();
+			if(atraccion.getNombre().equals(nombre)) {
+				atraccion.decrementarCupo();
+				if(atraccion.getCupo()==0)
+					listaAtracciones.remove(atraccion);
+			}
+		}
+	}
+	
+	Iterator<Promocion> it=listaPromociones.iterator();
+	while(it.hasNext()) {
+		Promocion promocion=it.next();
+		if(promocion.getNombre().equals(this.nombre)) {
+			this.cupo-=1;
+			if(promocion.getCupo()==0)
+				listaPromociones.remove(promocion);
+		}
+	}
+}
+
+@Override
+public boolean recomendacionValida(Usuario usuario) {
+	HashSet<String> itinerario=usuario.getItinerario();
+	for (String palabra : atraccionesIncluidas) {
+		if (itinerario.contains(palabra))
+			return false;
+	}
+	return true;
+}
+
+
+@Override
+public void agregarRecomendacionAItinerario(Usuario usuario) {
+	Iterator<String> iterador =this.atraccionesIncluidas.iterator();
+	while(iterador.hasNext())
+		usuario.agregarRecomendacion(iterador.next());
+}
+
+
+public void decrementarCupo() {
+	this.cupo-=1;
+}
+
+
+public void recalcularCupo(List<Atraccion> listaAtracciones) {
+	int cupo=0;
+	
+	for(String nombreAtraccion:this.atraccionesIncluidas){
+		for(Atraccion atraccion: listaAtracciones) {
+			if(cupo==0)
+				cupo=atraccion.getCupo();
+			else
+				cupo=Math.min(cupo, atraccion.getCupo());
+		}
+	}
+	this.cupo=cupo;
+}
+
+
+
+}
+

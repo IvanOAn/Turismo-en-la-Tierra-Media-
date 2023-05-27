@@ -15,13 +15,8 @@ public class PromocionesAxB extends Promocion {
 	
 	@Override
 	public String toString() {
-		return super.toString()+"-AtraccionGratis=" + atraccionGratis + "\n";
-	}
-
-	@Override
-	public int compareTo(Promocion o) {
-		//TODO: definir como se ordenan las promociones
-		return 0;
+		return super.toString()+"-AtraccionGratis: " + this.atraccionGratis + "\n"
+							   +"-Precio: "+this.precio +"\n";
 	}
 	
 }

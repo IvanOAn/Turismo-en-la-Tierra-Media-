@@ -1,9 +1,12 @@
 package Clases;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Atraccion implements Comparable<Atraccion> {
+public class Atraccion implements Recomendacion {
 
 	private String nombre;
 	private double costo;
@@ -54,24 +57,65 @@ public class Atraccion implements Comparable<Atraccion> {
 		}
 		return res;
 	}
-	
-	//Esto podría ser una excepción en vez de un if
-	public void decrementarCupo() {
-		if (this.cupo > 0)
-			this.cupo = this.cupo - 1;
-	}
 
 	//-- Overrides --
 	
-	//El orden natural de las atracciones será de mayor a menor costo
-	@Override
-	public int compareTo(Atraccion o) {
-		return (int) (o.costo - this.costo);
-	}
-	
 	@Override
 	public String toString() {
-		return "Atraccion [nombre=" + nombre + ", costo=" + costo + ", tiempo=" + tiempo + ", cupo=" + cupo
-				+ ", tipoDeAtraccion=" + tipoDeAtraccion + "]";
+		return "Atraccion: " + this.nombre +"\n" +
+			   "-Precio: " + costo+ "\n"+ "-Tiempo Requerido: " + tiempo +"\n" +
+				"-Tipo de atraccion=" + tipoDeAtraccion;
+	}
+
+	@Override
+	public double getPrecio() {
+		return this.costo;
+	}
+
+	@Override
+	public TipoDeAtraccion getTipoDeRecomendacion() {
+		return this.tipoDeAtraccion;
+	}
+
+	@Override
+	public boolean recomendacionValida(Usuario usuario) {
+		HashSet<String>itinerario= usuario.getItinerario();
+		if (itinerario.contains(this.nombre))
+				return false;
+		return true;
+	}
+
+	@Override
+	public void agregarRecomendacionAItinerario(Usuario usuario) {
+		usuario.agregarRecomendacion(this.nombre);
+	}
+
+	@Override
+	public void actualizarRecomendaciones(List<Atraccion> listaAtracciones,List<Promocion> listaPromociones){
+		Iterator<Atraccion> iterador=listaAtracciones.iterator();
+	
+		while(iterador.hasNext()) {
+			Atraccion atraccion=iterador.next();
+			if(atraccion.getNombre().equals(this.nombre)) {
+				atraccion.decrementarCupo();
+				if(atraccion.getCupo()==0)
+					listaAtracciones.remove(atraccion);
+			}
+		}
+		
+		Iterator<Promocion> it=listaPromociones.iterator();
+		while(it.hasNext()) {
+			Promocion promocion=it.next();
+			for(String nombreAtraccion:promocion.getAtraccionesIncluidas())
+				if(nombreAtraccion.equals(this.nombre)) {
+					promocion.recalcularCupo(listaAtracciones);
+					if(promocion.getCupo()==0)
+						listaPromociones.remove(promocion);
+				}
+		}
+	}
+
+	public void decrementarCupo() {
+		this.cupo-=1;
 	}
 }

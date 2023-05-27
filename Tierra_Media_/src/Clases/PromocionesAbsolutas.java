@@ -10,11 +10,14 @@ public class PromocionesAbsolutas extends Promocion {
 		super(nombre,cupo, tiempoRequerido, tipoDeAtraccion, atraccionesIncluidas);
 		this.precio=precio;
 	}
-  
+
 	@Override
-	public int compareTo(Promocion o) {
-		//TODO: definir como se ordenan las promociones
-		return 0;
-	}	
+	public String toString() {
+		return super.toString() + "-Precio: "+this.precio +"\n";
+	}
+	
+	
+	
+	
 	
 }

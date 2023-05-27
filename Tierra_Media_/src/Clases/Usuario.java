@@ -2,6 +2,7 @@ package Clases;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class Usuario {
 	private String nombre;
@@ -39,6 +40,10 @@ public class Usuario {
 		return tipoDeAtraccionPreferida;
 	}
 	
+	public HashSet<String> getItinerario() {
+		return itinerario;
+	}
+
 	//-- Setters --
 	protected void setPresupuesto(double presupuesto) {
 		this.presupuesto = presupuesto;
@@ -64,11 +69,18 @@ public class Usuario {
 		return !this.itinerario.contains(atraccion.getNombre());
 	}
 	
-	public void comprarPromocion(Promocion promocion) {
+/*	public void comprarPromocion(Promocion promocion) {
 		this.itinerario.addAll(promocion.getAtraccionesIncluidas());
 		this.presupuesto=this.presupuesto-promocion.getPrecio();
 		this.tiempoDisponible=this.tiempoDisponible-promocion.getTiempoRequerido();
 		promocion.setCupo(promocion.getCupo()-1);
+	}*/
+	
+	public void comprarRecomendacion(Recomendacion recomendacion, List<Atraccion> listaAtracciones, List<Promocion> listaDePromociones) {
+		recomendacion.agregarRecomendacionAItinerario(this);
+		this.presupuesto-=recomendacion.getPrecio();
+		this.tiempoDisponible-=recomendacion.getTiempo();
+		recomendacion.actualizarRecomendaciones(listaAtracciones, listaDePromociones);
 	}
 	
 	
@@ -82,6 +94,10 @@ public class Usuario {
 	public String toString() {
 		return "Usuario [nombre=" + nombre + ", presupuesto=" + presupuesto + ", tiempoDisponible=" + tiempoDisponible
 				+ ", tipoDeAtraccionPreferida=" + tipoDeAtraccionPreferida + ", itinerario=" + itinerario + "]";
+	}
+
+	public void agregarRecomendacion(String nombreAtraccion) {
+		this.itinerario.add(nombreAtraccion);
 	}
 	
 }

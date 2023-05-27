@@ -16,13 +16,7 @@ public class PromocionPorcentual extends Promocion{
 	public String toString() {
 		return super.toString()+"-Porcentaje de descuento: " + porcentajeDescuento + "\n"+
 							   "-Precio sin Descuento: "+ (precio+precio*porcentajeDescuento/(100-porcentajeDescuento))+ "\n"+
-							   "-Precio con descuento: "+ precio;
-	}
-
-	@Override
-	public int compareTo(Promocion o) {
-		//TODO: definir como se ordenan las promociones
-		return 0;
+							   "-Precio con descuento: "+ precio + "\n";
 	}
 	
 }

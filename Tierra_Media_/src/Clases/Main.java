@@ -28,8 +28,8 @@ public class Main {
 		Recomendador recom=new Recomendador();
 		
 		recom.realizarSugerencia();
-
-		for (int i = 0; i < vec.length; i++) {
+/*
+		/*for (int i = 0; i < vec.length; i++) {
 			atracciones.add(vec[i]);
 		}
  
@@ -58,7 +58,7 @@ public class Main {
 		promociones.add(proA);*/
 
 		// System.out.println(proAxB);
-
+/*
 		Usuario user = new Usuario("Galardier", 300, 50, TipoDeAtraccion.AVENTURA);
 		Iterator<Atraccion> itAtracciones = atracciones.iterator();
 		//Iterator<Promocion> itPromociones = promociones.iterator();
@@ -73,7 +73,7 @@ public class Main {
 		 * 
 		 * user.agregarAtraccion(itAtracciones.next()); }
 		 */
-
+/*
 		Promocion auxP = null;
 		Atraccion auxA = null;
 		boolean band = false;

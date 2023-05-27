@@ -43,24 +43,28 @@ public class Recomendador {
 		System.out.printf("%30s","Bienvenido/a a ...");
 		System.out.println("\n------------------------------------------\n");
 		
+		List<Recomendacion> listaRecomendaciones=new LinkedList<Recomendacion>();
+		
 		while(!this.colaDeUsuarios.isEmpty()) {
+			
 			Usuario usuario= this.colaDeUsuarios.remove();
-			System.out.printf("Nombre del visitante: %s\n\n",usuario.getNombre());
+			System.out.printf("\n\nNombre del visitante: %s\n\n",usuario.getNombre());
 			
-			Collections.sort(this.listaDeAtracciones, new ComparadorAtracciones(usuario.getTipoDeAtraccionPreferida()));
-			Collections.sort(this.listaDePromociones, new ComparadorPromociones(usuario.getTipoDeAtraccionPreferida()));
+			listaRecomendaciones.addAll(listaDeAtracciones);
+			listaRecomendaciones.addAll(listaDePromociones);
 			
-			ListIterator<Atraccion> iteradorAtracciones=this.listaDeAtracciones.listIterator();
-			ListIterator<Promocion> iteradorPromociones=this.listaDePromociones.listIterator();
+			Collections.sort(listaRecomendaciones, new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
 			
-			Promocion promocion;
-			Atraccion atraccion;
+			Iterator<Recomendacion> iterador = listaRecomendaciones.iterator();
+			Recomendacion aux;
 			
-			boolean band=false;
-			while(usuario.estado() && (iteradorAtracciones.hasNext() || iteradorPromociones.hasNext())) {
+			while(usuario.estado() && iterador.hasNext()) {
 				
-				boolean salir = false;
-				while (iteradorPromociones.hasNext() && (!salir || band)) {
+				aux =iterador.next();
+				
+				ofrecerRecomendacion(usuario, aux);
+				
+				/*while (iteradorPromociones.hasNext() && (!salir || band)) {
 					promocion=iteradorPromociones.next();
 					if (promocion.getTipoDeAtraccion()==usuario.getTipoDeAtraccionPreferida() || band) {
 						this.ofrecerPromocion(usuario,promocion);
@@ -81,15 +85,42 @@ public class Recomendador {
 							iteradorAtracciones.previous();
 						salir = true;
 					}
-				}
+				}*/
 				
-				if (!band)
-					band = true;
 			}
 		}
 	}
+	
+	private void ofrecerRecomendacion(Usuario usuario,Recomendacion recomendacion) {
+		if(usuario.getPresupuesto()<recomendacion.getPrecio() || 
+		   usuario.getTiempoDisponible()< recomendacion.getTiempo() ||
+		   !recomendacion.recomendacionValida(usuario))
+			return;
+		
+		System.out.println(recomendacion);
+		
+		if(this.validarRecomendacion()) {
+			usuario.comprarRecomendacion(recomendacion,this.listaDeAtracciones,this.listaDePromociones);
+		}else
+			return;
+	}
+	
+	private boolean validarRecomendacion() {
+		String respuesta;
+		Scanner input=new Scanner(System.in);
+		do {
+		System.out.println("\nQuiere aceptar la recomendacion? Digite S (Si) o N (No)");
+		System.out.print("Respuesta: ");
+		respuesta=input.next();
+		respuesta=respuesta.toUpperCase();
+		}while(!(respuesta.equals("S") || respuesta.equals("N")));
+		
+		//input.close();
 
-	private void ofrecerPromocion(Usuario usuario,Promocion promocion) {
+		return respuesta.equals("S");
+	}
+	
+/*	private void ofrecerPromocion(Usuario usuario,Promocion promocion) {
 		if(usuario.getPresupuesto()<promocion.getPrecio() || 
 		   usuario.getTiempoDisponible()< promocion.getTiempoRequerido() ||
 		   !usuario.promocionValida(promocion))
@@ -98,25 +129,10 @@ public class Recomendador {
 		System.out.println(promocion);
 		
 		if(this.validarRecomendacion()) {
-			usuario.comprarPromocion(promocion);
+//			usuario.comprarPromocion(promocion);
 			this.actualizarCupoAtraccionesEnPromocion(promocion);
 		}else
 			return;
-	}
-
-	private boolean validarRecomendacion() {
-		String respuesta;
-		Scanner input=new Scanner(System.in);
-		do {
-		System.out.println("\nQuiere aceptar la recomendacion? Digite S (Si) o N (No)");
-		System.out.print("Respuesta: ");
-		respuesta=input.next().toUpperCase();
-		}while(!(respuesta.equals("S") || respuesta.equals("N")));
-		
-		input.close();
-		if(respuesta=="S" || respuesta=="N")
-			return true;
-		return false;
 	}
 	
 	private void ofrecerAtraccion(Usuario usuario,Atraccion atraccion) {
@@ -139,5 +155,5 @@ public class Recomendador {
 				if(atraccion.getNombre().equals(nombre))
 					atraccion.decrementarCupo();
 		}
-	}
+	}*/
 }

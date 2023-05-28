@@ -9,21 +9,26 @@ public class Usuario {
 	private double presupuesto;
 	private double tiempoDisponible;
 	private TipoDeAtraccion tipoDeAtraccionPreferida;
-	//private Set<Atraccion> itinerario;	
+	// private Set<Atraccion> itinerario;
 	private HashSet<String> itinerario;
-	
-	//-- Constructor --
+	private final double presupuestoInicial;
+	private final double tiempoInicial;
+
+	// -- Constructor --
 	public Usuario(String nombre, double presupuesto, double tiempoDisponible,
 			TipoDeAtraccion tipoDeAtraccionPreferida) {
 		this.nombre = nombre;
 		this.presupuesto = presupuesto;
 		this.tiempoDisponible = tiempoDisponible;
 		this.tipoDeAtraccionPreferida = tipoDeAtraccionPreferida;
-		//itinerario =new TreeSet<>(new ComparadorAtracciones(tipoDeAtraccionPreferida));
-		itinerario =new HashSet<String>();
+		// itinerario =new TreeSet<>(new
+		// ComparadorAtracciones(tipoDeAtraccionPreferida));
+		itinerario = new HashSet<String>();
+		this.presupuestoInicial = presupuesto;
+		this.tiempoInicial = tiempoDisponible;
 	}
-	
-	//-- Getters --
+
+	// -- Getters --
 	public String getNombre() {
 		return nombre;
 	}
@@ -35,61 +40,64 @@ public class Usuario {
 	public double getTiempoDisponible() {
 		return tiempoDisponible;
 	}
-	
+
 	public TipoDeAtraccion getTipoDeAtraccionPreferida() {
 		return tipoDeAtraccionPreferida;
 	}
-	
+
 	public HashSet<String> getItinerario() {
 		return itinerario;
 	}
 
-	//-- Setters --
+	// -- Setters --
 	protected void setPresupuesto(double presupuesto) {
 		this.presupuesto = presupuesto;
 	}
 
 	protected void setTiempoDisponible(double tiempoDisponible) {
 		this.tiempoDisponible = tiempoDisponible;
-	}	
-	
-	//-- Métodos --
-	public boolean estado() {
-		return this.getPresupuesto()>0 && this.getTiempoDisponible()>0;
 	}
-	
+
+	// -- Métodos --
+	public boolean estado() {
+		return this.getPresupuesto() > 0 && this.getTiempoDisponible() > 0;
+	}
+
 	public void comprarAtraccion(Atraccion atraccion) {
 		this.itinerario.add(atraccion.getNombre());
-		this.presupuesto=this.presupuesto-atraccion.getCosto();
-		this.tiempoDisponible= this.tiempoDisponible-atraccion.getTiempo();
+		this.presupuesto = this.presupuesto - atraccion.getCosto();
+		this.tiempoDisponible = this.tiempoDisponible - atraccion.getTiempo();
 		atraccion.decrementarCupo();
 	}
-	
+
 	public boolean atraccionValida(Atraccion atraccion) {
 		return !this.itinerario.contains(atraccion.getNombre());
 	}
-	
-/*	public void comprarPromocion(Promocion promocion) {
-		this.itinerario.addAll(promocion.getAtraccionesIncluidas());
-		this.presupuesto=this.presupuesto-promocion.getPrecio();
-		this.tiempoDisponible=this.tiempoDisponible-promocion.getTiempoRequerido();
-		promocion.setCupo(promocion.getCupo()-1);
-	}*/
-	
-	public void comprarRecomendacion(Recomendacion recomendacion, List<Atraccion> listaAtracciones, List<Promocion> listaDePromociones) {
+
+	/*
+	 * public void comprarPromocion(Promocion promocion) {
+	 * this.itinerario.addAll(promocion.getAtraccionesIncluidas());
+	 * this.presupuesto=this.presupuesto-promocion.getPrecio();
+	 * this.tiempoDisponible=this.tiempoDisponible-promocion.getTiempoRequerido();
+	 * promocion.setCupo(promocion.getCupo()-1); }
+	 */
+
+	public void comprarRecomendacion(Recomendacion recomendacion, List<Atraccion> listaAtracciones,
+			List<Promocion> listaDePromociones, List<Recomendacion> listaRecomendacion,
+			HashMap<String, Atraccion> mapaAtracciones) {
 		recomendacion.agregarRecomendacionAItinerario(this);
-		this.presupuesto-=recomendacion.getPrecio();
-		this.tiempoDisponible-=recomendacion.getTiempo();
-		recomendacion.actualizarRecomendaciones(listaAtracciones, listaDePromociones);
+		this.presupuesto -= recomendacion.getPrecio();
+		this.tiempoDisponible -= recomendacion.getTiempo();
+		recomendacion.actualizarRecomendaciones(listaAtracciones, listaDePromociones, listaRecomendacion,
+				mapaAtracciones);
 	}
-	
-	
+
 	public boolean promocionValida(Promocion promocion) {
 		return promocion.atraccionEstaEnPromocion(itinerario);
 	}
 
-	//-- Overrides --
-	
+	// -- Overrides --
+
 	@Override
 	public String toString() {
 		return "Usuario [nombre=" + nombre + ", presupuesto=" + presupuesto + ", tiempoDisponible=" + tiempoDisponible
@@ -99,5 +107,4 @@ public class Usuario {
 	public void agregarRecomendacion(String nombreAtraccion) {
 		this.itinerario.add(nombreAtraccion);
 	}
-	
 }

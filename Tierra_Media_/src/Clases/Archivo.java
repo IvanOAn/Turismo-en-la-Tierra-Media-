@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.Locale;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class Archivo {
 		return colaDeUsuarios;
 	}
 
-	public LinkedList<Atraccion> cargarArchivoAtracciones() {
+	public LinkedList<Atraccion> cargarArchivoAtracciones(HashMap<String, Atraccion> mapaAtracciones) {
 
 		LinkedList<Atraccion> listaAtracciones = new LinkedList<Atraccion>();
 		Scanner scanner = null;
@@ -73,6 +74,7 @@ public class Archivo {
 
 				Atraccion atraccionAux = new Atraccion(nombre, precio, duracion, cupoMaximo, tipo);
 				listaAtracciones.add(atraccionAux);
+				mapaAtracciones.put(nombre, atraccionAux);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -81,7 +83,7 @@ public class Archivo {
 		}
 		return listaAtracciones;
 	}
-	
+
 	public LinkedList<Promocion> cargarArchivoPromociones(List<Atraccion> listaDeAtracciones) {
 
 		LinkedList<Promocion> listaPromociones = new LinkedList<Promocion>();
@@ -96,21 +98,21 @@ public class Archivo {
 			while (scanner.hasNextLine()) {
 				String lineaDeDatos = scanner.nextLine();
 				String vectordeDatos[] = lineaDeDatos.split("\t");
-				
-				String nombre=vectordeDatos[1];
+
+				String nombre = vectordeDatos[1];
 				String nombreTipo = vectordeDatos[2].toUpperCase();
 				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, nombreTipo);
-				
-				List<String> atraccionesIncluidas =new LinkedList<String>();
-				for(int i=3;i<vectordeDatos.length-1;i++)
+
+				List<String> atraccionesIncluidas = new LinkedList<String>();
+				for (int i = 3; i < vectordeDatos.length - 1; i++)
 					atraccionesIncluidas.add(vectordeDatos[i]);
-				
-				double precio=0;
-				double tiempo=0;
-				int cupo=0;
-				for(Atraccion atraccion: listaDeAtracciones) {
-					for(String nombreAtraccion: atraccionesIncluidas) {
-						if (atraccion.getNombre().equals(nombreAtraccion)){
+
+				double precio = 0;
+				double tiempo = 0;
+				int cupo = 0;
+				for (Atraccion atraccion : listaDeAtracciones) {
+					for (String nombreAtraccion : atraccionesIncluidas) {
+						if (atraccion.getNombre().equals(nombreAtraccion)) {
 							precio += atraccion.getCosto();
 							tiempo += atraccion.getTiempo();
 							if (cupo == 0)
@@ -120,29 +122,31 @@ public class Archivo {
 						}
 					}
 				}
-				
-				Promocion promocion=null;
-				
-				switch(vectordeDatos[0].toUpperCase()) {
+
+				Promocion promocion = null;
+
+				switch (vectordeDatos[0].toUpperCase()) {
 				case "PORCENTUAL":
-					double descuento=Double.parseDouble(vectordeDatos[vectordeDatos.length-1]);
-					promocion=new PromocionPorcentual(nombre,cupo, tiempo, tipo, atraccionesIncluidas, precio, descuento);
+					double descuento = Double.parseDouble(vectordeDatos[vectordeDatos.length - 1]);
+					promocion = new PromocionPorcentual(nombre, cupo, tiempo, tipo, atraccionesIncluidas, precio,
+							descuento);
 					break;
-					
+
 				case "ABSOLUTA":
-					precio=Double.parseDouble(vectordeDatos[vectordeDatos.length-1]);
-					promocion=new PromocionesAbsolutas(nombre,cupo, tiempo, tipo, atraccionesIncluidas, precio);
+					precio = Double.parseDouble(vectordeDatos[vectordeDatos.length - 1]);
+					promocion = new PromocionesAbsolutas(nombre, cupo, tiempo, tipo, atraccionesIncluidas, precio);
 					break;
-					
+
 				case "AXB":
-					String atraccionGratis =vectordeDatos[vectordeDatos.length-1];
-					for(Atraccion atraccion: listaDeAtracciones) {
-						if(atraccion.getNombre().equals(atraccionGratis)) {
-							tiempo+=atraccion.getTiempo();
-							cupo=Math.min(cupo, atraccion.getCupo());
+					String atraccionGratis = vectordeDatos[vectordeDatos.length - 1];
+					for (Atraccion atraccion : listaDeAtracciones) {
+						if (atraccion.getNombre().equals(atraccionGratis)) {
+							tiempo += atraccion.getTiempo();
+							cupo = Math.min(cupo, atraccion.getCupo());
 						}
 					}
-					promocion=new PromocionesAxB(nombre,cupo, tiempo, tipo, atraccionesIncluidas, precio,atraccionGratis);
+					promocion = new PromocionesAxB(nombre, cupo, tiempo, tipo, atraccionesIncluidas, precio,
+							atraccionGratis);
 					break;
 				}
 				listaPromociones.add(promocion);

@@ -1,8 +1,11 @@
 package Clases;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -14,7 +17,7 @@ public class Atraccion implements Recomendacion {
 	private int cupo;
 	private TipoDeAtraccion tipoDeAtraccion;
 
-	//-- Constructor --
+	// -- Constructor --
 	public Atraccion(String nombre, double costo, double tiempo, int cupo, TipoDeAtraccion tipoDeAtraccion) {
 		this.nombre = nombre;
 		this.costo = costo;
@@ -22,8 +25,8 @@ public class Atraccion implements Recomendacion {
 		this.cupo = cupo;
 		this.tipoDeAtraccion = tipoDeAtraccion;
 	}
-	
-	//-- Getters --
+
+	// -- Getters --
 	public double getCosto() {
 		return costo;
 	}
@@ -44,7 +47,7 @@ public class Atraccion implements Recomendacion {
 		return nombre;
 	}
 
-	//-- Métodos --
+	// -- Métodos --
 	public static Set<Atraccion> atraccionesDisponibles(Usuario usuario, Set<Atraccion> treeSet) {
 
 		Set<Atraccion> res = new TreeSet<>();
@@ -58,13 +61,12 @@ public class Atraccion implements Recomendacion {
 		return res;
 	}
 
-	//-- Overrides --
-	
+	// -- Overrides --
+
 	@Override
 	public String toString() {
-		return "Atraccion: " + this.nombre +"\n" +
-			   "-Precio: " + costo+ "\n"+ "-Tiempo Requerido: " + tiempo +"\n" +
-				"-Tipo de atraccion=" + tipoDeAtraccion;
+		return "Atraccion: " + this.nombre + "\n" + "-Precio: " + costo + "\n" + "-Tiempo Requerido: " + tiempo + "\n"
+				+ "-Tipo de atraccion=" + tipoDeAtraccion;
 	}
 
 	@Override
@@ -79,9 +81,9 @@ public class Atraccion implements Recomendacion {
 
 	@Override
 	public boolean recomendacionValida(Usuario usuario) {
-		HashSet<String>itinerario= usuario.getItinerario();
+		HashSet<String> itinerario = usuario.getItinerario();
 		if (itinerario.contains(this.nombre))
-				return false;
+			return false;
 		return true;
 	}
 
@@ -91,31 +93,42 @@ public class Atraccion implements Recomendacion {
 	}
 
 	@Override
-	public void actualizarRecomendaciones(List<Atraccion> listaAtracciones,List<Promocion> listaPromociones){
-		Iterator<Atraccion> iterador=listaAtracciones.iterator();
-	
-		while(iterador.hasNext()) {
-			Atraccion atraccion=iterador.next();
-			if(atraccion.getNombre().equals(this.nombre)) {
+	public void actualizarRecomendaciones(List<Atraccion> listaAtracciones, List<Promocion> listaPromociones,
+			List<Recomendacion> listaRecomendacion, HashMap<String, Atraccion> mapaAtracciones) {
+
+		for (Atraccion atraccion : listaAtracciones)
+			if (atraccion.getNombre().equals(this.nombre))
 				atraccion.decrementarCupo();
-				if(atraccion.getCupo()==0)
-					listaAtracciones.remove(atraccion);
-			}
-		}
-		
-		Iterator<Promocion> it=listaPromociones.iterator();
-		while(it.hasNext()) {
-			Promocion promocion=it.next();
-			for(String nombreAtraccion:promocion.getAtraccionesIncluidas())
-				if(nombreAtraccion.equals(this.nombre)) {
+
+		for (Promocion promocion : listaPromociones)
+			for (String nombreAtraccion : promocion.getAtraccionesIncluidas())
+				if (nombreAtraccion.equals(this.nombre))
 					promocion.recalcularCupo(listaAtracciones);
-					if(promocion.getCupo()==0)
-						listaPromociones.remove(promocion);
-				}
-		}
 	}
 
 	public void decrementarCupo() {
-		this.cupo-=1;
+		this.cupo -= 1;
+	}
+
+	@Override
+	public int prioridad() {
+		return 1;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(cupo);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Atraccion other = (Atraccion) obj;
+		return cupo == other.cupo;
 	}
 }

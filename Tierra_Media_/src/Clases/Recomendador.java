@@ -1,6 +1,7 @@
 package Clases;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,148 +13,148 @@ public class Recomendador {
 	Queue<Usuario> colaDeUsuarios;
 	List<Atraccion> listaDeAtracciones;
 	List<Promocion> listaDePromociones;
+	HashMap<String, Atraccion> mapaAtracciones;
 
 	public Recomendador() {
-		this.colaDeUsuarios =new LinkedList<Usuario>();
-		this.listaDeAtracciones= new LinkedList<Atraccion>();
-		this.listaDePromociones= new LinkedList<Promocion>();
+		this.colaDeUsuarios = new LinkedList<Usuario>();
+		this.listaDeAtracciones = new LinkedList<Atraccion>();
+		this.listaDePromociones = new LinkedList<Promocion>();
+		this.mapaAtracciones = new HashMap<>();
 	}
-	
+
 	private void cargarUsuarios() {
-		Archivo archivoUsuarios= new Archivo("Usuarios");
-		this.colaDeUsuarios=archivoUsuarios.cargarArchivoUsuarios();
+		Archivo archivoUsuarios = new Archivo("Usuarios");
+		this.colaDeUsuarios = archivoUsuarios.cargarArchivoUsuarios();
 	}
-	
+
 	private void cargarAtracciones() {
-		Archivo archivoAtracciones= new Archivo("Atracciones");
-		this.listaDeAtracciones=archivoAtracciones.cargarArchivoAtracciones();
+		Archivo archivoAtracciones = new Archivo("Atracciones");
+		this.listaDeAtracciones = archivoAtracciones.cargarArchivoAtracciones(mapaAtracciones);
 	}
-	
+
 	private void cargarPromociones() {
-		Archivo archivoPromociones= new Archivo("Promociones");
-		this.listaDePromociones=archivoPromociones.cargarArchivoPromociones(listaDeAtracciones);
+		Archivo archivoPromociones = new Archivo("Promociones");
+		this.listaDePromociones = archivoPromociones.cargarArchivoPromociones(listaDeAtracciones);
 	}
-	
+
 	public void realizarSugerencia() {
 		this.cargarUsuarios();
 		this.cargarAtracciones();
 		this.cargarPromociones();
-		
+
 		System.out.println("------------------------------------------");
-		System.out.printf("%30s","Bienvenido/a a ...");
+		System.out.printf("%30s", "Bienvenido/a a ...");
 		System.out.println("\n------------------------------------------\n");
-		
-		List<Recomendacion> listaRecomendaciones=new LinkedList<Recomendacion>();
-		
-		while(!this.colaDeUsuarios.isEmpty()) {
-			
-			Usuario usuario= this.colaDeUsuarios.remove();
-			System.out.printf("\n\nNombre del visitante: %s\n\n",usuario.getNombre());
-			
+
+		List<Recomendacion> listaRecomendaciones = new LinkedList<Recomendacion>();
+
+		Scanner input = new Scanner(System.in);
+		while (!this.colaDeUsuarios.isEmpty()) {
+
+			Usuario usuario = this.colaDeUsuarios.remove();
+			System.out.printf("\n\nNombre del visitante: %s\n\n", usuario.getNombre());
+
 			listaRecomendaciones.addAll(listaDeAtracciones);
 			listaRecomendaciones.addAll(listaDePromociones);
-			
-			Collections.sort(listaRecomendaciones, new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
-			
+
+			// eliminarRecomendaciones(listaDeAtracciones);
+
+			Collections.sort(listaRecomendaciones,
+					new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
+
 			Iterator<Recomendacion> iterador = listaRecomendaciones.iterator();
 			Recomendacion aux;
-			
-			while(usuario.estado() && iterador.hasNext()) {
-				
-				aux =iterador.next();
-				
-				ofrecerRecomendacion(usuario, aux);
-				
-				/*while (iteradorPromociones.hasNext() && (!salir || band)) {
-					promocion=iteradorPromociones.next();
-					if (promocion.getTipoDeAtraccion()==usuario.getTipoDeAtraccionPreferida() || band) {
-						this.ofrecerPromocion(usuario,promocion);
-					} else {
-						if(iteradorPromociones.hasPrevious())
-							iteradorPromociones.previous();
-						salir = true;
-					}
-				}
-				
-				salir = false;
-				while (iteradorAtracciones.hasNext() && (!salir || band)) {
-					atraccion = iteradorAtracciones.next();
-					if (atraccion.getTipoDeAtraccion() == usuario.getTipoDeAtraccionPreferida() || band) {
-						this.ofrecerAtraccion(usuario, atraccion);
-					} else {
-						if(iteradorAtracciones.hasPrevious())
-							iteradorAtracciones.previous();
-						salir = true;
-					}
-				}*/
-				
+
+			while (usuario.estado() && iterador.hasNext()) {
+
+				aux = iterador.next();
+
+				ofrecerRecomendacion(usuario, aux, input, listaRecomendaciones);
+
+				/*
+				 * while (iteradorPromociones.hasNext() && (!salir || band)) {
+				 * promocion=iteradorPromociones.next(); if
+				 * (promocion.getTipoDeAtraccion()==usuario.getTipoDeAtraccionPreferida() ||
+				 * band) { this.ofrecerPromocion(usuario,promocion); } else {
+				 * if(iteradorPromociones.hasPrevious()) iteradorPromociones.previous(); salir =
+				 * true; } }
+				 * 
+				 * salir = false; while (iteradorAtracciones.hasNext() && (!salir || band)) {
+				 * atraccion = iteradorAtracciones.next(); if (atraccion.getTipoDeAtraccion() ==
+				 * usuario.getTipoDeAtraccionPreferida() || band) {
+				 * this.ofrecerAtraccion(usuario, atraccion); } else {
+				 * if(iteradorAtracciones.hasPrevious()) iteradorAtracciones.previous(); salir =
+				 * true; } }
+				 */
+
 			}
+
+		}
+		input.close();
+	}
+
+	private void eliminarRecomendaciones(List<Recomendacion> lista) {
+		int indice = lista.indexOf(new Atraccion(null, 0, 0, 0, null));
+		while (indice != -1) {
+			lista.remove(indice);
+			indice = lista.indexOf(new Atraccion(null, 0, 0, 0, null));
 		}
 	}
-	
-	private void ofrecerRecomendacion(Usuario usuario,Recomendacion recomendacion) {
-		if(usuario.getPresupuesto()<recomendacion.getPrecio() || 
-		   usuario.getTiempoDisponible()< recomendacion.getTiempo() ||
-		   !recomendacion.recomendacionValida(usuario))
+
+	private void ofrecerRecomendacion(Usuario usuario, Recomendacion recomendacion, Scanner input,
+			List<Recomendacion> listaRecomendacion) {
+		if (usuario.getPresupuesto() < recomendacion.getPrecio()
+				|| usuario.getTiempoDisponible() < recomendacion.getTiempo()
+				|| !recomendacion.recomendacionValida(usuario) || recomendacion.getCupo() == 0)
 			return;
-		
+
 		System.out.println(recomendacion);
-		
-		if(this.validarRecomendacion()) {
-			usuario.comprarRecomendacion(recomendacion,this.listaDeAtracciones,this.listaDePromociones);
-		}else
+
+		if (this.validarRecomendacion(input)) {
+			usuario.comprarRecomendacion(recomendacion, this.listaDeAtracciones, this.listaDePromociones,
+					listaRecomendacion, mapaAtracciones);
+		} else
 			return;
 	}
-	
-	private boolean validarRecomendacion() {
+
+	private boolean validarRecomendacion(Scanner input) {
 		String respuesta;
-		Scanner input=new Scanner(System.in);
+
 		do {
-		System.out.println("\nQuiere aceptar la recomendacion? Digite S (Si) o N (No)");
-		System.out.print("Respuesta: ");
-		respuesta=input.next();
-		respuesta=respuesta.toUpperCase();
-		}while(!(respuesta.equals("S") || respuesta.equals("N")));
-		
-		//input.close();
+			System.out.println("\nQuiere aceptar la recomendacion? Digite S (Si) o N (No)");
+			System.out.print("Respuesta: ");
+			respuesta = input.next();
+			respuesta = respuesta.toUpperCase();
+		} while (!(respuesta.equals("S") || respuesta.equals("N")));
 
 		return respuesta.equals("S");
 	}
-	
-/*	private void ofrecerPromocion(Usuario usuario,Promocion promocion) {
-		if(usuario.getPresupuesto()<promocion.getPrecio() || 
-		   usuario.getTiempoDisponible()< promocion.getTiempoRequerido() ||
-		   !usuario.promocionValida(promocion))
-			return;
-		
-		System.out.println(promocion);
-		
-		if(this.validarRecomendacion()) {
-//			usuario.comprarPromocion(promocion);
-			this.actualizarCupoAtraccionesEnPromocion(promocion);
-		}else
-			return;
-	}
-	
-	private void ofrecerAtraccion(Usuario usuario,Atraccion atraccion) {
-		if(usuario.getPresupuesto()<atraccion.getCosto() || 
-		   usuario.getTiempoDisponible()< atraccion.getTiempo() ||
-		   !usuario.atraccionValida(atraccion))
-			return;
-		
-		System.out.println(atraccion);
-		
-		if(this.validarRecomendacion()) {
-			usuario.comprarAtraccion(atraccion);
-		}else
-			return;
-	}
 
-	private void actualizarCupoAtraccionesEnPromocion(Promocion promocion) {//Esto se deberia hacer en la clase promocion
-		for(Atraccion atraccion: this.listaDeAtracciones){
-			for(String nombre: promocion.getAtraccionesIncluidas())
-				if(atraccion.getNombre().equals(nombre))
-					atraccion.decrementarCupo();
-		}
-	}*/
+	/*
+	 * private void ofrecerPromocion(Usuario usuario,Promocion promocion) {
+	 * if(usuario.getPresupuesto()<promocion.getPrecio() ||
+	 * usuario.getTiempoDisponible()< promocion.getTiempoRequerido() ||
+	 * !usuario.promocionValida(promocion)) return;
+	 * 
+	 * System.out.println(promocion);
+	 * 
+	 * if(this.validarRecomendacion()) { // usuario.comprarPromocion(promocion);
+	 * this.actualizarCupoAtraccionesEnPromocion(promocion); }else return; }
+	 * 
+	 * private void ofrecerAtraccion(Usuario usuario,Atraccion atraccion) {
+	 * if(usuario.getPresupuesto()<atraccion.getCosto() ||
+	 * usuario.getTiempoDisponible()< atraccion.getTiempo() ||
+	 * !usuario.atraccionValida(atraccion)) return;
+	 * 
+	 * System.out.println(atraccion);
+	 * 
+	 * if(this.validarRecomendacion()) { usuario.comprarAtraccion(atraccion); }else
+	 * return; }
+	 * 
+	 * private void actualizarCupoAtraccionesEnPromocion(Promocion promocion)
+	 * {//Esto se deberia hacer en la clase promocion for(Atraccion atraccion:
+	 * this.listaDeAtracciones){ for(String nombre:
+	 * promocion.getAtraccionesIncluidas()) if(atraccion.getNombre().equals(nombre))
+	 * atraccion.decrementarCupo(); } }
+	 */
 }

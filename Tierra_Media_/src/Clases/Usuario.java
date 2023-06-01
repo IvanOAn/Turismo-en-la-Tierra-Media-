@@ -9,7 +9,6 @@ public class Usuario {
 	private double presupuesto;
 	private double tiempoDisponible;
 	private TipoDeAtraccion tipoDeAtraccionPreferida;
-	// private Set<Atraccion> itinerario;
 	private HashSet<String> itinerario;
 	private final double presupuestoInicial;
 	private final double tiempoInicial;
@@ -21,8 +20,6 @@ public class Usuario {
 		this.presupuesto = presupuesto;
 		this.tiempoDisponible = tiempoDisponible;
 		this.tipoDeAtraccionPreferida = tipoDeAtraccionPreferida;
-		// itinerario =new TreeSet<>(new
-		// ComparadorAtracciones(tipoDeAtraccionPreferida));
 		itinerario = new HashSet<String>();
 		this.presupuestoInicial = presupuesto;
 		this.tiempoInicial = tiempoDisponible;
@@ -48,6 +45,14 @@ public class Usuario {
 	public HashSet<String> getItinerario() {
 		return itinerario;
 	}
+	
+	public double getPresupuestoInicial() {
+		return presupuestoInicial;
+	}
+
+	public double getTiempoInicial() {
+		return tiempoInicial;
+	}
 
 	// -- Setters --
 	protected void setPresupuesto(double presupuesto) {
@@ -63,37 +68,14 @@ public class Usuario {
 		return this.getPresupuesto() > 0 && this.getTiempoDisponible() > 0;
 	}
 
-	public void comprarAtraccion(Atraccion atraccion) {
-		this.itinerario.add(atraccion.getNombre());
-		this.presupuesto = this.presupuesto - atraccion.getCosto();
-		this.tiempoDisponible = this.tiempoDisponible - atraccion.getTiempo();
-		atraccion.decrementarCupo();
-	}
-
-	public boolean atraccionValida(Atraccion atraccion) {
-		return !this.itinerario.contains(atraccion.getNombre());
-	}
-
-	/*
-	 * public void comprarPromocion(Promocion promocion) {
-	 * this.itinerario.addAll(promocion.getAtraccionesIncluidas());
-	 * this.presupuesto=this.presupuesto-promocion.getPrecio();
-	 * this.tiempoDisponible=this.tiempoDisponible-promocion.getTiempoRequerido();
-	 * promocion.setCupo(promocion.getCupo()-1); }
-	 */
 
 	public void comprarRecomendacion(Recomendacion recomendacion, List<Atraccion> listaAtracciones,
-			List<Promocion> listaDePromociones, List<Recomendacion> listaRecomendacion,
-			HashMap<String, Atraccion> mapaAtracciones) {
+			List<Promocion> listaDePromociones, HashMap<String, Atraccion> mapaAtracciones) {
 		recomendacion.agregarRecomendacionAItinerario(this);
 		this.presupuesto -= recomendacion.getPrecio();
 		this.tiempoDisponible -= recomendacion.getTiempo();
-		recomendacion.actualizarRecomendaciones(listaAtracciones, listaDePromociones, listaRecomendacion,
+		recomendacion.actualizarRecomendaciones(listaAtracciones, listaDePromociones,
 				mapaAtracciones);
-	}
-
-	public boolean promocionValida(Promocion promocion) {
-		return promocion.atraccionEstaEnPromocion(itinerario);
 	}
 
 	// -- Overrides --

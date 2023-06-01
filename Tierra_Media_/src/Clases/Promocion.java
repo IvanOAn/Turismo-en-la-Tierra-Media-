@@ -15,20 +15,10 @@ public class Promocion implements Recomendacion {
 	protected int cupo;
 	protected double tiempoRequerido;
 	protected TipoDeAtraccion tipoDeAtraccion;
-	// protected HashMap<String, Atraccion> atraccionesIncluidas;
 	protected List<String> atraccionesIncluidas;
 	protected double precio;
 
 	// -- Constructor --
-	/*
-	 * public Promocion(ArrayList<Atraccion> atraccionesIncluidas) {
-	 * this.atraccionesIncluidas = new HashMap<>(); this.tipoDeAtraccion =
-	 * atraccionesIncluidas.get(0).getTipoDeAtraccion(); for (Atraccion atraccion :
-	 * atraccionesIncluidas) { this.atraccionesIncluidas.put(atraccion.getNombre(),
-	 * atraccion); this.tiempoRequerido += atraccion.getTiempo(); this.precio +=
-	 * atraccion.getCosto(); if (cupo == 0) cupo = atraccion.getCupo(); else cupo =
-	 * Math.min(cupo, atraccion.getCupo()); } }
-	 */
 
 	// Esto seria si calculamos precio y cupo en la clase archivo
 	public Promocion(String nombre, int cupo, double tiempoRequerido, TipoDeAtraccion tipoDeAtraccion,
@@ -57,39 +47,12 @@ public class Promocion implements Recomendacion {
 		return atraccionesIncluidas;
 	}
 
-	// -- Setters --
-	protected void setCupo(int cupo) {
-		this.cupo = cupo;
-	}
-
-	/*
-	 * //-- Métodos -- public HashMap<String, Atraccion> getAtraccionesIncluidas() {
-	 * return atraccionesIncluidas; }
-	 */
-	/*
-	 * public static Set<Promocion> promocionesDisponibles(Usuario usuario,
-	 * Set<Promocion> treeSet) { Set<Promocion> res = new TreeSet<>();
-	 * 
-	 * for (Promocion promocion : treeSet) { if (promocion.getPrecio() <=
-	 * usuario.getPresupuesto() && promocion.getTiempoRequerido() <=
-	 * usuario.getTiempoDisponible() && promocion.getCupo() > 0 &&
-	 * !usuario.promocionValida(promocion)) res.add(promocion); } return res; }
-	 */
-
-	public boolean atraccionEstaEnPromocion(HashSet<String> itinerario) {
-		for (String palabra : atraccionesIncluidas) {
-			if (itinerario.contains(palabra))
-				return false;
-		}
-		return true;
-	}
-
 	// -- Overrides --
 
 	@Override
 	public String toString() {
-		return "Promocion: " + nombre + "\n" + "-Tiempo requerido: " + tiempoRequerido + "\n"
-				+ "-Atracciones incluidas: " + atraccionesIncluidas + "\n";
+		return "\nPromocion: " + nombre + "\n" + "-Tiempo requerido: " + tiempoRequerido + "\n"
+				+ "-Atracciones incluidas: " + atraccionesIncluidas;
 	}
 
 	@Override
@@ -114,7 +77,7 @@ public class Promocion implements Recomendacion {
 
 	@Override
 	public void actualizarRecomendaciones(List<Atraccion> listaAtracciones, List<Promocion> listaPromociones,
-			List<Recomendacion> listaRecomendacion, HashMap<String, Atraccion> mapaAtracciones) {
+			HashMap<String, Atraccion> mapaAtracciones) {
 
 		for (Promocion promocion : listaPromociones)
 			if (promocion.getNombre().equals(this.nombre)) {

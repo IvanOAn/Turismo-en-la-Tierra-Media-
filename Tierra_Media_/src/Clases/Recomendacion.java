@@ -18,7 +18,7 @@ public interface Recomendacion {
 	public TipoDeAtraccion getTipoDeRecomendacion();
 
 	public void actualizarRecomendaciones(List<Atraccion> listaAtracciones, List<Promocion> listaPromociones,
-			List<Recomendacion> listaRecomendacion, HashMap<String, Atraccion> mapaAtracciones);
+			HashMap<String, Atraccion> mapaAtracciones);
 
 	public boolean recomendacionValida(Usuario usuario);
 

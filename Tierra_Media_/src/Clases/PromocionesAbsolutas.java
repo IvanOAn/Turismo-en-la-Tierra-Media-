@@ -13,7 +13,7 @@ public class PromocionesAbsolutas extends Promocion {
 
 	@Override
 	public String toString() {
-		return super.toString() + "-Precio: " + this.precio + "\n";
+		return super.toString() + "\n-Precio: $" + this.precio;
 	}
 	
 	

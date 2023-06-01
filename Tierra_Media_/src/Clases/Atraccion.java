@@ -46,27 +46,13 @@ public class Atraccion implements Recomendacion {
 	public String getNombre() {
 		return nombre;
 	}
-
-	// -- Métodos --
-	public static Set<Atraccion> atraccionesDisponibles(Usuario usuario, Set<Atraccion> treeSet) {
-
-		Set<Atraccion> res = new TreeSet<>();
-
-		for (Atraccion atraccion : treeSet) {
-			if (atraccion.getCosto() <= usuario.getPresupuesto()
-					&& atraccion.getTiempo() <= usuario.getTiempoDisponible() && atraccion.getCupo() > 0
-					&& !usuario.atraccionValida(atraccion))
-				res.add(atraccion);
-		}
-		return res;
-	}
-
+	
 	// -- Overrides --
 
 	@Override
 	public String toString() {
-		return "Atraccion: " + this.nombre + "\n" + "-Precio: " + costo + "\n" + "-Tiempo Requerido: " + tiempo + "\n"
-				+ "-Tipo de atraccion=" + tipoDeAtraccion;
+		return "\nAtraccion: " + this.nombre + "\n" + "-Precio: $" + costo + "\n" + "-Tiempo Requerido: " + tiempo + "\n"
+				+ "-Tipo de atraccion: " + tipoDeAtraccion;
 	}
 
 	@Override
@@ -94,7 +80,7 @@ public class Atraccion implements Recomendacion {
 
 	@Override
 	public void actualizarRecomendaciones(List<Atraccion> listaAtracciones, List<Promocion> listaPromociones,
-			List<Recomendacion> listaRecomendacion, HashMap<String, Atraccion> mapaAtracciones) {
+			HashMap<String, Atraccion> mapaAtracciones) {
 
 		for (Atraccion atraccion : listaAtracciones)
 			if (atraccion.getNombre().equals(this.nombre))

@@ -15,12 +15,14 @@ public class ComparadorPromociones implements Comparator<Promocion> {
 		if (o1.getTipoDeAtraccion().ordinal() == TipoOrden.ordinal()
 				&& o2.getTipoDeAtraccion().ordinal() != TipoOrden.ordinal())
 			return -1;
+		
 		else if (o1.getTipoDeAtraccion().ordinal() != TipoOrden.ordinal()
 				&& o2.getTipoDeAtraccion().ordinal() == TipoOrden.ordinal())
 			return 1;
+		
 		else if (o1.getPrecio() == o2.getPrecio()) 
-				return (int) (o2.getTiempoRequerido() - o1.getTiempoRequerido());
-		return (int) (o2.getPrecio() - o1.getPrecio());
-	 	}
-
+			return Double.compare(o2.getTiempoRequerido(), o1.getTiempoRequerido());
+		
+		return Double.compare(o2.getPrecio(), o1.getPrecio());
+	 }
 }

@@ -1,25 +1,25 @@
 package Clases;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Queue;
 import java.util.Scanner;
-import java.util.Map;
-import java.util.HashMap;
 
 public class Recomendador {
 	Queue<Usuario> colaDeUsuarios;
-	LinkedList<Atraccion> listaDeAtracciones;
-	LinkedList<Promocion> listaDePromociones;
+	List<Atraccion> listaDeAtracciones;
+	List<Promocion> listaDePromociones;
 	HashMap<String, Atraccion> mapaAtracciones;
 
 	public Recomendador() {
 		this.colaDeUsuarios = new LinkedList<Usuario>();
 		this.listaDeAtracciones = new LinkedList<Atraccion>();
 		this.listaDePromociones = new LinkedList<Promocion>();
+		this.mapaAtracciones = new HashMap<>();
 	}
 
 	private void cargarUsuarios() {
@@ -29,13 +29,12 @@ public class Recomendador {
 
 	private void cargarAtracciones() {
 		Archivo archivoAtracciones = new Archivo("Atracciones");
-		this.mapaAtracciones = new HashMap<String, Atraccion>();
-		this.listaDeAtracciones=archivoAtracciones.cargarArchivoAtracciones(this.mapaAtracciones);
+		this.listaDeAtracciones = archivoAtracciones.cargarArchivoAtracciones(mapaAtracciones);
 	}
 
 	private void cargarPromociones() {
 		Archivo archivoPromociones = new Archivo("Promociones");
-		this.listaDePromociones = archivoPromociones.cargarArchivoPromociones(this.mapaAtracciones);
+		this.listaDePromociones = archivoPromociones.cargarArchivoPromociones(mapaAtracciones);
 	}
 
 	public void realizarSugerencia() {
@@ -45,100 +44,97 @@ public class Recomendador {
 
 		System.out.println("------------------------------------------");
 		System.out.printf("%30s", "Bienvenido/a a ...");
-		
-		
+		System.out.println("\n------------------------------------------");
+
+		List<Recomendacion> listaRecomendaciones = new LinkedList<Recomendacion>();
+		LinkedList<Recomendacion> listaRecomendacionesAceptadas = new LinkedList<Recomendacion>();
+
 		Scanner input = new Scanner(System.in);
 		while (!this.colaDeUsuarios.isEmpty()) {
-			System.out.println("\n------------------------------------------\n");
+
 			Usuario usuario = this.colaDeUsuarios.remove();
 			System.out.printf("\nNombre del visitante: %s\n", usuario.getNombre());
-			System.out.println("Presupuesto: " + usuario.getPresupuesto() + " y tiempoo: " + 
-					usuario.getTiempoDisponible() + "\n\n");
 
-			LinkedList<Promocion> listaRecomPromociones = this.generarRecomendacionPromociones(usuario.getTipoDeAtraccionPreferida());
-			for(int i = 0; i < listaRecomPromociones.size(); i++) { // preguntas por todas las promociones
-				Promocion promoAct = listaRecomPromociones.get(i);
-				if(usuario.puedeComprarPromocion(promoAct)) {
-					this.ofrecerPromocion(usuario, promoAct, input);
+			listaRecomendaciones.addAll(listaDeAtracciones);
+			listaRecomendaciones.addAll(listaDePromociones);
+
+			Collections.sort(listaRecomendaciones,
+					new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
+
+			Iterator<Recomendacion> iterador = listaRecomendaciones.iterator();
+			Recomendacion aux;
+
+			while (usuario.estado() && iterador.hasNext()) {
+
+				aux = iterador.next();
+
+				if(ofrecerRecomendacion(usuario, aux, input)) { // devuelve true cuando acepto la recomendacion
+					listaRecomendacionesAceptadas.add(aux);
 				}
 			}
+			imprimirResumenUsuario(usuario, listaRecomendacionesAceptadas);
 			
-			LinkedList<Atraccion> listaRecomAtracciones = this.generarRecomendacionAtracciones(usuario);
-			for(int i = 0; i < listaRecomAtracciones.size(); i++) {
-				Atraccion atraccionAct = listaRecomAtracciones.get(i);
-				if(usuario.puedeComprarAtraccion(atraccionAct)) {
-					this.ofrecerAtraccion(usuario, atraccionAct, input);
-				}
-			}
-			// guardarDatosDelUsuarioEnArchivo();
-			//System.out.println(usuario.getItinerario()); // o algo asi
+			Archivo archivoSalida = new Archivo(usuario.getNombre());
+			archivoSalida.generarArchivoResumenUsuario(usuario, listaRecomendacionesAceptadas);
+			listaRecomendacionesAceptadas.clear();
+			
 		}
+		
 		input.close();
 	}
 
-	private void ofrecerPromocion(Usuario usuario, Promocion promocion, Scanner input) {
-		if (usuario.getPresupuesto() < promocion.getPrecio()
-				|| usuario.getTiempoDisponible() < promocion.getTiempoRequerido()
-				|| !usuario.promocionValida(promocion))
-			return;
+	private boolean ofrecerRecomendacion(Usuario usuario, Recomendacion recomendacion, Scanner input) {
+		
+		if (usuario.getPresupuesto() < recomendacion.getPrecio()
+				|| usuario.getTiempoDisponible() < recomendacion.getTiempo()
+				|| !recomendacion.recomendacionValida(usuario) || recomendacion.getCupo() == 0)
+			return false;
 
-		System.out.println(promocion);
+		System.out.println(recomendacion);
 
 		if (this.validarRecomendacion(input)) {
-			usuario.comprarPromocion(promocion);
-			promocion.actualizarCupoAtraccionesEnPromocion(this.mapaAtracciones);
-			System.out.println("Promocion comprada con exito\n");
-		} else
-			System.out.println("Promocion rechazada\n");
+			usuario.comprarRecomendacion(recomendacion, this.listaDeAtracciones, this.listaDePromociones,
+					mapaAtracciones);
+			return true;
+		}
+			
+		return false;
+		 
 	}
 
 	private boolean validarRecomendacion(Scanner input) {
 		String respuesta;
+
 		do {
 			System.out.println("\nQuiere aceptar la recomendacion? Digite S (Si) o N (No)");
 			System.out.print("Respuesta: ");
 			respuesta = input.next();
-			respuesta.toUpperCase();
+			respuesta = respuesta.toUpperCase();
 		} while (!(respuesta.equals("S") || respuesta.equals("N")));
 
 		return respuesta.equals("S");
 	}
-
-	private void ofrecerAtraccion(Usuario usuario, Atraccion atraccion, Scanner input) {
-		if (usuario.getPresupuesto() < atraccion.getCosto() || usuario.getTiempoDisponible() < atraccion.getTiempo()
-				|| !usuario.atraccionValida(atraccion))
-			return;
-
-		System.out.println(atraccion);
-
-		if (this.validarRecomendacion(input)) {
-			usuario.comprarAtraccion(atraccion);
-		} else
-			return;
-	}
 	
-	// -- Mio --
-	public LinkedList<Promocion> generarRecomendacionPromociones(TipoDeAtraccion tipo) {
-		LinkedList<Promocion> listaRecomendacionDePromociones = this.listaDePromociones;
+	private void imprimirResumenUsuario(Usuario usuario, 
+			LinkedList<Recomendacion> listaRecomendacionesAceptadas) {
+		System.out.println("------------------------------------------");
+		System.out.println("Resumen del Usuario: " + usuario.getNombre());
 		
-		ComparadorPromociones comparador = new ComparadorPromociones(tipo);
-		listaRecomendacionDePromociones.sort(comparador);
+		System.out.println("\nSituacion Original:\n");
+		System.out.printf("-Presupuesto Orignal: $%.2f\n", usuario.getPresupuestoInicial());
+		System.out.println("-Tiempo Disponible Orignal: " + usuario.getTiempoInicial());	
 		
-		return listaRecomendacionDePromociones;
-	}
-	
-	public LinkedList<Atraccion> generarRecomendacionAtracciones(Usuario usuario){
-		LinkedList<Atraccion> listaRecomendacionesDeAtracciones = new LinkedList<Atraccion>();
-		
-		for(Atraccion atraccion : this.listaDeAtracciones) { // recorro la lista y pregunto si ya fue elegida
-			if(!usuario.atraccionYaElegida(atraccion) || atraccion.getCupo() > 0) {
-				listaRecomendacionesDeAtracciones.add(atraccion); // si no fue elegida y tiene lugar la agrego
-			}
+		System.out.println("\nRecomendaciones aceptadas:");
+		for(Recomendacion recom : listaRecomendacionesAceptadas) {
+			System.out.println(recom);
 		}
 		
-		ComparadorAtracciones comparador = new ComparadorAtracciones(usuario.getTipoDeAtraccionPreferida());
-		listaRecomendacionesDeAtracciones.sort(comparador);		
+		System.out.println("\nSituacion Final:\n");
+		System.out.printf("-Presupuesto Final: $%.2f\n", usuario.getPresupuesto());
+		System.out.println("-Tiempo Disponible Final: " + usuario.getTiempoDisponible());
 		
-		return listaRecomendacionesDeAtracciones;
+		System.out.printf("\nCosto total de la salida: $%.2f\n", usuario.getPresupuestoInicial()-usuario.getPresupuesto());
+		System.out.printf("Tiempo total de la salida: %.2f\n", usuario.getTiempoInicial()-usuario.getTiempoDisponible());
+		System.out.println("------------------------------------------");
 	}
 }

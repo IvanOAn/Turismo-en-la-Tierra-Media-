@@ -1,5 +1,5 @@
 package Clases;
 
 public enum TipoDeAtraccion {
-	AVENTURA,PAISAJES,DEGUSTACION
+	AVENTURA, PAISAJES, DEGUSTACION
 }

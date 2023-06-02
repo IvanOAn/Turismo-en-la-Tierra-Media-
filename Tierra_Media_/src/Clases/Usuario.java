@@ -2,15 +2,16 @@ package Clases;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.List;
 
 public class Usuario {
 	private String nombre;
 	private double presupuesto;
 	private double tiempoDisponible;
 	private TipoDeAtraccion tipoDeAtraccionPreferida;
-	// private Set<Atraccion> itinerario;
 	private HashSet<String> itinerario;
+	private final double presupuestoInicial;
+	private final double tiempoInicial;
 
 	// -- Constructor --
 	public Usuario(String nombre, double presupuesto, double tiempoDisponible,
@@ -19,9 +20,9 @@ public class Usuario {
 		this.presupuesto = presupuesto;
 		this.tiempoDisponible = tiempoDisponible;
 		this.tipoDeAtraccionPreferida = tipoDeAtraccionPreferida;
-		// itinerario =new TreeSet<>(new
-		// ComparadorAtracciones(tipoDeAtraccionPreferida));
 		itinerario = new HashSet<String>();
+		this.presupuestoInicial = presupuesto;
+		this.tiempoInicial = tiempoDisponible;
 	}
 
 	// -- Getters --
@@ -40,9 +41,17 @@ public class Usuario {
 	public TipoDeAtraccion getTipoDeAtraccionPreferida() {
 		return tipoDeAtraccionPreferida;
 	}
-	
+
 	public HashSet<String> getItinerario() {
 		return itinerario;
+	}
+	
+	public double getPresupuestoInicial() {
+		return presupuestoInicial;
+	}
+
+	public double getTiempoInicial() {
+		return tiempoInicial;
 	}
 
 	// -- Setters --
@@ -59,40 +68,14 @@ public class Usuario {
 		return this.getPresupuesto() > 0 && this.getTiempoDisponible() > 0;
 	}
 
-	public void comprarAtraccion(Atraccion atraccion) {
-		this.itinerario.add(atraccion.getNombre());
-		this.presupuesto = this.presupuesto - atraccion.getCosto();
-		this.tiempoDisponible = this.tiempoDisponible - atraccion.getTiempo();
-		atraccion.decrementarCupo();
-	}
 
-	public boolean atraccionValida(Atraccion atraccion) {
-		return !this.itinerario.contains(atraccion.getNombre());
-	}
-
-	public void comprarPromocion(Promocion promocion) {
-		this.itinerario.addAll(promocion.getAtraccionesIncluidas());
-		this.presupuesto = this.presupuesto - promocion.getPrecio();
-		this.tiempoDisponible = this.tiempoDisponible - promocion.getTiempoRequerido();
-		promocion.setCupo(promocion.getCupo() - 1);
-	}
-
-	public boolean promocionValida(Promocion promocion) {
-		return promocion.atraccionEstaEnPromocion(itinerario);
-	}
-
-	public boolean atraccionYaElegida(Atraccion atraccion) {
-		return this.itinerario.contains(atraccion.getNombre()); // pregunta si esta atraccion ya la eligió
-	}
-	
-	public boolean puedeComprarPromocion(Promocion promocion) {
-		return this.presupuesto >= promocion.getPrecio() && 
-				this.tiempoDisponible >= promocion.getTiempoRequerido() && promocion.getCupo() > 0;
-	}
-	
-	public boolean puedeComprarAtraccion(Atraccion atraccion) {
-		return this.presupuesto >= atraccion.getCosto() &&
-				this.tiempoDisponible >= atraccion.getTiempo() && atraccion.getCupo() > 0;
+	public void comprarRecomendacion(Recomendacion recomendacion, List<Atraccion> listaAtracciones,
+			List<Promocion> listaDePromociones, HashMap<String, Atraccion> mapaAtracciones) {
+		recomendacion.agregarRecomendacionAItinerario(this);
+		this.presupuesto -= recomendacion.getPrecio();
+		this.tiempoDisponible -= recomendacion.getTiempo();
+		recomendacion.actualizarRecomendaciones(listaAtracciones, listaDePromociones,
+				mapaAtracciones);
 	}
 
 	// -- Overrides --
@@ -103,4 +86,7 @@ public class Usuario {
 				+ ", tipoDeAtraccionPreferida=" + tipoDeAtraccionPreferida + ", itinerario=" + itinerario + "]";
 	}
 
+	public void agregarRecomendacion(String nombreAtraccion) {
+		this.itinerario.add(nombreAtraccion);
+	}
 }

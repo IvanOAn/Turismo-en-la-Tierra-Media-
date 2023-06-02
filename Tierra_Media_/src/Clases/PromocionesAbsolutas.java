@@ -5,16 +5,16 @@ import java.util.List;
 
 public class PromocionesAbsolutas extends Promocion {
 
-	public PromocionesAbsolutas(String nombre,int cupo, double tiempoRequerido, TipoDeAtraccion tipoDeAtraccion,
+	public PromocionesAbsolutas(String nombre, int cupo, double tiempoRequerido, TipoDeAtraccion tipoDeAtraccion,
 			List<String> atraccionesIncluidas, double precio) {
-		super(nombre,cupo, tiempoRequerido, tipoDeAtraccion, atraccionesIncluidas);
-		this.precio=precio;
+		super(nombre, cupo, tiempoRequerido, tipoDeAtraccion, atraccionesIncluidas);
+		this.precio = precio;
 	}
-  
+
 	@Override
-	public int compareTo(Promocion o) {
-		//TODO: definir como se ordenan las promociones
-		return 0;
-	}	
+	public String toString() {
+		return super.toString() + "\n-Precio: $" + this.precio;
+	}
+	
 	
 }

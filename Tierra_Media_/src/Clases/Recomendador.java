@@ -48,13 +48,16 @@ public class Recomendador {
 
 		List<Recomendacion> listaRecomendaciones = new LinkedList<Recomendacion>();
 		LinkedList<Recomendacion> listaRecomendacionesAceptadas = new LinkedList<Recomendacion>();
-
+		
+		listaRecomendaciones.addAll(listaDeAtracciones);
+		listaRecomendaciones.addAll(listaDePromociones);
+		
 		Scanner input = new Scanner(System.in);
 		while (!this.colaDeUsuarios.isEmpty()) {
 
-			Usuario usuario = this.colaDeUsuarios.remove();
+  			Usuario usuario = this.colaDeUsuarios.remove();
 			System.out.printf("\nNombre del visitante: %s\n", usuario.getNombre());
-
+			
 			listaRecomendaciones.addAll(listaDeAtracciones);
 			listaRecomendaciones.addAll(listaDePromociones);
 
@@ -77,9 +80,7 @@ public class Recomendador {
 			Archivo archivoSalida = new Archivo(usuario.getNombre());
 			archivoSalida.generarArchivoResumenUsuario(usuario, listaRecomendacionesAceptadas);
 			listaRecomendacionesAceptadas.clear();
-			
 		}
-		
 		input.close();
 	}
 
@@ -96,10 +97,8 @@ public class Recomendador {
 			usuario.comprarRecomendacion(recomendacion, this.listaDeAtracciones, this.listaDePromociones,
 					mapaAtracciones);
 			return true;
-		}
-			
+		}	
 		return false;
-		 
 	}
 
 	private boolean validarRecomendacion(Scanner input) {

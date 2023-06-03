@@ -67,15 +67,17 @@ public class Usuario {
 	public boolean estado() {
 		return this.getPresupuesto() > 0 && this.getTiempoDisponible() > 0;
 	}
-
+	
+	public void agregarRecomendacion(String nombreAtraccion) {
+		this.itinerario.add(nombreAtraccion);
+	}
 
 	public void comprarRecomendacion(Recomendacion recomendacion, List<Atraccion> listaAtracciones,
 			List<Promocion> listaDePromociones, HashMap<String, Atraccion> mapaAtracciones) {
 		recomendacion.agregarRecomendacionAItinerario(this);
 		this.presupuesto -= recomendacion.getPrecio();
 		this.tiempoDisponible -= recomendacion.getTiempo();
-		recomendacion.actualizarRecomendaciones(listaAtracciones, listaDePromociones,
-				mapaAtracciones);
+		recomendacion.decrementarCupo();
 	}
 
 	// -- Overrides --
@@ -84,9 +86,5 @@ public class Usuario {
 	public String toString() {
 		return "Usuario [nombre=" + nombre + ", presupuesto=" + presupuesto + ", tiempoDisponible=" + tiempoDisponible
 				+ ", tipoDeAtraccionPreferida=" + tipoDeAtraccionPreferida + ", itinerario=" + itinerario + "]";
-	}
-
-	public void agregarRecomendacion(String nombreAtraccion) {
-		this.itinerario.add(nombreAtraccion);
 	}
 }

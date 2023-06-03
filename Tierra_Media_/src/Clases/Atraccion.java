@@ -78,19 +78,19 @@ public class Atraccion implements Recomendacion {
 		usuario.agregarRecomendacion(this.nombre);
 	}
 
-	@Override
-	public void actualizarRecomendaciones(List<Atraccion> listaAtracciones, List<Promocion> listaPromociones,
-			HashMap<String, Atraccion> mapaAtracciones) {
-
-		for (Atraccion atraccion : listaAtracciones)
-			if (atraccion.getNombre().equals(this.nombre))
-				atraccion.decrementarCupo();
-
-		for (Promocion promocion : listaPromociones)
-			for (String nombreAtraccion : promocion.getAtraccionesIncluidas())
-				if (nombreAtraccion.equals(this.nombre))
-					promocion.recalcularCupo(listaAtracciones);
-	}
+/*	@Override
+	public void actualizarRecomendaciones(List<Atraccion> listaAtracciones,List<Promocion> listaPromociones){
+		Iterator<Atraccion> iterador=listaAtracciones.iterator();
+		
+		while(iterador.hasNext()) {
+			Atraccion atraccion=iterador.next();
+			if(atraccion.getNombre().equals(this.nombre)) {
+				if(atraccion.getCupo()==0)
+					iterador.remove();			}
+		}
+		
+		
+	}*/
 
 	public void decrementarCupo() {
 		this.cupo -= 1;
@@ -101,7 +101,7 @@ public class Atraccion implements Recomendacion {
 		return 1;
 	}
 
-	@Override
+/*	@Override
 	public int hashCode() {
 		return Objects.hash(cupo);
 	}
@@ -116,5 +116,5 @@ public class Atraccion implements Recomendacion {
 			return false;
 		Atraccion other = (Atraccion) obj;
 		return cupo == other.cupo;
-	}
+	}*/
 }

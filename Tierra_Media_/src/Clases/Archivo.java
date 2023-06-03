@@ -1,4 +1,4 @@
-package Clases;
+  package Clases;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -107,19 +107,15 @@ public class Archivo {
 
 				double precio = 0;
 				double tiempo = 0;
-				int cupo = 0;
-				List<String> atraccionesIncluidas = new LinkedList<String>(); // lista de atracciones de la oferta
-				for (int i = 3; i < vectordeDatos.length - 1; i++) { // el for no lee la ultima posicion
-					atraccionesIncluidas.add(vectordeDatos[i]);
-					Atraccion atraccionAux = mapaAtracciones.get(vectordeDatos[i]);
 
+				List<Atraccion> atraccionesIncluidas = new LinkedList<Atraccion>(); // lista de atracciones de la oferta
+				for (int i = 3; i < vectordeDatos.length - 1; i++) { // el for no lee la ultima posicion
+					Atraccion atraccionAux = mapaAtracciones.get(vectordeDatos[i]);
+					atraccionesIncluidas.add(atraccionAux);
+					
 					if (atraccionAux != null) { // lo encontro
 						precio += atraccionAux.getCosto();
 						tiempo += atraccionAux.getTiempo();
-						if (cupo == 0)
-							cupo = atraccionAux.getCupo();
-						else
-							cupo = Math.min(cupo, atraccionAux.getCupo());
 					} else
 						System.out.println("La atraccion incluida en la oferta no esta incluida en el archivo atracciones");
 				}
@@ -129,26 +125,28 @@ public class Archivo {
 				switch (vectordeDatos[0].toUpperCase()) {
 				case "PORCENTUAL": // si era porcentual, la ultima posicion era el descuento
 					double descuento = Double.parseDouble(vectordeDatos[vectordeDatos.length - 1]);
-					promocion = new PromocionPorcentual(nombre, cupo, tiempo, tipo, atraccionesIncluidas, precio,
+					promocion = new PromocionPorcentual(nombre, tiempo, tipo, atraccionesIncluidas, precio,
 							descuento);
 					break;
 
 				case "ABSOLUTA": // si es absoluta, la ultima posicion es el precio
 					precio = Double.parseDouble(vectordeDatos[vectordeDatos.length - 1]);
-					promocion = new PromocionesAbsolutas(nombre, cupo, tiempo, tipo, atraccionesIncluidas, precio);
+					promocion = new PromocionesAbsolutas(nombre,tiempo, tipo, atraccionesIncluidas, precio);
 					break;
 
 				case "AXB": // si era AxB entonces la ultima posicion era la atraccion gratis
 					String atraccionGratis = vectordeDatos[vectordeDatos.length - 1];
-
+					
+					Atraccion atraccion = mapaAtracciones.get(vectordeDatos[vectordeDatos.length - 1]);
+					atraccionesIncluidas.add(atraccion);// agrego la atraccion gratis
+					
 					Atraccion atraccionAux = mapaAtracciones.get(atraccionGratis);
 					if (atraccionAux != null) {
 						precio += atraccionAux.getCosto();
 						tiempo += atraccionAux.getTiempo();
-						cupo = Math.min(cupo, atraccionAux.getCupo());
 					}
 
-					promocion = new PromocionesAxB(nombre, cupo, tiempo, tipo, atraccionesIncluidas, precio,
+					promocion = new PromocionesAxB(nombre,tiempo, tipo, atraccionesIncluidas, precio,
 							atraccionGratis);
 					break;
 				}

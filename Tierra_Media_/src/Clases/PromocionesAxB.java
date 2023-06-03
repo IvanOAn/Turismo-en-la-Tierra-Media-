@@ -6,9 +6,9 @@ import java.util.List;
 public class PromocionesAxB extends Promocion {
 	private String atraccionGratis;
 
-	public PromocionesAxB(String nombre, int cupo, double tiempoRequerido, TipoDeAtraccion tipoDeAtraccion,
-			List<String> atraccionesIncluidas, double precio, String atraccionGratis) {
-		super(nombre, cupo, tiempoRequerido, tipoDeAtraccion, atraccionesIncluidas);
+	public PromocionesAxB(String nombre,double tiempoRequerido, TipoDeAtraccion tipoDeAtraccion,
+			List<Atraccion> atraccionesIncluidas, double precio, String atraccionGratis) {
+		super(nombre,tiempoRequerido, tipoDeAtraccion, atraccionesIncluidas);
 		this.atraccionGratis = atraccionGratis;
 		this.precio = precio;
 	}
@@ -18,5 +18,4 @@ public class PromocionesAxB extends Promocion {
 		return super.toString() + "\n-AtraccionGratis: " + this.atraccionGratis + "\n" + 
 					"-Precio: $" + this.precio;
 	}
-
 }

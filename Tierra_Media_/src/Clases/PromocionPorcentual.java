@@ -5,9 +5,9 @@ import java.util.List;
 public class PromocionPorcentual extends Promocion {
 	private double porcentajeDescuento;
 
-	public PromocionPorcentual(String nombre, int cupo, double tiempoRequerido, TipoDeAtraccion tipoDeAtraccion,
-			List<String> atraccionesIncluidas, double precio, double porcentajeDescuento) {
-		super(nombre, cupo, tiempoRequerido, tipoDeAtraccion, atraccionesIncluidas);
+	public PromocionPorcentual(String nombre, double tiempoRequerido, TipoDeAtraccion tipoDeAtraccion,
+			List<Atraccion> atraccionesIncluidas, double precio, double porcentajeDescuento) {
+		super(nombre,tiempoRequerido, tipoDeAtraccion, atraccionesIncluidas);
 		this.porcentajeDescuento = porcentajeDescuento;
 		this.precio = precio - precio * porcentajeDescuento / 100;
 	}

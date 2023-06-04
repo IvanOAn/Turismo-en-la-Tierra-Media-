@@ -1,8 +1,5 @@
 package Clases;
 
-import java.util.HashMap;
-import java.util.List;
-
 public interface Recomendacion {
 
 	public int getCupo();

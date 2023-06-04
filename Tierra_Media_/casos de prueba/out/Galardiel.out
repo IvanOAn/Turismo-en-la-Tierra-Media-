@@ -2,22 +2,25 @@ Resumen del Usuario: Galardiel
 
 Situacion Original:
 
--Presupuesto Orignal: 100,00
+-Presupuesto Orignal: $100,00
 -Tiempo Disponible Orignal: 5.0
 
 Recomendaciones aceptadas:
 
-Atraccion: Minas Tirith
--Precio: 5.0
--Tiempo Requerido: 2.5
+Atraccion: Erebor
+-Precio: $12.0
+-Tiempo Requerido: 3.0
 -Tipo de atraccion: PAISAJES
 
 Atraccion: Abismo de Helm
--Precio: 5.0
+-Precio: $5.0
 -Tiempo Requerido: 2.0
 -Tipo de atraccion: PAISAJES
 
 Situacion Final:
 
--Presupuesto Final: 90,00
--Tiempo Disponible Final: 0.5
+-Presupuesto Final: $83,00
+-Tiempo Disponible Final: 0.0
+
+Costo total de la salida: $17,00
+Tiempo total de la salida: 5,00

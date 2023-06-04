@@ -47,18 +47,18 @@ public class Recomendador {
 
 		List<Recomendacion> listaRecomendaciones = new LinkedList<Recomendacion>();
 		LinkedList<Recomendacion> listaRecomendacionesAceptadas = new LinkedList<Recomendacion>();
-		
+
 		listaRecomendaciones.addAll(listaDeAtracciones);
 		listaRecomendaciones.addAll(listaDePromociones);
-		
+
 		Scanner input = new Scanner(System.in);
 		while (!this.colaDeUsuarios.isEmpty()) {
 
-  			Usuario usuario = this.colaDeUsuarios.remove();
+			Usuario usuario = this.colaDeUsuarios.remove();
 			System.out.printf("\nNombre del visitante: %s\n", usuario.getNombre());
-			
-			listaRecomendaciones.addAll(listaDeAtracciones);
-			listaRecomendaciones.addAll(listaDePromociones);
+
+			// listaRecomendaciones.addAll(listaDeAtracciones);
+			// listaRecomendaciones.addAll(listaDePromociones);
 
 			Collections.sort(listaRecomendaciones,
 					new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
@@ -70,12 +70,12 @@ public class Recomendador {
 
 				aux = iterador.next();
 
-				if(ofrecerRecomendacion(usuario, aux, input)) { // devuelve true cuando acepto la recomendacion
+				if (ofrecerRecomendacion(usuario, aux, input)) { // devuelve true cuando acepto la recomendacion
 					listaRecomendacionesAceptadas.add(aux);
 				}
 			}
 			imprimirResumenUsuario(usuario, listaRecomendacionesAceptadas);
-			
+
 			Archivo archivoSalida = new Archivo(usuario.getNombre());
 			archivoSalida.generarArchivoResumenUsuario(usuario, listaRecomendacionesAceptadas);
 			listaRecomendacionesAceptadas.clear();
@@ -84,7 +84,7 @@ public class Recomendador {
 	}
 
 	private boolean ofrecerRecomendacion(Usuario usuario, Recomendacion recomendacion, Scanner input) {
-		
+
 		if (usuario.getPresupuesto() < recomendacion.getPrecio()
 				|| usuario.getTiempoDisponible() < recomendacion.getTiempo()
 				|| !recomendacion.recomendacionValida(usuario) || recomendacion.getCupo() == 0)
@@ -96,7 +96,7 @@ public class Recomendador {
 			usuario.comprarRecomendacion(recomendacion, this.listaDeAtracciones, this.listaDePromociones,
 					mapaAtracciones);
 			return true;
-		}	
+		}
 		return false;
 	}
 
@@ -112,27 +112,28 @@ public class Recomendador {
 
 		return respuesta.equals("S");
 	}
-	
-	private void imprimirResumenUsuario(Usuario usuario, 
-			LinkedList<Recomendacion> listaRecomendacionesAceptadas) {
+
+	private void imprimirResumenUsuario(Usuario usuario, LinkedList<Recomendacion> listaRecomendacionesAceptadas) {
 		System.out.println("------------------------------------------");
 		System.out.println("Resumen del Usuario: " + usuario.getNombre());
-		
+
 		System.out.println("\nSituacion Original:\n");
 		System.out.printf("-Presupuesto Orignal: $%.2f\n", usuario.getPresupuestoInicial());
-		System.out.println("-Tiempo Disponible Orignal: " + usuario.getTiempoInicial());	
-		
+		System.out.println("-Tiempo Disponible Orignal: " + usuario.getTiempoInicial());
+
 		System.out.println("\nRecomendaciones aceptadas:");
-		for(Recomendacion recom : listaRecomendacionesAceptadas) {
+		for (Recomendacion recom : listaRecomendacionesAceptadas) {
 			System.out.println(recom);
 		}
-		
+
 		System.out.println("\nSituacion Final:\n");
 		System.out.printf("-Presupuesto Final: $%.2f\n", usuario.getPresupuesto());
 		System.out.println("-Tiempo Disponible Final: " + usuario.getTiempoDisponible());
-		
-		System.out.printf("\nCosto total de la salida: $%.2f\n", usuario.getPresupuestoInicial()-usuario.getPresupuesto());
-		System.out.printf("Tiempo total de la salida: %.2f\n", usuario.getTiempoInicial()-usuario.getTiempoDisponible());
+
+		System.out.printf("\nCosto total de la salida: $%.2f\n",
+				usuario.getPresupuestoInicial() - usuario.getPresupuesto());
+		System.out.printf("Tiempo total de la salida: %.2f\n",
+				usuario.getTiempoInicial() - usuario.getTiempoDisponible());
 		System.out.println("------------------------------------------");
 	}
 }

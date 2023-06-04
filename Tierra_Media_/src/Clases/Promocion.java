@@ -68,13 +68,20 @@ public class Promocion implements Recomendacion {
 
 	@Override
 	public int getCupo() {
+
 		int cupo = 0;
-		for (Atraccion atraccion : this.atraccionesIncluidas) {
-			if (cupo == 0)
-				cupo = atraccion.getCupo();
-			else
-				cupo = Math.min(cupo, atraccion.getCupo());
+		/*
+		 * for (Atraccion atraccion : this.atraccionesIncluidas) { if (cupo == 0) cupo =
+		 * atraccion.getCupo(); else cupo = Math.min(cupo, atraccion.getCupo()); }
+		 */
+
+		Iterator<Atraccion> atracciones = this.atraccionesIncluidas.iterator();
+
+		cupo = atracciones.next().getCupo();
+		while (atracciones.hasNext() && cupo > 0) {
+			cupo = Math.min(cupo, atracciones.next().getCupo());
 		}
+
 		return cupo;
 	}
 

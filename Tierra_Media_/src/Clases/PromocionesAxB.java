@@ -9,6 +9,7 @@ public class PromocionesAxB extends Promocion {
 		super(nombre, atraccionesIncluidas);
 		this.atraccionGratis = atraccionGratis;
 		this.tiempoRequerido += atraccionGratis.getTiempo();
+		//atraccionesIncluidas.add(atraccionGratis);
 	}
 
 	@Override

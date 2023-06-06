@@ -1,71 +1,36 @@
 package Clases;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
 
-public class Atraccion implements Recomendacion {
+public class Atraccion extends Recomendacion{
 
-	private String nombre;
-	private double costo;
-	private double tiempo;
+	//private String nombre;
+	//private double costo;
+	//private double tiempo;
 	private int cupo;
-	private TipoDeAtraccion tipoDeAtraccion;
+	//private TipoDeAtraccion tipoDeAtraccion;
 
 	// -- Constructor --
-	public Atraccion(String nombre, double costo, double tiempo, int cupo, TipoDeAtraccion tipoDeAtraccion) {
-		this.nombre = nombre;
-		this.costo = costo;
-		this.tiempo = tiempo;
+	public Atraccion(String nombre, double precio, double duracion, TipoDeAtraccion tipoDeAtraccion, int cupo) {
+		super(nombre,precio,duracion,tipoDeAtraccion);
 		this.cupo = cupo;
-		this.tipoDeAtraccion = tipoDeAtraccion;
 	}
 
 	// -- Getters --
-	public double getCosto() {
-		return costo;
-	}
-
-	public double getTiempo() {
-		return tiempo;
-	}
-
-	public TipoDeAtraccion getTipoDeAtraccion() {
-		return tipoDeAtraccion;
-	}
 
 	public int getCupo() {
 		return cupo;
-	}
-
-	public String getNombre() {
-		return nombre;
 	}
 	
 	// -- Overrides --
 
 	@Override
 	public String toString() {
-		return "\nAtraccion: " + this.nombre + "\n" + "-Precio: $" + costo + "\n" + "-Tiempo Requerido: " + tiempo + "\n"
+		return "\nAtraccion: " + this.nombre + "\n" + "-Precio: $" + precio + "\n" + "-Tiempo Requerido: " + duracion + "\n"
 				+ "-Tipo de atraccion: " + tipoDeAtraccion;
 	}
 
-	@Override
-	public double getPrecio() {
-		return this.costo;
-	}
-
-	@Override
-	public TipoDeAtraccion getTipoDeRecomendacion() {
-		return this.tipoDeAtraccion;
-	}
-
-	@Override
+	/*@Override
 	public boolean recomendacionValida(Usuario usuario) {
 		HashSet<String> itinerario = usuario.getItinerario();
 		if (itinerario.contains(this.nombre))
@@ -76,7 +41,7 @@ public class Atraccion implements Recomendacion {
 	@Override
 	public void agregarRecomendacionAItinerario(Usuario usuario) {
 		usuario.agregarRecomendacion(this.nombre);
-	}
+	}*/
 
 /*	@Override
 	public void actualizarRecomendaciones(List<Atraccion> listaAtracciones,List<Promocion> listaPromociones){
@@ -91,14 +56,15 @@ public class Atraccion implements Recomendacion {
 		
 		
 	}*/
-
+	
+	@Override
 	public void decrementarCupo() {
 		this.cupo -= 1;
 	}
 
 	@Override
-	public int prioridad() {
-		return 1;
+	public boolean esPromocion() {
+		return false;
 	}
 
 /*	@Override

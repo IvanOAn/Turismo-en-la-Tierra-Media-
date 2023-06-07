@@ -1,17 +1,19 @@
 Resumen del Usuario: Sam
 
-Situacion Original:
+	Situacion Inicial:
 
--Presupuesto Orignal: 36,00
--Tiempo Disponible Orignal: 8.0
+		-Presupuesto: $36,00
+		-Tiempo Disponible: 8.0 horas
 
-Recomendaciones aceptadas:
+	Atracciones compradas:
 
-Promocion: Pack degustación
--Tiempo requerido: 7.5
--Atracciones incluidas: [Lothlórien, La Comarca]-Precio: 36.0
+		-Atraccion: Lothlórien
+		-Duración : 1.0 horas
 
-Situacion Final:
+		-Atraccion: La Comarca
+		-Duración : 6.5 horas
 
--Presupuesto Final: 0,00
--Tiempo Disponible Final: 0.5
+	Situacion Final: 
+
+		Costo total de la salida: $36,00
+		Duración total de la salida: 7.5 horas

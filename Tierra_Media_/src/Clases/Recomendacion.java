@@ -1,28 +1,58 @@
 package Clases;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.Objects;
 
-public interface Recomendacion {
+public abstract class Recomendacion implements Recomendable {
+	protected String nombre;
+	protected double precio;
+	protected double duracion;
+	protected TipoDeAtraccion tipoDeAtraccion;
+	
+	public Recomendacion() {}
+	
+	public Recomendacion(String nombre, double precio, double duracion, TipoDeAtraccion tipoDeAtraccion) {
+		this.nombre = nombre;
+		this.precio = precio;
+		this.duracion = duracion;
+		this.tipoDeAtraccion = tipoDeAtraccion;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+	public double getPrecio() {
+		return precio;
+	}
+	public double getDuracion() {
+		return duracion;
+	}
+	public TipoDeAtraccion getTipoDeAtraccion() {
+		return tipoDeAtraccion;
+	}
 
-	public int getCupo();
+	@Override
+	public abstract int getCupo();
 
-	public String getNombre();
+	@Override
+	public abstract void decrementarCupo();
 
-	public double getPrecio();
+	@Override
+	public abstract boolean esPromocion();
 
-	public double getTiempo();
-
-	public void decrementarCupo();
-
-	public TipoDeAtraccion getTipoDeRecomendacion();
-
-	public void actualizarRecomendaciones(List<Atraccion> listaAtracciones, List<Promocion> listaPromociones,
-			HashMap<String, Atraccion> mapaAtracciones);
-
-	public boolean recomendacionValida(Usuario usuario);
-
-	public void agregarRecomendacionAItinerario(Usuario usuario);
-
-	public int prioridad();
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Recomendacion other = (Recomendacion) obj;
+		return Double.doubleToLongBits(duracion) == Double.doubleToLongBits(other.duracion)
+				&& Objects.equals(nombre, other.nombre)
+				&& Double.doubleToLongBits(precio) == Double.doubleToLongBits(other.precio)
+				&& tipoDeAtraccion == other.tipoDeAtraccion;
+	}
+	
+	
 }

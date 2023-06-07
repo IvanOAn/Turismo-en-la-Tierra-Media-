@@ -6,7 +6,6 @@ public class Main {
 		
 		Recomendador recomendador = new Recomendador();
 		
-		recomendador.realizarSugerencia();
-		
+		recomendador.realizarSugerencia();		
 	}
 }

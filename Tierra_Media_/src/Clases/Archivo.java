@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +31,8 @@ public class Archivo {
 			scanner.useLocale(Locale.ENGLISH);
 
 			while (scanner.hasNextLine()) {
-				String lineaDeDatos = scanner.nextLine(); 
-				String vectordeDatos[] = lineaDeDatos.split("\t"); 
+				String lineaDeDatos = scanner.nextLine();
+				String vectordeDatos[] = lineaDeDatos.split("\t");
 
 				String nombre = vectordeDatos[0]; // asignas el nombre
 				double presupuesto = Double.parseDouble(vectordeDatos[1]); // asignas el presupuesto
@@ -51,9 +52,8 @@ public class Archivo {
 		return colaDeUsuarios;
 	}
 
-	public LinkedList<Atraccion> cargarArchivoAtracciones(Map<String, Atraccion> mapaAtracciones) {
+	public void cargarArchivoAtracciones(Map<String, Atraccion> mapaAtracciones, List<Recomendacion> listaRecomendaciones) {
 
-		LinkedList<Atraccion> listaAtracciones = new LinkedList<Atraccion>();
 		Scanner scanner = null;
 
 		try {
@@ -63,8 +63,8 @@ public class Archivo {
 			scanner.useLocale(Locale.ENGLISH);
 
 			while (scanner.hasNextLine()) {
-				String lineaDeDatos = scanner.nextLine(); 
-				String vectordeDatos[] = lineaDeDatos.split("\t"); 
+				String lineaDeDatos = scanner.nextLine();
+				String vectordeDatos[] = lineaDeDatos.split("\t");
 
 				String nombre = vectordeDatos[0]; // asignas el nombre
 				double precio = Double.parseDouble(vectordeDatos[1]); // asignas el precio
@@ -74,8 +74,8 @@ public class Archivo {
 
 				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, nombreTipo); // asignas el tipo
 
-				Atraccion atraccionAux = new Atraccion(nombre, precio, duracion, cupoMaximo, tipo); 
-				listaAtracciones.add(atraccionAux);
+				Atraccion atraccionAux = new Atraccion(nombre, precio, duracion, cupoMaximo, tipo);
+				listaRecomendaciones.add(atraccionAux);
 				mapaAtracciones.put(nombre, atraccionAux);
 			}
 		} catch (Exception e) {
@@ -83,12 +83,10 @@ public class Archivo {
 		} finally {
 			scanner.close();
 		}
-		return listaAtracciones;
 	}
 
-	public LinkedList<Promocion> cargarArchivoPromociones(Map<String, Atraccion> mapaAtracciones) {
+	public void cargarArchivoPromociones(Map<String, Atraccion> mapaAtracciones, List<Recomendacion> listaRecomendaciones) {
 
-		LinkedList<Promocion> listaPromociones = new LinkedList<Promocion>();
 		Scanner scanner = null;
 
 		try {
@@ -101,27 +99,18 @@ public class Archivo {
 				String lineaDeDatos = scanner.nextLine();
 				String vectordeDatos[] = lineaDeDatos.split("\t");
 
-				String nombre = vectordeDatos[1]; 
-				String nombreTipo = vectordeDatos[2].toUpperCase(); 
+				String nombre = vectordeDatos[1];
+				String nombreTipo = vectordeDatos[2].toUpperCase();
 				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, nombreTipo);
 
-				double precio = 0;
-				double tiempo = 0;
-				int cupo = 0;
-				List<String> atraccionesIncluidas = new LinkedList<String>(); // lista de atracciones de la oferta
+				List<Atraccion> atraccionesIncluidas = new LinkedList<Atraccion>(); // lista de atracciones de la oferta
 				for (int i = 3; i < vectordeDatos.length - 1; i++) { // el for no lee la ultima posicion
-					atraccionesIncluidas.add(vectordeDatos[i]);
 					Atraccion atraccionAux = mapaAtracciones.get(vectordeDatos[i]);
+					atraccionesIncluidas.add(atraccionAux);
 
-					if (atraccionAux != null) { // lo encontro
-						precio += atraccionAux.getCosto();
-						tiempo += atraccionAux.getTiempo();
-						if (cupo == 0)
-							cupo = atraccionAux.getCupo();
-						else
-							cupo = Math.min(cupo, atraccionAux.getCupo());
-					} else
-						System.out.println("La atraccion incluida en la oferta no esta incluida en el archivo atracciones");
+					if (atraccionAux == null)
+						System.out.println(
+								"La atraccion incluida en la oferta no esta incluida en el archivo atracciones");
 				}
 
 				Promocion promocion = null;
@@ -129,40 +118,29 @@ public class Archivo {
 				switch (vectordeDatos[0].toUpperCase()) {
 				case "PORCENTUAL": // si era porcentual, la ultima posicion era el descuento
 					double descuento = Double.parseDouble(vectordeDatos[vectordeDatos.length - 1]);
-					promocion = new PromocionPorcentual(nombre, cupo, tiempo, tipo, atraccionesIncluidas, precio,
-							descuento);
+					promocion = new PromocionesPorcentual(nombre, atraccionesIncluidas, descuento);
 					break;
 
 				case "ABSOLUTA": // si es absoluta, la ultima posicion es el precio
-					precio = Double.parseDouble(vectordeDatos[vectordeDatos.length - 1]);
-					promocion = new PromocionesAbsolutas(nombre, cupo, tiempo, tipo, atraccionesIncluidas, precio);
+					double precio = Double.parseDouble(vectordeDatos[vectordeDatos.length - 1]);
+					promocion = new PromocionesAbsolutas(nombre, atraccionesIncluidas, precio);
 					break;
 
 				case "AXB": // si era AxB entonces la ultima posicion era la atraccion gratis
-					String atraccionGratis = vectordeDatos[vectordeDatos.length - 1];
-
-					Atraccion atraccionAux = mapaAtracciones.get(atraccionGratis);
-					if (atraccionAux != null) {
-						precio += atraccionAux.getCosto();
-						tiempo += atraccionAux.getTiempo();
-						cupo = Math.min(cupo, atraccionAux.getCupo());
-					}
-
-					promocion = new PromocionesAxB(nombre, cupo, tiempo, tipo, atraccionesIncluidas, precio,
-							atraccionGratis);
+					Atraccion atraccionGratis = mapaAtracciones.get(vectordeDatos[vectordeDatos.length - 1]);
+					promocion = new PromocionesAxB(nombre, atraccionesIncluidas, atraccionGratis);
 					break;
 				}
-				listaPromociones.add(promocion);
+				listaRecomendaciones.add(promocion);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			scanner.close();
 		}
-		return listaPromociones;
 	}
-	
-	public void generarArchivoResumenUsuario(Usuario usuario, LinkedList<Recomendacion> listaRecomendacionesAceptadas) {
+
+	public void generarArchivoResumenUsuario(Usuario usuario) {
 		FileWriter file = null;
 		PrintWriter printerWriter = null;
 
@@ -172,22 +150,28 @@ public class Archivo {
 
 			printerWriter.println("Resumen del Usuario: " + usuario.getNombre());
 
-			printerWriter.println("\nSituacion Original:\n");
-			printerWriter.printf("-Presupuesto Orignal: $%.2f\n", usuario.getPresupuestoInicial());
-			printerWriter.println("-Tiempo Disponible Orignal: " + usuario.getTiempoInicial());
+			printerWriter.println("\n\tSituacion Inicial:\n");
+			printerWriter.printf("\t\t-Presupuesto: $%.2f\n", usuario.getPresupuestoInicial());
+			printerWriter.println("\t\t-Tiempo Disponible: " + usuario.getTiempoInicial() + " horas");
 
-			printerWriter.println("\nRecomendaciones aceptadas:");
+			printerWriter.println("\n\tAtracciones compradas:\n");
 
-			for (Recomendacion recom : listaRecomendacionesAceptadas) {
-				printerWriter.println(recom);
+			HashMap<String, Atraccion> itinerario = usuario.getItinerario();
+			for (String nombre : itinerario.keySet()) {
+				//printerWriter.println(itinerario.get(nombre));
+				Atraccion atraccion = itinerario.get(nombre);
+				printerWriter.println("\t\t-Atraccion: " + atraccion.getNombre());
+				printerWriter.println("\t\t-Duración : " + atraccion.getDuracion() + " horas\n");
 			}
 
-			printerWriter.println("\nSituacion Final:\n");
-			printerWriter.printf("-Presupuesto Final: $%.2f\n", usuario.getPresupuesto());
-			printerWriter.println("-Tiempo Disponible Final: " + usuario.getTiempoDisponible());
-			
-			printerWriter.printf("\nCosto total de la salida: $%.2f\n", usuario.getPresupuestoInicial()-usuario.getPresupuesto());
-			printerWriter.printf("Tiempo total de la salida: %.2f\n", usuario.getTiempoInicial()-usuario.getTiempoDisponible());
+			printerWriter.println("\tSituacion Final: ");
+			//printerWriter.printf("-Presupuesto Final: $%.2f\n", usuario.getPresupuesto());
+			//printerWriter.println("-Tiempo Disponible Final: " + usuario.getTiempoDisponible());
+
+			printerWriter.printf("\n\t\tCosto total de la salida: $%.2f\n",
+					usuario.getPresupuestoInicial() - usuario.getPresupuesto());
+			printerWriter.println("\t\tDuración total de la salida: " + 
+					(usuario.getTiempoInicial() - usuario.getTiempoDisponible()) + " horas");
 
 		} catch (Exception e) {
 			e.printStackTrace();

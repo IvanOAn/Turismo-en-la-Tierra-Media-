@@ -5,21 +5,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Queue;
 import java.util.Scanner;
 
 public class Recomendador {
 	Queue<Usuario> colaDeUsuarios;
-	List<Atraccion> listaDeAtracciones;
-	List<Promocion> listaDePromociones;
-	HashMap<String, Atraccion> mapaAtracciones;
+	List<Recomendacion> listaRecomendaciones;
 
 	public Recomendador() {
 		this.colaDeUsuarios = new LinkedList<Usuario>();
-		this.listaDeAtracciones = new LinkedList<Atraccion>();
-		this.listaDePromociones = new LinkedList<Promocion>();
-		this.mapaAtracciones = new HashMap<>();
+		this.listaRecomendaciones =new LinkedList<Recomendacion>();
 	}
 
 	private void cargarUsuarios() {
@@ -27,36 +22,33 @@ public class Recomendador {
 		this.colaDeUsuarios = archivoUsuarios.cargarArchivoUsuarios();
 	}
 
-	private void cargarAtracciones() {
+	private void cargarAtracciones(HashMap<String, Atraccion> mapaAtracciones) {
 		Archivo archivoAtracciones = new Archivo("Atracciones");
-		this.listaDeAtracciones = archivoAtracciones.cargarArchivoAtracciones(mapaAtracciones);
+		archivoAtracciones.cargarArchivoAtracciones(mapaAtracciones, listaRecomendaciones);
 	}
 
-	private void cargarPromociones() {
+	private void cargarPromociones(HashMap<String, Atraccion> mapaAtracciones) {
 		Archivo archivoPromociones = new Archivo("Promociones");
-		this.listaDePromociones = archivoPromociones.cargarArchivoPromociones(mapaAtracciones);
+		archivoPromociones.cargarArchivoPromociones(mapaAtracciones, listaRecomendaciones);
 	}
 
 	public void realizarSugerencia() {
+		
+		HashMap<String, Atraccion> mapaAtracciones=new HashMap<String, Atraccion>();
+		
 		this.cargarUsuarios();
-		this.cargarAtracciones();
-		this.cargarPromociones();
+		this.cargarAtracciones(mapaAtracciones);
+		this.cargarPromociones(mapaAtracciones);
 
 		System.out.println("------------------------------------------");
-		System.out.printf("%30s", "Bienvenido/a a ...");
+		System.out.printf("%30s","Bienvenido/a a ...");
 		System.out.println("\n------------------------------------------");
-
-		List<Recomendacion> listaRecomendaciones = new LinkedList<Recomendacion>();
-		LinkedList<Recomendacion> listaRecomendacionesAceptadas = new LinkedList<Recomendacion>();
 
 		Scanner input = new Scanner(System.in);
 		while (!this.colaDeUsuarios.isEmpty()) {
-
+			
 			Usuario usuario = this.colaDeUsuarios.remove();
 			System.out.printf("\nNombre del visitante: %s\n", usuario.getNombre());
-
-			listaRecomendaciones.addAll(listaDeAtracciones);
-			listaRecomendaciones.addAll(listaDePromociones);
 
 			Collections.sort(listaRecomendaciones,
 					new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
@@ -68,38 +60,36 @@ public class Recomendador {
 
 				aux = iterador.next();
 
-				if(ofrecerRecomendacion(usuario, aux, input)) { // devuelve true cuando acepto la recomendacion
-					listaRecomendacionesAceptadas.add(aux);
+				if (ofrecerRecomendacion(usuario, aux, input)) { // devuelve true cuando acepto la recomendacion
+					System.out.println("¡Aceptada!");
+					System.out.println("------------------------------------------");
 				}
 			}
-			imprimirResumenUsuario(usuario, listaRecomendacionesAceptadas);
-			
+			imprimirResumenUsuario(usuario);
+
 			Archivo archivoSalida = new Archivo(usuario.getNombre());
-			archivoSalida.generarArchivoResumenUsuario(usuario, listaRecomendacionesAceptadas);
-			listaRecomendacionesAceptadas.clear();
-			
+			archivoSalida.generarArchivoResumenUsuario(usuario);
 		}
-		
+		System.out.println("\nSe han realizado todas las recomendaciones a los usuarios, hasta mañana!");
 		input.close();
 	}
 
 	private boolean ofrecerRecomendacion(Usuario usuario, Recomendacion recomendacion, Scanner input) {
-		
+
 		if (usuario.getPresupuesto() < recomendacion.getPrecio()
-				|| usuario.getTiempoDisponible() < recomendacion.getTiempo()
-				|| !recomendacion.recomendacionValida(usuario) || recomendacion.getCupo() == 0)
+				|| usuario.getTiempoDisponible() < recomendacion.getDuracion()
+				|| !usuario.recomendacionNoComprada(recomendacion) || recomendacion.getCupo() == 0)
 			return false;
 
 		System.out.println(recomendacion);
 
 		if (this.validarRecomendacion(input)) {
-			usuario.comprarRecomendacion(recomendacion, this.listaDeAtracciones, this.listaDePromociones,
-					mapaAtracciones);
+			usuario.comprarRecomendacion(recomendacion);
 			return true;
 		}
-			
+		
+		System.out.println("------------------------------------------");
 		return false;
-		 
 	}
 
 	private boolean validarRecomendacion(Scanner input) {
@@ -114,27 +104,35 @@ public class Recomendador {
 
 		return respuesta.equals("S");
 	}
-	
-	private void imprimirResumenUsuario(Usuario usuario, 
-			LinkedList<Recomendacion> listaRecomendacionesAceptadas) {
+
+	private void imprimirResumenUsuario(Usuario usuario) {
 		System.out.println("------------------------------------------");
 		System.out.println("Resumen del Usuario: " + usuario.getNombre());
+
+		System.out.println("\n\tSituacion Inicial:\n");
+		System.out.printf("\t\t-Presupuesto: $%.2f\n", usuario.getPresupuestoInicial());
+		System.out.println("\t\t-Tiempo Disponible: " + usuario.getTiempoInicial() + " hs");
+
+		System.out.println("\n\tAtracciones compradas:\n");
 		
-		System.out.println("\nSituacion Original:\n");
-		System.out.printf("-Presupuesto Orignal: $%.2f\n", usuario.getPresupuestoInicial());
-		System.out.println("-Tiempo Disponible Orignal: " + usuario.getTiempoInicial());	
-		
-		System.out.println("\nRecomendaciones aceptadas:");
-		for(Recomendacion recom : listaRecomendacionesAceptadas) {
-			System.out.println(recom);
+		HashMap<String, Atraccion> itinerario=usuario.getItinerario();
+		for (String nombre : itinerario.keySet()) {
+			//System.out.println(itinerario.get(nombre));
+			Atraccion atraccion = itinerario.get(nombre);
+			System.out.println("\t\t-Atraccion: " + atraccion.getNombre());
+			System.out.println("\t\t-Duración : " + atraccion.getDuracion() + " horas\n");
 		}
-		
-		System.out.println("\nSituacion Final:\n");
-		System.out.printf("-Presupuesto Final: $%.2f\n", usuario.getPresupuesto());
-		System.out.println("-Tiempo Disponible Final: " + usuario.getTiempoDisponible());
-		
-		System.out.printf("\nCosto total de la salida: $%.2f\n", usuario.getPresupuestoInicial()-usuario.getPresupuesto());
-		System.out.printf("Tiempo total de la salida: %.2f\n", usuario.getTiempoInicial()-usuario.getTiempoDisponible());
+
+		System.out.println("\tSituacion Final:");
+		//System.out.printf("-Presupuesto Final: $%.2f\n", usuario.getPresupuesto());
+		//System.out.println("-Tiempo Disponible Final: " + usuario.getTiempoDisponible());
+
+		System.out.printf("\n\t\tCosto total de la salida: $%.2f\n",
+				usuario.getPresupuestoInicial() - usuario.getPresupuesto());
+		System.out.println("\t\tDuración total de la salida: " +
+				(usuario.getTiempoInicial()-usuario.getTiempoDisponible()) + " horas");
 		System.out.println("------------------------------------------");
+		System.out.println("------------------------------------------");
+		
 	}
 }

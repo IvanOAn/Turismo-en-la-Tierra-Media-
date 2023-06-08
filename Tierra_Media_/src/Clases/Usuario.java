@@ -9,7 +9,7 @@ public class Usuario {
 	private double presupuesto;
 	private double tiempoDisponible;
 	private TipoDeAtraccion tipoDeAtraccionPreferida;
-	private HashSet<String> itinerario;
+	private Itinerario itinerario;
 	private final double presupuestoInicial;
 	private final double tiempoInicial;
 
@@ -20,7 +20,7 @@ public class Usuario {
 		this.presupuesto = presupuesto;
 		this.tiempoDisponible = tiempoDisponible;
 		this.tipoDeAtraccionPreferida = tipoDeAtraccionPreferida;
-		itinerario = new HashSet<String>();
+		this.itinerario= new Itinerario();
 		this.presupuestoInicial = presupuesto;
 		this.tiempoInicial = tiempoDisponible;
 	}
@@ -41,10 +41,6 @@ public class Usuario {
 	public TipoDeAtraccion getTipoDeAtraccionPreferida() {
 		return tipoDeAtraccionPreferida;
 	}
-
-	public HashSet<String> getItinerario() {
-		return itinerario;
-	}
 	
 	public double getPresupuestoInicial() {
 		return presupuestoInicial;
@@ -54,39 +50,23 @@ public class Usuario {
 		return tiempoInicial;
 	}
 
-	// -- Setters --
-	protected void setPresupuesto(double presupuesto) {
-		this.presupuesto = presupuesto;
-	}
-
-	protected void setTiempoDisponible(double tiempoDisponible) {
-		this.tiempoDisponible = tiempoDisponible;
-	}
-
 	// -- Métodos --
 	public boolean estado() {
 		return this.getPresupuesto() > 0 && this.getTiempoDisponible() > 0;
 	}
+	
+	public boolean recomendacionNoComprada(Recomendacion recomendacion) {
+		return this.itinerario.recomendacionNoComprada(recomendacion);
+	}
 
-
-	public void comprarRecomendacion(Recomendacion recomendacion, List<Atraccion> listaAtracciones,
-			List<Promocion> listaDePromociones, HashMap<String, Atraccion> mapaAtracciones) {
-		recomendacion.agregarRecomendacionAItinerario(this);
+	public void comprarRecomendacion(Recomendacion recomendacion) {
+		this.itinerario.agregarRecomendacion(recomendacion);
 		this.presupuesto -= recomendacion.getPrecio();
-		this.tiempoDisponible -= recomendacion.getTiempo();
-		recomendacion.actualizarRecomendaciones(listaAtracciones, listaDePromociones,
-				mapaAtracciones);
+		this.tiempoDisponible -= recomendacion.getDuracion();
+		recomendacion.decrementarCupo();
 	}
 
-	// -- Overrides --
-
-	@Override
-	public String toString() {
-		return "Usuario [nombre=" + nombre + ", presupuesto=" + presupuesto + ", tiempoDisponible=" + tiempoDisponible
-				+ ", tipoDeAtraccionPreferida=" + tipoDeAtraccionPreferida + ", itinerario=" + itinerario + "]";
-	}
-
-	public void agregarRecomendacion(String nombreAtraccion) {
-		this.itinerario.add(nombreAtraccion);
+	public HashMap<String, Atraccion> getItinerario() {
+		return this.itinerario.getItinerario();
 	}
 }

@@ -1,151 +1,78 @@
 package Clases;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
 
-public class Promocion implements Recomendacion {
+public class Promocion extends Recomendacion{
 
-	protected String nombre;
-	protected int cupo;
-	protected double tiempoRequerido;
-	protected TipoDeAtraccion tipoDeAtraccion;
-	protected List<String> atraccionesIncluidas;
-	protected double precio;
+	protected List<Atraccion> atraccionesIncluidas;
 
 	// -- Constructor --
-
-	// Esto seria si calculamos precio y cupo en la clase archivo
-	public Promocion(String nombre, int cupo, double tiempoRequerido, TipoDeAtraccion tipoDeAtraccion,
-			List<String> atraccionesIncluidas) {
-		this.nombre = nombre;
-		this.cupo = cupo;
-		this.tiempoRequerido = tiempoRequerido;
-		this.tipoDeAtraccion = tipoDeAtraccion;
+	public Promocion(String nombre, List<Atraccion> atraccionesIncluidas) {
+		this.nombre=nombre;
+		this.tipoDeAtraccion = atraccionesIncluidas.get(0).getTipoDeAtraccion();
 		this.atraccionesIncluidas = atraccionesIncluidas;
+		for (Atraccion atraccion : atraccionesIncluidas) {
+			this.duracion += atraccion.getDuracion();
+			this.precio += atraccion.getPrecio();
+		}
 	}
 
 	/// -- Gettters --
-	public TipoDeAtraccion getTipoDeAtraccion() {
-		return tipoDeAtraccion;
-	}
-
-	public double getTiempoRequerido() {
-		return tiempoRequerido;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public List<String> getAtraccionesIncluidas() {
+	public List<Atraccion> getAtraccionesIncluidas() {
 		return atraccionesIncluidas;
+	}
+	
+	//--Métodos--
+	public List<String> toNombre() {
+		List<String> listaNombres = new ArrayList<String>();
+		for (Atraccion atraccion : this.atraccionesIncluidas)
+			listaNombres.add(atraccion.getNombre());
+		return listaNombres;
 	}
 
 	// -- Overrides --
-
 	@Override
 	public String toString() {
-		return "\nPromocion: " + nombre + "\n" + "-Tiempo requerido: " + tiempoRequerido + "\n"
-				+ "-Atracciones incluidas: " + atraccionesIncluidas;
-	}
-
-	@Override
-	public double getPrecio() {
-		return this.precio;
-	}
-
-	@Override
-	public double getTiempo() {
-		return this.tiempoRequerido;
+		return "\nPromocion: " + nombre + "\n" + "-Atracciones incluidas: " + this.toNombre() 
+				+ "\n-Duración: " + duracion;
 	}
 
 	@Override
 	public int getCupo() {
-		return this.cupo;
-	}
 
-	@Override
-	public TipoDeAtraccion getTipoDeRecomendacion() {
-		return this.tipoDeAtraccion;
-	}
-
-	@Override
-	public void actualizarRecomendaciones(List<Atraccion> listaAtracciones, List<Promocion> listaPromociones,
-			HashMap<String, Atraccion> mapaAtracciones) {
-
-		for (Promocion promocion : listaPromociones)
-			if (promocion.getNombre().equals(this.nombre)) {
-				promocion.decrementarCupo();
-				for (String nombre : promocion.getAtraccionesIncluidas())
-					for (Atraccion atraccion : listaAtracciones)
-						if (atraccion.getNombre().equals(nombre))
-							atraccion.decrementarCupo();
-
-			}
-	}
-
-	@Override
-	public boolean recomendacionValida(Usuario usuario) {
-		HashSet<String> itinerario = usuario.getItinerario();
-		for (String palabra : atraccionesIncluidas) {
-			if (itinerario.contains(palabra))
-				return false;
+		int cupo =atraccionesIncluidas.get(0).getCupo();
+		
+		for (Atraccion atraccion:atraccionesIncluidas) {
+			cupo = Math.min(cupo, atraccion.getCupo());
 		}
-		return true;
+		return cupo;
 	}
 
 	@Override
-	public void agregarRecomendacionAItinerario(Usuario usuario) {
-		Iterator<String> iterador = this.atraccionesIncluidas.iterator();
-		while (iterador.hasNext())
-			usuario.agregarRecomendacion(iterador.next());
-	}
-
 	public void decrementarCupo() {
-		this.cupo -= 1;
-	}
-
-	public void recalcularCupo(List<Atraccion> listaAtracciones) {
-		int cupo = 0;
-
-		for (String nombreAtraccion : this.atraccionesIncluidas) {
-			for (Atraccion atraccion : listaAtracciones) {
-				if (nombreAtraccion.equals(atraccion.getNombre())) {
-					if (cupo == 0)
-						cupo = atraccion.getCupo();
-					else
-						cupo = Math.min(cupo, atraccion.getCupo());
-				}
-			}
+		for (Atraccion atraccion : this.atraccionesIncluidas) {
+			atraccion.decrementarCupo();
 		}
-		this.cupo = cupo;
 	}
 
 	@Override
-	public int prioridad() {
-		return -1;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(cupo);
+	public boolean esPromocion() {
+		return true;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Promocion other = (Promocion) obj;
-		return cupo == other.cupo;
+		return Objects.equals(atraccionesIncluidas, other.atraccionesIncluidas);
 	}
 }

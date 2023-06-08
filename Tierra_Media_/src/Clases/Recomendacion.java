@@ -1,28 +1,38 @@
 package Clases;
 
-import java.util.HashMap;
-import java.util.List;
+public abstract class Recomendacion implements Recomendable {
+	protected String nombre;
+	protected double precio;
+	protected double duracion;
+	protected TipoDeAtraccion tipoDeAtraccion;
+	
+	public Recomendacion() {}
+	
+	public Recomendacion(String nombre, double precio, double duracion, TipoDeAtraccion tipoDeAtraccion) {
+		this.nombre = nombre;
+		this.precio = precio;
+		this.duracion = duracion;
+		this.tipoDeAtraccion = tipoDeAtraccion;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public double getPrecio() {
+		return precio;
+	}
+	public double getDuracion() {
+		return duracion;
+	}
+	public TipoDeAtraccion getTipoDeAtraccion() {
+		return tipoDeAtraccion;
+	}
 
-public interface Recomendacion {
+	@Override
+	public abstract int getCupo();
 
-	public int getCupo();
+	@Override
+	public abstract void decrementarCupo();
 
-	public String getNombre();
-
-	public double getPrecio();
-
-	public double getTiempo();
-
-	public void decrementarCupo();
-
-	public TipoDeAtraccion getTipoDeRecomendacion();
-
-	public void actualizarRecomendaciones(List<Atraccion> listaAtracciones, List<Promocion> listaPromociones,
-			List<Recomendacion> listaRecomendacion, HashMap<String, Atraccion> mapaAtracciones);
-
-	public boolean recomendacionValida(Usuario usuario);
-
-	public void agregarRecomendacionAItinerario(Usuario usuario);
-
-	public int prioridad();
+	@Override
+	public abstract boolean esPromocion();
 }

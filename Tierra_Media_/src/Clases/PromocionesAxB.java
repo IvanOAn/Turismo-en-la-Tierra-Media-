@@ -1,21 +1,19 @@
 package Clases;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PromocionesAxB extends Promocion {
-	private String atraccionGratis;
+	private Atraccion atraccionGratis;
 
-	public PromocionesAxB(String nombre, int cupo, double tiempoRequerido, TipoDeAtraccion tipoDeAtraccion,
-			List<String> atraccionesIncluidas, double precio, String atraccionGratis) {
-		super(nombre, cupo, tiempoRequerido, tipoDeAtraccion, atraccionesIncluidas);
+	public PromocionesAxB(String nombre, List<Atraccion> atraccionesIncluidas, Atraccion atraccionGratis) {
+		super(nombre, atraccionesIncluidas);
 		this.atraccionGratis = atraccionGratis;
-		this.precio = precio;
+		this.duracion += atraccionGratis.getDuracion();
+		//atraccionesIncluidas.add(atraccionGratis);
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() + "-AtraccionGratis: " + this.atraccionGratis + "\n" + "-Precio: " + this.precio + "\n";
+		return super.toString() + "\n-AtraccionGratis: " + this.atraccionGratis + "\n" + "-Precio: $" + this.precio;
 	}
-
 }

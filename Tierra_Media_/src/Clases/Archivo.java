@@ -1,13 +1,16 @@
 package Clases;
 
 import java.io.File;
-
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Archivo {
 	private String nombre;
@@ -31,12 +34,12 @@ public class Archivo {
 				String lineaDeDatos = scanner.nextLine();
 				String vectordeDatos[] = lineaDeDatos.split("\t");
 
-				String nombre = vectordeDatos[0];
-				double presupuesto = Double.parseDouble(vectordeDatos[1]);
-				double tiempoDisponible = Double.parseDouble(vectordeDatos[2]);
-				String tipoAtraccionPreferida = vectordeDatos[3].toUpperCase();
+				String nombre = vectordeDatos[0]; // asignas el nombre
+				double presupuesto = Double.parseDouble(vectordeDatos[1]); // asignas el presupuesto
+				double tiempoDisponible = Double.parseDouble(vectordeDatos[2]); // asginas el tiempo
+				String tipoAtraccionPreferida = vectordeDatos[3].toUpperCase(); // lees el tipo
 
-				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, tipoAtraccionPreferida);
+				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, tipoAtraccionPreferida); // asignas el tipo
 
 				Usuario usuario = new Usuario(nombre, presupuesto, tiempoDisponible, tipo);
 				colaDeUsuarios.add(usuario);
@@ -49,7 +52,7 @@ public class Archivo {
 		return colaDeUsuarios;
 	}
 
-	public LinkedList<Atraccion> cargarArchivoAtracciones(HashMap<String, Atraccion> mapaAtracciones) {
+	public LinkedList<Atraccion> cargarArchivoAtracciones(Map<String, Atraccion> mapaAtracciones) {
 
 		LinkedList<Atraccion> listaAtracciones = new LinkedList<Atraccion>();
 		Scanner scanner = null;
@@ -64,15 +67,15 @@ public class Archivo {
 				String lineaDeDatos = scanner.nextLine();
 				String vectordeDatos[] = lineaDeDatos.split("\t");
 
-				String nombre = vectordeDatos[0];
-				double precio = Double.parseDouble(vectordeDatos[1]);
-				double duracion = Double.parseDouble(vectordeDatos[2]);
-				int cupoMaximo = Integer.parseInt(vectordeDatos[3]);
-				String nombreTipo = vectordeDatos[4].toUpperCase();
+				String nombre = vectordeDatos[0]; // asignas el nombre
+				double precio = Double.parseDouble(vectordeDatos[1]); // asignas el precio
+				double duracion = Double.parseDouble(vectordeDatos[2]); // asignas la duracion
+				int cupoMaximo = Integer.parseInt(vectordeDatos[3]); // asignas el cupo
+				String nombreTipo = vectordeDatos[4].toUpperCase(); // lees el tipo
 
-				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, nombreTipo);
+				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, nombreTipo); // asignas el tipo
 
-				Atraccion atraccionAux = new Atraccion(nombre, precio, duracion, cupoMaximo, tipo);
+				Atraccion atraccionAux = new Atraccion(nombre, precio, duracion,tipo,cupoMaximo);
 				listaAtracciones.add(atraccionAux);
 				mapaAtracciones.put(nombre, atraccionAux);
 			}
@@ -84,13 +87,13 @@ public class Archivo {
 		return listaAtracciones;
 	}
 
-	public LinkedList<Promocion> cargarArchivoPromociones(List<Atraccion> listaDeAtracciones) {
+	public LinkedList<Promocion> cargarArchivoPromociones(Map<String, Atraccion> mapaAtracciones) {
 
 		LinkedList<Promocion> listaPromociones = new LinkedList<Promocion>();
 		Scanner scanner = null;
 
 		try {
-			File file = new File("casos de prueba/in/" + this.nombre + ".in");
+			File file = new File("casos de prueba/in/" + this.nombre + ".in"); // lees el archivo
 
 			scanner = new Scanner(file);
 			scanner.useLocale(Locale.ENGLISH);
@@ -101,52 +104,36 @@ public class Archivo {
 
 				String nombre = vectordeDatos[1];
 				String nombreTipo = vectordeDatos[2].toUpperCase();
+				// TODO: decidir si la promociones tiene que decir su tipo.
 				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, nombreTipo);
 
-				List<String> atraccionesIncluidas = new LinkedList<String>();
-				for (int i = 3; i < vectordeDatos.length - 1; i++)
-					atraccionesIncluidas.add(vectordeDatos[i]);
+				List<Atraccion> atraccionesIncluidas = new LinkedList<Atraccion>(); // lista de atracciones de la oferta
+				for (int i = 3; i < vectordeDatos.length - 1; i++) { // el for no lee la ultima posicion
+					Atraccion atraccionAux = mapaAtracciones.get(vectordeDatos[i]);
+					atraccionesIncluidas.add(atraccionAux);
 
-				double precio = 0;
-				double tiempo = 0;
-				int cupo = 0;
-				for (Atraccion atraccion : listaDeAtracciones) {
-					for (String nombreAtraccion : atraccionesIncluidas) {
-						if (atraccion.getNombre().equals(nombreAtraccion)) {
-							precio += atraccion.getCosto();
-							tiempo += atraccion.getTiempo();
-							if (cupo == 0)
-								cupo = atraccion.getCupo();
-							else
-								cupo = Math.min(cupo, atraccion.getCupo());
-						}
-					}
+					if (atraccionAux == null)
+						System.out.println(
+								"La atraccion incluida en la oferta no esta incluida en el archivo atracciones");
 				}
 
 				Promocion promocion = null;
 
 				switch (vectordeDatos[0].toUpperCase()) {
-				case "PORCENTUAL":
+				case "PORCENTUAL": // si era porcentual, la ultima posicion era el descuento
 					double descuento = Double.parseDouble(vectordeDatos[vectordeDatos.length - 1]);
-					promocion = new PromocionPorcentual(nombre, cupo, tiempo, tipo, atraccionesIncluidas, precio,
-							descuento);
+					promocion = new PromocionPorcentual(nombre, atraccionesIncluidas, descuento);
 					break;
 
-				case "ABSOLUTA":
-					precio = Double.parseDouble(vectordeDatos[vectordeDatos.length - 1]);
-					promocion = new PromocionesAbsolutas(nombre, cupo, tiempo, tipo, atraccionesIncluidas, precio);
+				case "ABSOLUTA": // si es absoluta, la ultima posicion es el precio
+					double precio = Double.parseDouble(vectordeDatos[vectordeDatos.length - 1]);
+					promocion = new PromocionesAbsolutas(nombre, atraccionesIncluidas, precio);
 					break;
 
-				case "AXB":
-					String atraccionGratis = vectordeDatos[vectordeDatos.length - 1];
-					for (Atraccion atraccion : listaDeAtracciones) {
-						if (atraccion.getNombre().equals(atraccionGratis)) {
-							tiempo += atraccion.getTiempo();
-							cupo = Math.min(cupo, atraccion.getCupo());
-						}
-					}
-					promocion = new PromocionesAxB(nombre, cupo, tiempo, tipo, atraccionesIncluidas, precio,
-							atraccionGratis);
+				case "AXB": // si era AxB entonces la ultima posicion era la atraccion gratis
+					Atraccion atraccionGratis = mapaAtracciones.get(vectordeDatos[vectordeDatos.length - 1]);
+
+					promocion = new PromocionesAxB(nombre, atraccionesIncluidas, atraccionGratis);
 					break;
 				}
 				listaPromociones.add(promocion);
@@ -157,5 +144,48 @@ public class Archivo {
 			scanner.close();
 		}
 		return listaPromociones;
+	}
+
+	public void generarArchivoResumenUsuario(Usuario usuario) {
+		FileWriter file = null;
+		PrintWriter printerWriter = null;
+
+		try {
+			file = new FileWriter("casos de prueba/out/" + this.nombre + ".out");
+			printerWriter = new PrintWriter(file);
+
+			printerWriter.println("Resumen del Usuario: " + usuario.getNombre());
+
+			printerWriter.println("\nSituacion Original:\n");
+			printerWriter.printf("-Presupuesto Orignal: $%.2f\n", usuario.getPresupuestoInicial());
+			printerWriter.println("-Tiempo Disponible Orignal: " + usuario.getTiempoInicial());
+
+			printerWriter.println("\nRecomendaciones aceptadas:");
+
+			HashMap<String, Atraccion> itinerario=usuario.getItinerario();
+			for (String nombre : itinerario.keySet()) {
+				printerWriter.println(itinerario.get(nombre));
+			}
+
+			printerWriter.println("\nSituacion Final:\n");
+			printerWriter.printf("-Presupuesto Final: $%.2f\n", usuario.getPresupuesto());
+			printerWriter.println("-Tiempo Disponible Final: " + usuario.getTiempoDisponible());
+
+			printerWriter.printf("\nCosto total de la salida: $%.2f\n",
+					usuario.getPresupuestoInicial() - usuario.getPresupuesto());
+			printerWriter.printf("Tiempo total de la salida: %.2f\n",
+					usuario.getTiempoInicial() - usuario.getTiempoDisponible());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (file != null) {
+				try {
+					file.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }

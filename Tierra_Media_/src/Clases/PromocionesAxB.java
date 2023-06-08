@@ -15,7 +15,16 @@ public class PromocionesAxB extends Promocion {
 
 	@Override
 	public String toString() {
-		return super.toString() + "\n-AtraccionGratis: " + this.atraccionGratis.getNombre() + "\n" + "-Precio: $" + this.precio;
+		return super.toString() + "\n-AtraccionGratis: " + this.atraccionGratis.getNombre() + "\n" + "-Precio: $"
+				+ this.precio;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(atraccionGratis);
+		return result;
 	}
 
 	@Override

@@ -20,6 +20,14 @@ public class PromocionesPorcentual extends Promocion {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(porcentajeDescuento);
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -30,4 +38,5 @@ public class PromocionesPorcentual extends Promocion {
 		PromocionesPorcentual other = (PromocionesPorcentual) obj;
 		return Double.doubleToLongBits(porcentajeDescuento) == Double.doubleToLongBits(other.porcentajeDescuento);
 	}
+
 }

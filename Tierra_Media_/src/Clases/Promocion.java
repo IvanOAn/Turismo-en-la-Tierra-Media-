@@ -1,19 +1,17 @@
 package Clases;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-public class Promocion extends Recomendacion{
+public class Promocion extends Recomendacion {
 
 	protected List<Atraccion> atraccionesIncluidas;
 
 	// -- Constructor --
 	public Promocion(String nombre, List<Atraccion> atraccionesIncluidas) {
-		this.nombre=nombre;
-		this.tipoDeAtraccion = atraccionesIncluidas.get(0).getTipoDeAtraccion();
+		super(nombre,0,0, null);
+		this.tipoDeAtraccion= atraccionesIncluidas.get(0).getTipoDeAtraccion();
 		this.atraccionesIncluidas = atraccionesIncluidas;
 		for (Atraccion atraccion : atraccionesIncluidas) {
 			this.duracion += atraccion.getDuracion();
@@ -25,8 +23,8 @@ public class Promocion extends Recomendacion{
 	public List<Atraccion> getAtraccionesIncluidas() {
 		return atraccionesIncluidas;
 	}
-	
-	//--Métodos--
+
+	// --Métodos--
 	public List<String> toNombre() {
 		List<String> listaNombres = new ArrayList<String>();
 		for (Atraccion atraccion : this.atraccionesIncluidas)
@@ -37,16 +35,16 @@ public class Promocion extends Recomendacion{
 	// -- Overrides --
 	@Override
 	public String toString() {
-		return "\nPromocion: " + nombre + "\n" + "-Atracciones incluidas: " + this.toNombre() 
-				+ "\n-Duración: " + duracion;
+		return "\nPromocion: " + nombre + "\n" + "-Atracciones incluidas: " + this.toNombre() + "\n-Duración: "
+				+ duracion + " horas";
 	}
 
 	@Override
 	public int getCupo() {
 
-		int cupo =atraccionesIncluidas.get(0).getCupo();
-		
-		for (Atraccion atraccion:atraccionesIncluidas) {
+		int cupo = atraccionesIncluidas.get(0).getCupo();
+
+		for (Atraccion atraccion : atraccionesIncluidas) {
 			cupo = Math.min(cupo, atraccion.getCupo());
 		}
 		return cupo;
@@ -65,6 +63,30 @@ public class Promocion extends Recomendacion{
 	}
 
 	@Override
+	public void agregarRecomendacionAItinierario(Itinerario itinerario) {
+		for (Atraccion atraccion : this.atraccionesIncluidas) {
+			atraccion.agregarRecomendacionAItinierario(itinerario);
+		}
+	}
+
+	@Override
+	public boolean recomendacionIncluyeAtraccionComprada(Usuario usuario) {
+		for (Atraccion atraccion : this.atraccionesIncluidas) {
+			if (atraccion.recomendacionIncluyeAtraccionComprada(usuario))
+				return true; // la promocion tiene una atraccion ya comprada
+		}
+		return false; // la promocion no contiene ninguna atraccion ya comprada
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(atraccionesIncluidas);
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -75,4 +97,5 @@ public class Promocion extends Recomendacion{
 		Promocion other = (Promocion) obj;
 		return Objects.equals(atraccionesIncluidas, other.atraccionesIncluidas);
 	}
+
 }

@@ -32,7 +32,7 @@ public class Recomendador {
 		archivoPromociones.cargarArchivoPromociones(mapaAtracciones, listaRecomendaciones);
 	}
 
-	public void realizarSugerencia() {
+public void realizarSugerencia() {
 		
 		HashMap<String, Atraccion> mapaAtracciones=new HashMap<String, Atraccion>();
 		
@@ -78,7 +78,7 @@ public class Recomendador {
 
 		if (usuario.getPresupuesto() < recomendacion.getPrecio()
 				|| usuario.getTiempoDisponible() < recomendacion.getDuracion()
-				|| !usuario.recomendacionNoComprada(recomendacion) || recomendacion.getCupo() == 0)
+				|| recomendacion.recomendacionIncluyeAtraccionComprada(usuario) || recomendacion.getCupo() == 0)
 			return false;
 
 		System.out.println(recomendacion);
@@ -111,7 +111,7 @@ public class Recomendador {
 
 		System.out.println("\n\tSituacion Inicial:\n");
 		System.out.printf("\t\t-Presupuesto: $%.2f\n", usuario.getPresupuestoInicial());
-		System.out.println("\t\t-Tiempo Disponible: " + usuario.getTiempoInicial() + " hs");
+		System.out.println("\t\t-Tiempo Disponible: " + usuario.getTiempoInicial() + " horas");
 
 		System.out.println("\n\tAtracciones compradas:\n");
 		
@@ -120,7 +120,7 @@ public class Recomendador {
 			//System.out.println(itinerario.get(nombre));
 			Atraccion atraccion = itinerario.get(nombre);
 			System.out.println("\t\t-Atraccion: " + atraccion.getNombre());
-			System.out.println("\t\t-Duración : " + atraccion.getDuracion() + " horas\n");
+			System.out.println("\t\t-Duración : " + atraccion.getDuracion() + " horas\n");	
 		}
 
 		System.out.println("\tSituacion Final:");

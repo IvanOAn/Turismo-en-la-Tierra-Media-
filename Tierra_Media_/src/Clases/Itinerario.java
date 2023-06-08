@@ -1,36 +1,12 @@
 package Clases;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Itinerario {
-	private HashMap<String,Atraccion>itinerario;
-	
-	public Itinerario() {
-		this.itinerario = new HashMap<String,Atraccion>();
-	}
+	private HashMap<String, Atraccion> itinerario;
 
-	public void agregarRecomendacion(Recomendacion recomendacion){
-		if(recomendacion.esPromocion()){
-			for(Atraccion atraccion:((Promocion)recomendacion).getAtraccionesIncluidas()) {
-				this.itinerario.put(atraccion.getNombre(),atraccion);
-			}
-		}else {
-			this.itinerario.put(((Atraccion)recomendacion).getNombre(),(Atraccion)recomendacion);
-		}
-	}
-	
-	public boolean recomendacionNoComprada(Recomendacion recomendacion) {
-		if(recomendacion.esPromocion()){
-			for(Atraccion atraccion:((Promocion)recomendacion).getAtraccionesIncluidas()) {
-				if(this.itinerario.containsKey(atraccion.getNombre()))
-					return false;
-			}
-		}else {
-			if(this.itinerario.containsKey(((Atraccion)recomendacion).getNombre()))
-				return false;
-		}
-		return true;
+	public Itinerario() {
+		this.itinerario = new HashMap<String, Atraccion>();
 	}
 
 	public HashMap<String, Atraccion> getItinerario() {

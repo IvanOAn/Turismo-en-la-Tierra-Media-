@@ -8,8 +8,6 @@ public abstract class Recomendacion{
 	protected double duracion;
 	protected TipoDeAtraccion tipoDeAtraccion;
 	
-	public Recomendacion() {}
-	
 	public Recomendacion(String nombre, double precio, double duracion, TipoDeAtraccion tipoDeAtraccion) {
 		this.nombre = nombre;
 		this.precio = precio;
@@ -38,6 +36,15 @@ public abstract class Recomendacion{
 	public abstract void decrementarCupo();
 	
 	public abstract boolean esPromocion();
+	
+	public abstract void agregarRecomendacionAItinierario(Itinerario itinerario);
+	
+	public abstract boolean recomendacionIncluyeAtraccionComprada(Usuario usuario);
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(duracion, nombre, precio, tipoDeAtraccion);
+	}
 
 	@Override
 	public boolean equals(Object obj) {

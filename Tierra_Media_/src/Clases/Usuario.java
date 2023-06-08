@@ -1,8 +1,6 @@
 package Clases;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 
 public class Usuario {
 	private String nombre;
@@ -54,13 +52,9 @@ public class Usuario {
 	public boolean estado() {
 		return this.getPresupuesto() > 0 && this.getTiempoDisponible() > 0;
 	}
-	
-	public boolean recomendacionNoComprada(Recomendacion recomendacion) {
-		return this.itinerario.recomendacionNoComprada(recomendacion);
-	}
 
 	public void comprarRecomendacion(Recomendacion recomendacion) {
-		this.itinerario.agregarRecomendacion(recomendacion);
+		recomendacion.agregarRecomendacionAItinierario(this.itinerario);
 		this.presupuesto -= recomendacion.getPrecio();
 		this.tiempoDisponible -= recomendacion.getDuracion();
 		recomendacion.decrementarCupo();

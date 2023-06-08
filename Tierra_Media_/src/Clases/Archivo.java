@@ -25,7 +25,7 @@ public class Archivo {
 		Scanner scanner = null;
 
 		try {
-			File file = new File("casos de prueba/in/" + this.nombre + ".in");
+			File file = new File("archivos/in/" + this.nombre + ".in");
 
 			scanner = new Scanner(file);
 			scanner.useLocale(Locale.ENGLISH);
@@ -52,12 +52,13 @@ public class Archivo {
 		return colaDeUsuarios;
 	}
 
-	public void cargarArchivoAtracciones(Map<String, Atraccion> mapaAtracciones, List<Recomendacion> listaRecomendaciones) {
+	public void cargarArchivoAtracciones(Map<String, Atraccion> mapaAtracciones,
+			List<Recomendacion> listaRecomendaciones) {
 
 		Scanner scanner = null;
 
 		try {
-			File file = new File("casos de prueba/in/" + this.nombre + ".in");
+			File file = new File("archivos/in/" + this.nombre + ".in");
 
 			scanner = new Scanner(file);
 			scanner.useLocale(Locale.ENGLISH);
@@ -85,12 +86,13 @@ public class Archivo {
 		}
 	}
 
-	public void cargarArchivoPromociones(Map<String, Atraccion> mapaAtracciones, List<Recomendacion> listaRecomendaciones) {
+	public void cargarArchivoPromociones(Map<String, Atraccion> mapaAtracciones,
+			List<Recomendacion> listaRecomendaciones) {
 
 		Scanner scanner = null;
 
 		try {
-			File file = new File("casos de prueba/in/" + this.nombre + ".in"); // lees el archivo
+			File file = new File("archivos/in/" + this.nombre + ".in"); // lees el archivo
 
 			scanner = new Scanner(file);
 			scanner.useLocale(Locale.ENGLISH);
@@ -100,8 +102,6 @@ public class Archivo {
 				String vectordeDatos[] = lineaDeDatos.split("\t");
 
 				String nombre = vectordeDatos[1];
-				String nombreTipo = vectordeDatos[2].toUpperCase();
-				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, nombreTipo);
 
 				List<Atraccion> atraccionesIncluidas = new LinkedList<Atraccion>(); // lista de atracciones de la oferta
 				for (int i = 3; i < vectordeDatos.length - 1; i++) { // el for no lee la ultima posicion
@@ -145,7 +145,7 @@ public class Archivo {
 		PrintWriter printerWriter = null;
 
 		try {
-			file = new FileWriter("casos de prueba/out/" + this.nombre + ".out");
+			file = new FileWriter("archivos/out/" + this.nombre + ".out");
 			printerWriter = new PrintWriter(file);
 
 			printerWriter.println("Resumen del Usuario: " + usuario.getNombre());
@@ -158,20 +158,22 @@ public class Archivo {
 
 			HashMap<String, Atraccion> itinerario = usuario.getItinerario();
 			for (String nombre : itinerario.keySet()) {
-				//printerWriter.println(itinerario.get(nombre));
+				// printerWriter.println(itinerario.get(nombre));
 				Atraccion atraccion = itinerario.get(nombre);
 				printerWriter.println("\t\t-Atraccion: " + atraccion.getNombre());
 				printerWriter.println("\t\t-Duración : " + atraccion.getDuracion() + " horas\n");
 			}
 
 			printerWriter.println("\tSituacion Final: ");
-			//printerWriter.printf("-Presupuesto Final: $%.2f\n", usuario.getPresupuesto());
-			//printerWriter.println("-Tiempo Disponible Final: " + usuario.getTiempoDisponible());
+			// printerWriter.printf("-Presupuesto Final: $%.2f\n",
+			// usuario.getPresupuesto());
+			// printerWriter.println("-Tiempo Disponible Final: " +
+			// usuario.getTiempoDisponible());
 
 			printerWriter.printf("\n\t\tCosto total de la salida: $%.2f\n",
 					usuario.getPresupuestoInicial() - usuario.getPresupuesto());
-			printerWriter.println("\t\tDuración total de la salida: " + 
-					(usuario.getTiempoInicial() - usuario.getTiempoDisponible()) + " horas");
+			printerWriter.println("\t\tDuración total de la salida: "
+					+ (usuario.getTiempoInicial() - usuario.getTiempoDisponible()) + " horas");
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,30 +1,31 @@
 package Clases;
 
-import java.util.HashSet;
 import java.util.Objects;
 
-public class Atraccion extends Recomendacion{
+public class Atraccion extends Recomendacion {
 
 	private int cupo;
 
 	// -- Constructor --
 	public Atraccion(String nombre, double precio, double duracion, int cupo, TipoDeAtraccion tipoDeAtraccion) {
-		super(nombre,precio,duracion,tipoDeAtraccion);
+		super(nombre, precio, duracion, tipoDeAtraccion);
 		this.cupo = cupo;
 	}
 
 	// -- Getters --
+
 	public int getCupo() {
 		return cupo;
 	}
-	
+
 	// -- Overrides --
+
 	@Override
 	public String toString() {
-		return "\nAtraccion: " + this.nombre + "\n" + "-Precio: $" + precio + "\n" + "-Duración: " + duracion + "\n"
-				+ "-Tipo de atraccion: " + tipoDeAtraccion;
+		return "\nAtraccion: " + this.nombre + "\n" + "-Precio: $" + precio + "\n" + "-Duración: " + duracion 
+				+ " horas\n" + "-Tipo de atraccion: " + tipoDeAtraccion;
 	}
-	
+
 	@Override
 	public void decrementarCupo() {
 		this.cupo -= 1;
@@ -33,6 +34,21 @@ public class Atraccion extends Recomendacion{
 	@Override
 	public boolean esPromocion() {
 		return false;
+	}
+
+	@Override
+	public void agregarRecomendacionAItinierario(Itinerario itinerario) {
+		itinerario.getItinerario().put(this.nombre, this);
+	}
+
+	@Override
+	public boolean recomendacionIncluyeAtraccionComprada(Usuario usuario) {
+		return usuario.getItinerario().containsKey(this.nombre); // se fija si ya se compro la atraccion
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(cupo);
 	}
 
 	@Override
@@ -46,4 +62,5 @@ public class Atraccion extends Recomendacion{
 		Atraccion other = (Atraccion) obj;
 		return cupo == other.cupo;
 	}
+
 }

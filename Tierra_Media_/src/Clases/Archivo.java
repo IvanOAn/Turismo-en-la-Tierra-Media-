@@ -150,25 +150,27 @@ public class Archivo {
 
 			printerWriter.println("Resumen del Usuario: " + usuario.getNombre());
 
-			printerWriter.println("\n\tSituacion Inicial:\n");
-			printerWriter.printf("\t\t-Presupuesto: $%.2f\n", usuario.getPresupuestoInicial());
-			printerWriter.println("\t\t-Tiempo Disponible: " + usuario.getTiempoInicial() + " horas");
+			printerWriter.println("\nSituacion Inicial:");
+			printerWriter.printf(" -%-15s\t$%.2f\n", "Presupuesto:", usuario.getPresupuestoInicial());
+			printerWriter.printf(" -%-15s\t%.2f horas\n", "Tiempo Disponible:", usuario.getTiempoInicial());
 
-			printerWriter.println("\n\tAtracciones compradas:\n");
+			printerWriter.println("\nAtracciones compradas:");
 
 			HashMap<String, Atraccion> itinerario = usuario.getItinerario();
-			for (String nombre : itinerario.keySet()) {
-				Atraccion atraccion = itinerario.get(nombre);
-				printerWriter.println("\t\t-Atraccion: " + atraccion.getNombre());
-				printerWriter.println("\t\t-Duración : " + atraccion.getDuracion() + " horas\n");
+			if (itinerario.isEmpty()) {
+				printerWriter.printf(" -%-32s\n", "No se aceptaron recomendaciones");
+			} else {
+				for (String nombre : itinerario.keySet()) {
+					Atraccion atraccion = itinerario.get(nombre);
+					printerWriter.printf(" -%-32s\t", atraccion.getNombre());
+					printerWriter.printf("%.2f horas\n", atraccion.getDuracion());
+				}
 			}
-
-			printerWriter.println("\tSituacion Final: ");
-
-			printerWriter.printf("\n\t\tCosto total de la salida: $%.2f\n",
+			printerWriter.print("\nSituacion Final:");
+			printerWriter.printf("\n -%-15s\t$%.2f\n", "Costo total:",
 					usuario.getPresupuestoInicial() - usuario.getPresupuesto());
-			printerWriter.println("\t\tDuración total de la salida: "
-					+ (usuario.getTiempoInicial() - usuario.getTiempoDisponible()) + " horas");
+			printerWriter.printf(" -%-15s\t%.2f horas\n", "Duración total:",
+					(usuario.getTiempoInicial() - usuario.getTiempoDisponible()));
 
 		} catch (Exception e) {
 			e.printStackTrace();

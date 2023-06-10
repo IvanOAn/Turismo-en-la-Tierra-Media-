@@ -40,9 +40,9 @@ public class Recomendador {
 		this.cargarAtracciones(mapaAtracciones);
 		this.cargarPromociones(mapaAtracciones);
 
-		System.out.println("------------------------------------------");
-		System.out.printf("%30s", "Bienvenido/a a ...");
-		System.out.println("\n------------------------------------------");
+		System.out.println("------------------------------------------------------------------------------------");
+		System.out.printf("%52s", "Bienvenido/a a Springfield");
+		System.out.println("\n------------------------------------------------------------------------------------");
 
 		Scanner input = new Scanner(System.in);
 		while (!this.colaDeUsuarios.isEmpty()) {
@@ -62,7 +62,8 @@ public class Recomendador {
 
 				if (ofrecerRecomendacion(usuario, aux, input)) { // devuelve true cuando acepto la recomendacion
 					System.out.println("¡Aceptada!");
-					System.out.println("------------------------------------------");
+					System.out.println(
+							"------------------------------------------------------------------------------------");
 				}
 			}
 			imprimirResumenUsuario(usuario);
@@ -88,7 +89,7 @@ public class Recomendador {
 			return true;
 		}
 
-		System.out.println("------------------------------------------");
+		System.out.println("------------------------------------------------------------------------------------");
 		return false;
 	}
 
@@ -106,30 +107,32 @@ public class Recomendador {
 	}
 
 	private void imprimirResumenUsuario(Usuario usuario) {
-		System.out.println("------------------------------------------");
+		System.out.println("------------------------------------------------------------------------------------");
 		System.out.println("Resumen del Usuario: " + usuario.getNombre());
 
-		System.out.println("\n\tSituacion Inicial:\n");
-		System.out.printf("\t\t-Presupuesto: $%.2f\n", usuario.getPresupuestoInicial());
-		System.out.println("\t\t-Tiempo Disponible: " + usuario.getTiempoInicial() + " horas");
+		System.out.println("\nSituacion Inicial:");
+		System.out.printf(" -%-15s\t$%.2f\n", "Presupuesto:", usuario.getPresupuestoInicial());
+		System.out.printf(" -%-15s\t%.2f horas\n", "Tiempo Disponible:", usuario.getTiempoInicial());
 
-		System.out.println("\n\tAtracciones compradas:\n");
+		System.out.println("\nAtracciones compradas:");
 
 		HashMap<String, Atraccion> itinerario = usuario.getItinerario();
-		for (String nombre : itinerario.keySet()) {
-			Atraccion atraccion = itinerario.get(nombre);
-			System.out.println("\t\t-Atraccion: " + atraccion.getNombre());
-			System.out.println("\t\t-Duración : " + atraccion.getDuracion() + " horas\n");
+		if (itinerario.isEmpty()) {
+			System.out.printf(" -%-32s\n", "No se aceptaron recomendaciones");
+		} else {
+			for (String nombre : itinerario.keySet()) {
+				Atraccion atraccion = itinerario.get(nombre);
+				System.out.printf(" -%-32s\t", atraccion.getNombre());
+				System.out.printf("%.2f horas\n", atraccion.getDuracion());
+			}
 		}
-
-		System.out.println("\tSituacion Final:");
-
-		System.out.printf("\n\t\tCosto total de la salida: $%.2f\n",
+		System.out.print("\nSituacion Final:");
+		System.out.printf("\n -%-15s\t$%.2f\n", "Costo total:",
 				usuario.getPresupuestoInicial() - usuario.getPresupuesto());
-		System.out.println("\t\tDuración total de la salida: "
-				+ (usuario.getTiempoInicial() - usuario.getTiempoDisponible()) + " horas");
-		System.out.println("------------------------------------------");
-		System.out.println("------------------------------------------");
+		System.out.printf(" -%-15s\t%.2f horas\n", "Duración total:",
+				(usuario.getTiempoInicial() - usuario.getTiempoDisponible()));
+		System.out.println("------------------------------------------------------------------------------------");
+		System.out.println("------------------------------------------------------------------------------------");
 
 	}
 }

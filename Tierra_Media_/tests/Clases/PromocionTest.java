@@ -128,18 +128,18 @@ public class PromocionTest {
 		List<Atraccion> atraccionesAventura = new LinkedList<Atraccion>();
 		atraccionesAventura.add(new Atraccion("Isildur", 25, 2, 0, TipoDeAtraccion.AVENTURA));
 		atraccionesAventura.add(new Atraccion("Gondor", 15, 4, 15, TipoDeAtraccion.AVENTURA));
-		
+
 		List<Atraccion> atraccionesPaisajes = new LinkedList<Atraccion>();
 		atraccionesPaisajes.add(new Atraccion("Erebor 1", 15, 1, 23, TipoDeAtraccion.PAISAJES));
 		atraccionesPaisajes.add(new Atraccion("Erebor 2", 5, 4, 10, TipoDeAtraccion.PAISAJES));
 
 		Promocion promocion1 = new Promocion("Primera Promocion", atraccionesAventura);
 		Promocion promocion2 = new Promocion("Segunda Promocion", atraccionesPaisajes);
-		
+
 		assertFalse(promocion1.equals(promocion2));
-		
+
 		promocion2 = new Promocion("Primera Promocion", atraccionesAventura);
-		
+
 		assertTrue(promocion1.equals(promocion2));
 	}
 }

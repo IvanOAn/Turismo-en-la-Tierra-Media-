@@ -22,7 +22,7 @@ public class Atraccion extends Recomendacion {
 
 	@Override
 	public String toString() {
-		return "\nAtraccion: " + this.nombre + "\n" + "-Precio: $" + precio + "\n" + "-Duración: " + duracion 
+		return "\nAtraccion: " + this.nombre + "\n" + "-Precio: $" + precio + "\n" + "-Duración: " + duracion
 				+ " horas\n" + "-Tipo de atraccion: " + tipoDeAtraccion;
 	}
 

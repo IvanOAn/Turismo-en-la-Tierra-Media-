@@ -73,7 +73,7 @@ public class Promocion extends Recomendacion {
 	public boolean recomendacionIncluyeAtraccionComprada(Usuario usuario) {
 		for (Atraccion atraccion : this.atraccionesIncluidas) {
 			if (atraccion.recomendacionIncluyeAtraccionComprada(usuario))
-				return true; 
+				return true;
 		}
 		return false;
 	}

@@ -29,5 +29,4 @@ public class PromocionesAbsolutas extends Promocion {
 			return false;
 		return true;
 	}
-
 }

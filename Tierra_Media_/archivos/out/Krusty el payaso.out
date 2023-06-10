@@ -1,22 +1,14 @@
 Resumen del Usuario: Krusty el payaso
 
-	Situacion Inicial:
+Situacion Inicial:
+ -Presupuesto:   	$200,00
+ -Tiempo Disponible:	4,50 horas
 
-		-Presupuesto: $200,00
-		-Tiempo Disponible: 4.5 horas
+Atracciones compradas:
+ -Casa de Retiro                  	0,20 horas
+ -El Calabozo del Androide        	1,00 horas
+ -Planta de Energia Nuclear       	3,00 horas
 
-	Atracciones compradas:
-
-		-Atraccion: Avenida Siempreviva 742
-		-Duración : 2.0 horas
-
-		-Atraccion: Krusty Burger
-		-Duración : 1.0 horas
-
-		-Atraccion: El Calabozo del Androide
-		-Duración : 1.5 horas
-
-	Situacion Final: 
-
-		Costo total de la salida: $60,00
-		Duración total de la salida: 4.5 horas
+Situacion Final:
+ -Costo total:   	$100,00
+ -Duración total:	4,20 horas

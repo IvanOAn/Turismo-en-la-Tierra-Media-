@@ -37,5 +37,4 @@ public class ComparadorRecomendaciones implements Comparator<Recomendacion> {
 
 		return Double.compare(o2.getPrecio(), o1.getPrecio());
 	}
-
 }

@@ -42,8 +42,9 @@ public class Atraccion extends Recomendacion {
 	}
 
 	@Override
-	public boolean recomendacionIncluyeAtraccionComprada(Usuario usuario) {
-		return usuario.getItinerario().containsKey(this.nombre); // se fija si ya se compro la atraccion
+	public boolean recomendacionIncluyeAtraccionComprada(Itinerario itinerario) {
+		return itinerario.getItinerario().containsKey(this.nombre); // se fija si ya se compro la atraccion
+
 	}
 
 	@Override

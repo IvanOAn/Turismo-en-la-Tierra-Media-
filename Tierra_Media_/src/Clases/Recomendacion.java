@@ -2,43 +2,43 @@ package Clases;
 
 import java.util.Objects;
 
-public abstract class Recomendacion{
+public abstract class Recomendacion {
 	protected String nombre;
 	protected double precio;
 	protected double duracion;
 	protected TipoDeAtraccion tipoDeAtraccion;
-	
+
 	public Recomendacion(String nombre, double precio, double duracion, TipoDeAtraccion tipoDeAtraccion) {
 		this.nombre = nombre;
 		this.precio = precio;
 		this.duracion = duracion;
 		this.tipoDeAtraccion = tipoDeAtraccion;
 	}
-	
+
 	public String getNombre() {
 		return nombre;
 	}
-	
+
 	public double getPrecio() {
 		return precio;
 	}
-	
+
 	public double getDuracion() {
 		return duracion;
 	}
-	
+
 	public TipoDeAtraccion getTipoDeAtraccion() {
 		return tipoDeAtraccion;
 	}
 
 	public abstract int getCupo();
-	
+
 	public abstract void decrementarCupo();
-	
+
 	public abstract boolean esPromocion();
-	
+
 	public abstract void agregarRecomendacionAItinierario(Itinerario itinerario);
-	
+
 	public abstract boolean recomendacionIncluyeAtraccionComprada(Usuario usuario);
 
 	@Override

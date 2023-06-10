@@ -92,7 +92,7 @@ public class Archivo {
 		Scanner scanner = null;
 
 		try {
-			File file = new File("archivos/in/" + this.nombre + ".in"); // lees el archivo
+			File file = new File("archivos/in/" + this.nombre + ".in");
 
 			scanner = new Scanner(file);
 			scanner.useLocale(Locale.ENGLISH);
@@ -103,8 +103,8 @@ public class Archivo {
 
 				String nombre = vectordeDatos[1];
 
-				List<Atraccion> atraccionesIncluidas = new LinkedList<Atraccion>(); // lista de atracciones de la oferta
-				for (int i = 3; i < vectordeDatos.length - 1; i++) { // el for no lee la ultima posicion
+				List<Atraccion> atraccionesIncluidas = new LinkedList<Atraccion>();
+				for (int i = 2; i < vectordeDatos.length - 1; i++) { // el for no lee la ultima posicion
 					Atraccion atraccionAux = mapaAtracciones.get(vectordeDatos[i]);
 					atraccionesIncluidas.add(atraccionAux);
 
@@ -158,17 +158,12 @@ public class Archivo {
 
 			HashMap<String, Atraccion> itinerario = usuario.getItinerario();
 			for (String nombre : itinerario.keySet()) {
-				// printerWriter.println(itinerario.get(nombre));
 				Atraccion atraccion = itinerario.get(nombre);
 				printerWriter.println("\t\t-Atraccion: " + atraccion.getNombre());
 				printerWriter.println("\t\t-Duración : " + atraccion.getDuracion() + " horas\n");
 			}
 
 			printerWriter.println("\tSituacion Final: ");
-			// printerWriter.printf("-Presupuesto Final: $%.2f\n",
-			// usuario.getPresupuesto());
-			// printerWriter.println("-Tiempo Disponible Final: " +
-			// usuario.getTiempoDisponible());
 
 			printerWriter.printf("\n\t\tCosto total de la salida: $%.2f\n",
 					usuario.getPresupuestoInicial() - usuario.getPresupuesto());

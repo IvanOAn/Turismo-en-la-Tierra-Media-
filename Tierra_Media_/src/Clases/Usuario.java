@@ -18,7 +18,7 @@ public class Usuario {
 		this.presupuesto = presupuesto;
 		this.tiempoDisponible = tiempoDisponible;
 		this.tipoDeAtraccionPreferida = tipoDeAtraccionPreferida;
-		this.itinerario= new Itinerario();
+		this.itinerario = new Itinerario();
 		this.presupuestoInicial = presupuesto;
 		this.tiempoInicial = tiempoDisponible;
 	}
@@ -39,13 +39,17 @@ public class Usuario {
 	public TipoDeAtraccion getTipoDeAtraccionPreferida() {
 		return tipoDeAtraccionPreferida;
 	}
-	
+
 	public double getPresupuestoInicial() {
 		return presupuestoInicial;
 	}
 
 	public double getTiempoInicial() {
 		return tiempoInicial;
+	}
+
+	public HashMap<String, Atraccion> getItinerario() {
+		return this.itinerario.getItinerario();
 	}
 
 	// -- Métodos --
@@ -60,7 +64,4 @@ public class Usuario {
 		recomendacion.decrementarCupo();
 	}
 
-	public HashMap<String, Atraccion> getItinerario() {
-		return this.itinerario.getItinerario();
-	}
 }

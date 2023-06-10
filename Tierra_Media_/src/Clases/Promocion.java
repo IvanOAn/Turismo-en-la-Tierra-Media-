@@ -10,8 +10,8 @@ public class Promocion extends Recomendacion {
 
 	// -- Constructor --
 	public Promocion(String nombre, List<Atraccion> atraccionesIncluidas) {
-		super(nombre,0,0, null);
-		this.tipoDeAtraccion= atraccionesIncluidas.get(0).getTipoDeAtraccion();
+		super(nombre, 0, 0, null);
+		this.tipoDeAtraccion = atraccionesIncluidas.get(0).getTipoDeAtraccion();
 		this.atraccionesIncluidas = atraccionesIncluidas;
 		for (Atraccion atraccion : atraccionesIncluidas) {
 			this.duracion += atraccion.getDuracion();
@@ -73,11 +73,11 @@ public class Promocion extends Recomendacion {
 	public boolean recomendacionIncluyeAtraccionComprada(Usuario usuario) {
 		for (Atraccion atraccion : this.atraccionesIncluidas) {
 			if (atraccion.recomendacionIncluyeAtraccionComprada(usuario))
-				return true; // la promocion tiene una atraccion ya comprada
+				return true; 
 		}
-		return false; // la promocion no contiene ninguna atraccion ya comprada
+		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

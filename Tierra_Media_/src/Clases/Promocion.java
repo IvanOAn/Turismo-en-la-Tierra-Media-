@@ -63,9 +63,9 @@ public class Promocion extends Recomendacion {
 	}
 
 	@Override
-	public void agregarRecomendacionAItinierario(Itinerario itinerario) {
+	public void agregarRecomendacionAItinierario(Usuario usuario) {
 		for (Atraccion atraccion : this.atraccionesIncluidas) {
-			atraccion.agregarRecomendacionAItinierario(itinerario);
+			atraccion.agregarRecomendacionAItinierario(usuario);
 		}
 	}
 

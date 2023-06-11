@@ -7,7 +7,7 @@ public class Usuario {
 	private double presupuesto;
 	private double tiempoDisponible;
 	private TipoDeAtraccion tipoDeAtraccionPreferida;
-	private Itinerario itinerario;
+	private HashMap<String, Atraccion> itinerario;
 	private final double presupuestoInicial;
 	private final double tiempoInicial;
 
@@ -18,7 +18,7 @@ public class Usuario {
 		this.presupuesto = presupuesto;
 		this.tiempoDisponible = tiempoDisponible;
 		this.tipoDeAtraccionPreferida = tipoDeAtraccionPreferida;
-		this.itinerario = new Itinerario();
+		this.itinerario = new HashMap<String, Atraccion>();
 		this.presupuestoInicial = presupuesto;
 		this.tiempoInicial = tiempoDisponible;
 	}
@@ -49,7 +49,7 @@ public class Usuario {
 	}
 
 	public HashMap<String, Atraccion> getItinerario() {
-		return this.itinerario.getItinerario();
+		return this.itinerario;
 	}
 
 	// -- Métodos --
@@ -58,7 +58,7 @@ public class Usuario {
 	}
 
 	public void comprarRecomendacion(Recomendacion recomendacion) {
-		recomendacion.agregarRecomendacionAItinierario(this.itinerario);
+		recomendacion.agregarRecomendacionAItinierario(this);
 		this.presupuesto -= recomendacion.getPrecio();
 		this.tiempoDisponible -= recomendacion.getDuracion();
 		recomendacion.decrementarCupo();

@@ -37,7 +37,7 @@ public abstract class Recomendacion {
 
 	public abstract boolean esPromocion();
 
-	public abstract void agregarRecomendacionAItinierario(Itinerario itinerario);
+	public abstract void agregarRecomendacionAItinierario(Usuario Usuario);
 
 	public abstract boolean recomendacionIncluyeAtraccionComprada(Usuario usuario);
 

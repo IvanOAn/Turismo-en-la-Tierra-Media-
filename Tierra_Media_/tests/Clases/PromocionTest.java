@@ -101,7 +101,7 @@ public class PromocionTest {
 
 	@Test
 	public void agregaRecomendacionesBien() {
-		Itinerario itinerario = new Itinerario();
+		Usuario usuario = new Usuario("Bilbo", 100, 8, TipoDeAtraccion.AVENTURA);
 
 		List<Atraccion> atracciones = new LinkedList<Atraccion>();
 		atracciones.add(new Atraccion("Comarca", 10, 3, 20, TipoDeAtraccion.DEGUSTACION));
@@ -115,10 +115,10 @@ public class PromocionTest {
 
 		Promocion promocion = new Promocion("Pack Degustación", atracciones);
 
-		promocion.agregarRecomendacionAItinierario(itinerario);
+		promocion.agregarRecomendacionAItinierario(usuario);
 
 		for (Atraccion atraccion : promocion.atraccionesIncluidas) {
-			assertTrue(itinerario.getItinerario().containsValue(atraccion));
+			assertTrue(usuario.getItinerario().containsValue(atraccion));
 		}
 
 	}

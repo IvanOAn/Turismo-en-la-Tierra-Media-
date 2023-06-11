@@ -13,11 +13,11 @@ public class AtraccionTest {
 	public void agregaBienRecomendacionAItinierario() {
 		Atraccion atraccion = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
 
-		Itinerario itinerario = new Itinerario();
+		Usuario usuario = new Usuario("Frodo", 10, 20, TipoDeAtraccion.AVENTURA);
 
-		atraccion.agregarRecomendacionAItinierario(itinerario);
+		atraccion.agregarRecomendacionAItinierario(usuario);
 
-		Assert.assertTrue(itinerario.getItinerario().containsKey(atraccion.getNombre()));
+		Assert.assertTrue(usuario.getItinerario().containsKey(atraccion.getNombre()));
 	}
 
 	@Test
@@ -30,13 +30,13 @@ public class AtraccionTest {
 
 		Promocion promocion = new Promocion("Pack Test", atracciones);
 
-		Itinerario itinerario = new Itinerario();
+		Usuario usuario = new Usuario("Sam", 35, 10, TipoDeAtraccion.PAISAJES);
 
-		promocion.agregarRecomendacionAItinierario(itinerario);
+		promocion.agregarRecomendacionAItinierario(usuario);
 
-		Assert.assertTrue(itinerario.getItinerario().containsKey("Minas Tirith"));
-		Assert.assertTrue(itinerario.getItinerario().containsKey("Abismo de Helm"));
-		Assert.assertTrue(itinerario.getItinerario().containsKey("Erebor"));
+		Assert.assertTrue(usuario.getItinerario().containsKey("Minas Tirith"));
+		Assert.assertTrue(usuario.getItinerario().containsKey("Abismo de Helm"));
+		Assert.assertTrue(usuario.getItinerario().containsKey("Erebor"));
 
 	}
 }

@@ -37,8 +37,8 @@ public class Atraccion extends Recomendacion {
 	}
 
 	@Override
-	public void agregarRecomendacionAItinierario(Itinerario itinerario) {
-		itinerario.getItinerario().put(this.nombre, this);
+	public void agregarRecomendacionAItinierario(Usuario usuario) {
+		usuario.getItinerario().put(this.nombre, this);
 	}
 
 	@Override

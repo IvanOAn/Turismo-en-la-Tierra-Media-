@@ -75,7 +75,7 @@ public class Recomendador {
 		input.close();
 	}
 
-	private boolean ofrecerRecomendacion(Usuario usuario, Recomendacion recomendacion, Scanner input) {
+	boolean ofrecerRecomendacion(Usuario usuario, Recomendacion recomendacion, Scanner input) {
 
 		if (usuario.getPresupuesto() < recomendacion.getPrecio()
 				|| usuario.getTiempoDisponible() < recomendacion.getDuracion()
@@ -93,7 +93,7 @@ public class Recomendador {
 		return false;
 	}
 
-	private boolean validarRecomendacion(Scanner input) {
+	boolean validarRecomendacion(Scanner input) {
 		String respuesta;
 
 		do {

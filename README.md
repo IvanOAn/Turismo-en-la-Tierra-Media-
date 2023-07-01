@@ -12,7 +12,7 @@
 
  ## Tutorial para ejecutar:
  	
-	 1- Descargar el zip.	
+	1- Descargar el zip.	
  	2- Ejecutarlo en Eclipse.	
  	3- Buscar la clase Main dentro del paquete main.	
  	4- Presionar el boton Run para comenzar con el programa.	

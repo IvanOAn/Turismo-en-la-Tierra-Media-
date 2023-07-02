@@ -74,20 +74,20 @@ public class ComparadorRecomendacionesTest {
 	@Test
 	public void ordenaBienPromocionesPorTipo() {
 		arrayAtracciones.clear();
-		Atraccion atraccion1 = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
-		Atraccion atraccion2 = new Atraccion("Moria 2", 21, 3, 1, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura1 = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura2 = new Atraccion("Moria 2", 21, 3, 1, TipoDeAtraccion.AVENTURA);
 
-		arrayAtracciones.add(atraccion1);
-		arrayAtracciones.add(atraccion2);
+		arrayAtracciones.add(atraccionAventura1);
+		arrayAtracciones.add(atraccionAventura2);
 
 		PromocionesPorcentual promocionAventura = new PromocionesPorcentual("Pack aventura", arrayAtracciones, 15);
 
 		arrayAtracciones.clear();
-		Atraccion atraccion3 = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.PAISAJES);
-		Atraccion atraccion4 = new Atraccion("Erebor 2", 4000, 3, 1, TipoDeAtraccion.PAISAJES);
+		Atraccion atraccionPaisajes1 = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.PAISAJES);
+		Atraccion atraccionPaisajes2 = new Atraccion("Erebor 2", 4000, 3, 1, TipoDeAtraccion.PAISAJES);
 
-		arrayAtracciones.add(atraccion3);
-		arrayAtracciones.add(atraccion4);
+		arrayAtracciones.add(atraccionPaisajes1);
+		arrayAtracciones.add(atraccionPaisajes2);
 
 		PromocionesAbsolutas promocionPaisajes = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 3500);
 
@@ -102,20 +102,20 @@ public class ComparadorRecomendacionesTest {
 	@Test
 	public void ordenaBienPromocionesPorPrecio() {
 		arrayAtracciones.clear();
-		Atraccion atraccion1 = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
-		Atraccion atraccion2 = new Atraccion("Moria 2", 21, 3, 1, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura1 = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura2 = new Atraccion("Moria 2", 21, 3, 1, TipoDeAtraccion.AVENTURA);
 
-		arrayAtracciones.add(atraccion1);
-		arrayAtracciones.add(atraccion2);
+		arrayAtracciones.add(atraccionAventura1);
+		arrayAtracciones.add(atraccionAventura2);
 
 		PromocionesPorcentual promocionMenorPrecio = new PromocionesPorcentual("Pack aventura", arrayAtracciones, 15);
 
 		arrayAtracciones.clear();
-		Atraccion atraccion3 = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.AVENTURA);
-		Atraccion atraccion4 = new Atraccion("Erebor 2", 4000, 3, 1, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura3 = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura4 = new Atraccion("Erebor 2", 4000, 3, 1, TipoDeAtraccion.AVENTURA);
 
-		arrayAtracciones.add(atraccion3);
-		arrayAtracciones.add(atraccion4);
+		arrayAtracciones.add(atraccionAventura3);
+		arrayAtracciones.add(atraccionAventura4);
 
 		PromocionesAbsolutas promocionMayorPrecio = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 3500);
 
@@ -130,20 +130,20 @@ public class ComparadorRecomendacionesTest {
 	@Test
 	public void ordenaBienPromocionesPorTiempo() {
 		arrayAtracciones.clear();
-		Atraccion atraccion1 = new Atraccion("Moria", 1020, 2, 6, TipoDeAtraccion.AVENTURA);
-		Atraccion atraccion2 = new Atraccion("Moria 2", 2001, 3, 1, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura1 = new Atraccion("Moria", 100, 2, 6, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura2 = new Atraccion("Moria 2", 200, 3, 1, TipoDeAtraccion.AVENTURA);
 
-		arrayAtracciones.add(atraccion1);
-		arrayAtracciones.add(atraccion2);
+		arrayAtracciones.add(atraccionAventura1);
+		arrayAtracciones.add(atraccionAventura2);
 
 		PromocionesAbsolutas promocionMenorTiempo = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 1000);
 
 		arrayAtracciones.clear();
-		Atraccion atraccion3 = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.AVENTURA);
-		Atraccion atraccion4 = new Atraccion("Erebor 2", 4000, 3, 1, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura3 = new Atraccion("Erebor 1", 2100, 5, 2, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura4 = new Atraccion("Erebor 2", 4000, 3, 1, TipoDeAtraccion.AVENTURA);
 
-		arrayAtracciones.add(atraccion3);
-		arrayAtracciones.add(atraccion4);
+		arrayAtracciones.add(atraccionAventura3);
+		arrayAtracciones.add(atraccionAventura4);
 
 		PromocionesAbsolutas promocionMayorTiempo = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 1000);
 
@@ -156,13 +156,13 @@ public class ComparadorRecomendacionesTest {
 	}
 
 	@Test
-	public void ordenaBienRecomendacionesPorTipo() {
+	public void ordenaBienRecomendacionesPorTipoFavoritoDelUsuario() {
 		arrayAtracciones.clear();
-		Atraccion atraccion1 = new Atraccion("Moria", 1020, 2, 6, TipoDeAtraccion.DEGUSTACION);
-		Atraccion atraccion2 = new Atraccion("Moria 2", 2001, 3, 1, TipoDeAtraccion.DEGUSTACION);
+		Atraccion atraccionDesgustacion1 = new Atraccion("Moria", 1020, 2, 6, TipoDeAtraccion.DEGUSTACION);
+		Atraccion atraccionDesgustacion2 = new Atraccion("Moria 2", 2001, 3, 1, TipoDeAtraccion.DEGUSTACION);
 
-		arrayAtracciones.add(atraccion1);
-		arrayAtracciones.add(atraccion2);
+		arrayAtracciones.add(atraccionDesgustacion1);
+		arrayAtracciones.add(atraccionDesgustacion2);
 
 		PromocionesAbsolutas promocionDegustacion = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 1000);
 
@@ -176,22 +176,22 @@ public class ComparadorRecomendacionesTest {
 	}
 
 	@Test
-	public void ordenaBienRecomendacionesPorPrecio() {
+	public void ordenaBienRecomendacionesMismoTipoDeAtraccion() {
 		listaRecomendaciones.clear();
 		arrayAtracciones.clear();
-		Atraccion atraccion1 = new Atraccion("Moria", 1020, 2, 6, TipoDeAtraccion.AVENTURA);
-		Atraccion atraccion2 = new Atraccion("Moria 2", 2001, 3, 1, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura1 = new Atraccion("Moria", 1020, 2, 6, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura2 = new Atraccion("Moria 2", 2001, 3, 1, TipoDeAtraccion.AVENTURA);
 
-		arrayAtracciones.add(atraccion1);
-		arrayAtracciones.add(atraccion2);
+		arrayAtracciones.add(atraccionAventura1);
+		arrayAtracciones.add(atraccionAventura2);
 
-		PromocionesAbsolutas promocionMayorPrecio = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 1000);
-		Atraccion atraccionMenorPrecio = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.AVENTURA);
+		PromocionesAbsolutas promocionMayorPrioridad = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 100);
+		Atraccion atraccionMenorPrioridad = new Atraccion("Erebor 1", 20000, 5, 2, TipoDeAtraccion.AVENTURA);
 
-		listaRecomendaciones.add(atraccionMenorPrecio);
-		listaRecomendaciones.add(promocionMayorPrecio);
+		listaRecomendaciones.add(atraccionMenorPrioridad);
+		listaRecomendaciones.add(promocionMayorPrioridad);
 		listaRecomendaciones.sort(new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
 
-		Assert.assertEquals(promocionMayorPrecio, listaRecomendaciones.get(0));
+		Assert.assertEquals(promocionMayorPrioridad, listaRecomendaciones.get(0));
 	}
 }

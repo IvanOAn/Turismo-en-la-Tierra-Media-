@@ -32,12 +32,12 @@ public class Recomendador {
 
 	private void cargarAtracciones(Map<String, Atraccion> mapaAtracciones) {
 		Archivo archivoAtracciones = new Archivo("Atracciones");
-		archivoAtracciones.cargarArchivoAtracciones(mapaAtracciones, listaRecomendaciones);
+		this.listaRecomendaciones.addAll(archivoAtracciones.cargarArchivoAtracciones(mapaAtracciones));
 	}
 
 	private void cargarPromociones(Map<String, Atraccion> mapaAtracciones) {
 		Archivo archivoPromociones = new Archivo("Promociones");
-		archivoPromociones.cargarArchivoPromociones(mapaAtracciones, listaRecomendaciones);
+		this.listaRecomendaciones.addAll(archivoPromociones.cargarArchivoPromociones(mapaAtracciones));
 	}
 
 	public void realizarSugerencia() {

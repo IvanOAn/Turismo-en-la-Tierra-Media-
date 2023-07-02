@@ -62,7 +62,7 @@ public class Usuario {
 	}
 
 	public void comprarRecomendacion(Recomendacion recomendacion) {
-		recomendacion.agregarRecomendacionAItinierario(this); 
+		recomendacion.agregarRecomendacionAItinierario(this);
 		this.presupuesto -= recomendacion.getPrecio();
 		this.tiempoDisponible -= recomendacion.getDuracion();
 		recomendacion.decrementarCupo();

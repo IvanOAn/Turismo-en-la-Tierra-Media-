@@ -32,43 +32,43 @@ public class ComparadorRecomendacionesTest {
 	@Test
 	public void ordenaBienAtraccionesPorPrecio() {
 		arrayAtracciones.clear();
-		Atraccion atraccion1 = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
-		Atraccion atraccion2 = new Atraccion("Erebor", 21, 3, 1, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionMenorPrecio = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionMayorPrecio = new Atraccion("Erebor", 21, 3, 1, TipoDeAtraccion.AVENTURA);
 
-		arrayAtracciones.add(atraccion2);
-		arrayAtracciones.add(atraccion1);
+		arrayAtracciones.add(atraccionMenorPrecio);
+		arrayAtracciones.add(atraccionMayorPrecio);
 
 		arrayAtracciones.sort(new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
 
-		Assert.assertEquals(atraccion2, arrayAtracciones.get(0));
+		Assert.assertEquals(atraccionMayorPrecio, arrayAtracciones.get(0));
 	}
 
 	@Test
 	public void ordenaBienAtraccionesPorTipo() {
 		arrayAtracciones.clear();
-		Atraccion atraccion1 = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
-		Atraccion atraccion2 = new Atraccion("Erebor", 21, 3, 1, TipoDeAtraccion.PAISAJES);
+		Atraccion atraccionAventura = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionPaisaje = new Atraccion("Erebor", 21, 3, 1, TipoDeAtraccion.PAISAJES);
 
-		arrayAtracciones.add(atraccion2);
-		arrayAtracciones.add(atraccion1);
+		arrayAtracciones.add(atraccionPaisaje);
+		arrayAtracciones.add(atraccionAventura);
 
 		arrayAtracciones.sort(new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
 
-		Assert.assertEquals(atraccion1, arrayAtracciones.get(0));
+		Assert.assertEquals(atraccionAventura, arrayAtracciones.get(0));
 	}
 
 	@Test
 	public void ordenaBienAtraccionesPorTiempo() {
 		arrayAtracciones.clear();
-		Atraccion atraccion1 = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
-		Atraccion atraccion2 = new Atraccion("Erebor", 10, 3, 1, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionMenosTiempo = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionMasTiempo = new Atraccion("Erebor", 10, 3, 1, TipoDeAtraccion.AVENTURA);
 
-		arrayAtracciones.add(atraccion2);
-		arrayAtracciones.add(atraccion1);
+		arrayAtracciones.add(atraccionMenosTiempo);
+		arrayAtracciones.add(atraccionMasTiempo);
 
 		arrayAtracciones.sort(new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
 
-		Assert.assertEquals(atraccion2, arrayAtracciones.get(0));
+		Assert.assertEquals(atraccionMasTiempo, arrayAtracciones.get(0));
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class ComparadorRecomendacionesTest {
 		arrayAtracciones.add(atraccion1);
 		arrayAtracciones.add(atraccion2);
 
-		PromocionesPorcentual promocion1 = new PromocionesPorcentual("Pack aventura", arrayAtracciones, 15);
+		PromocionesPorcentual promocionAventura = new PromocionesPorcentual("Pack aventura", arrayAtracciones, 15);
 
 		arrayAtracciones.clear();
 		Atraccion atraccion3 = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.PAISAJES);
@@ -89,14 +89,14 @@ public class ComparadorRecomendacionesTest {
 		arrayAtracciones.add(atraccion3);
 		arrayAtracciones.add(atraccion4);
 
-		PromocionesAbsolutas promocion2 = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 3500);
+		PromocionesAbsolutas promocionPaisajes = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 3500);
 
-		listaPromociones.add(promocion2);
-		listaPromociones.add(promocion1);
+		listaPromociones.add(promocionAventura);
+		listaPromociones.add(promocionPaisajes);
 
 		listaPromociones.sort(new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
 
-		Assert.assertEquals(promocion1, listaPromociones.get(0));
+		Assert.assertEquals(promocionAventura, listaPromociones.get(0));
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class ComparadorRecomendacionesTest {
 		arrayAtracciones.add(atraccion1);
 		arrayAtracciones.add(atraccion2);
 
-		PromocionesPorcentual promocion1 = new PromocionesPorcentual("Pack aventura", arrayAtracciones, 15);
+		PromocionesPorcentual promocionMenorPrecio = new PromocionesPorcentual("Pack aventura", arrayAtracciones, 15);
 
 		arrayAtracciones.clear();
 		Atraccion atraccion3 = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.AVENTURA);
@@ -117,14 +117,14 @@ public class ComparadorRecomendacionesTest {
 		arrayAtracciones.add(atraccion3);
 		arrayAtracciones.add(atraccion4);
 
-		PromocionesAbsolutas promocion2 = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 3500);
+		PromocionesAbsolutas promocionMayorPrecio = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 3500);
 
-		listaPromociones.add(promocion2);
-		listaPromociones.add(promocion1);
+		listaPromociones.add(promocionMayorPrecio);
+		listaPromociones.add(promocionMenorPrecio);
 
 		listaPromociones.sort(new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
 
-		Assert.assertEquals(promocion2, listaPromociones.get(0));
+		Assert.assertEquals(promocionMayorPrecio, listaPromociones.get(0));
 	}
 
 	@Test
@@ -136,7 +136,7 @@ public class ComparadorRecomendacionesTest {
 		arrayAtracciones.add(atraccion1);
 		arrayAtracciones.add(atraccion2);
 
-		PromocionesAbsolutas promocion1 = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 1000);
+		PromocionesAbsolutas promocionMenorTiempo = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 1000);
 
 		arrayAtracciones.clear();
 		Atraccion atraccion3 = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.AVENTURA);
@@ -145,14 +145,14 @@ public class ComparadorRecomendacionesTest {
 		arrayAtracciones.add(atraccion3);
 		arrayAtracciones.add(atraccion4);
 
-		PromocionesAbsolutas promocion2 = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 1000);
+		PromocionesAbsolutas promocionMayorTiempo = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 1000);
 
-		listaPromociones.add(promocion2);
-		listaPromociones.add(promocion1);
+		listaPromociones.add(promocionMayorTiempo);
+		listaPromociones.add(promocionMenorTiempo);
 
 		listaPromociones.sort(new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
 
-		Assert.assertEquals(promocion2, listaPromociones.get(0));
+		Assert.assertEquals(promocionMayorTiempo, listaPromociones.get(0));
 	}
 
 	@Test
@@ -164,18 +164,15 @@ public class ComparadorRecomendacionesTest {
 		arrayAtracciones.add(atraccion1);
 		arrayAtracciones.add(atraccion2);
 
-		PromocionesAbsolutas promocion1 = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 1000);
+		PromocionesAbsolutas promocionDegustacion = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 1000);
 
-		arrayAtracciones.clear();
-		Atraccion atraccion3 = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionAventura = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.AVENTURA);
 
-		arrayAtracciones.add(atraccion3);
-
-		listaRecomendaciones.add(atraccion3);
-		listaRecomendaciones.add(promocion1);
+		listaRecomendaciones.add(atraccionAventura);
+		listaRecomendaciones.add(promocionDegustacion);
 		listaRecomendaciones.sort(new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
 
-		Assert.assertEquals(atraccion3, listaRecomendaciones.get(0));
+		Assert.assertEquals(atraccionAventura, listaRecomendaciones.get(0));
 	}
 
 	@Test
@@ -188,17 +185,13 @@ public class ComparadorRecomendacionesTest {
 		arrayAtracciones.add(atraccion1);
 		arrayAtracciones.add(atraccion2);
 
-		PromocionesAbsolutas promocion1 = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 1000);
+		PromocionesAbsolutas promocionMayorPrecio = new PromocionesAbsolutas("Pack paisajes", arrayAtracciones, 1000);
+		Atraccion atraccionMenorPrecio = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.AVENTURA);
 
-		arrayAtracciones.clear();
-		Atraccion atraccion3 = new Atraccion("Erebor 1", 210, 5, 2, TipoDeAtraccion.AVENTURA);
-
-		arrayAtracciones.add(atraccion3);
-
-		listaRecomendaciones.add(atraccion3);
-		listaRecomendaciones.add(promocion1);
+		listaRecomendaciones.add(atraccionMenorPrecio);
+		listaRecomendaciones.add(promocionMayorPrecio);
 		listaRecomendaciones.sort(new ComparadorRecomendaciones(usuario.getTipoDeAtraccionPreferida()));
 
-		Assert.assertEquals(promocion1, listaRecomendaciones.get(0));
+		Assert.assertEquals(promocionMayorPrecio, listaRecomendaciones.get(0));
 	}
 }

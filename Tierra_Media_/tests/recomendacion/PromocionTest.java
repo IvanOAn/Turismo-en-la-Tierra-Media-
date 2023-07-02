@@ -90,7 +90,7 @@ public class PromocionTest {
 		atracciones.add(new Atraccion("Isildur", 25, 2, 0, TipoDeAtraccion.AVENTURA));
 
 		Promocion promocion = new Promocion("Pack Aventura", atracciones);
-		usuario.comprarRecomendacion(atracciones.get(0));
+		usuario.comprarRecomendacion(promocion);
 
 		assertTrue(promocion.recomendacionIncluyeAtraccionComprada(usuario));
 	}
@@ -111,5 +111,22 @@ public class PromocionTest {
 		promocion2 = new Promocion("Primera Promocion", atraccionesAventura);
 
 		assertTrue(promocion1.equals(promocion2));
+	}
+
+	@Test
+	public void decrementaCupoAtraccionBien() {
+		Usuario usuario = new Usuario("Frodo", 50, 10, TipoDeAtraccion.AVENTURA);
+
+		Atraccion atraccionCupo20 = new Atraccion("Moria", 10, 3, 20, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionCupo1 = new Atraccion("Isildur", 25, 2, 1, TipoDeAtraccion.AVENTURA);
+
+		List<Atraccion> atracciones = new LinkedList<Atraccion>();
+		atracciones.add(atraccionCupo20);
+		atracciones.add(atraccionCupo1);
+
+		Promocion promocion = new Promocion("Pack Aventura", atracciones);
+		usuario.comprarRecomendacion(promocion);
+
+		assertEquals(0, atraccionCupo1.getCupo());
 	}
 }

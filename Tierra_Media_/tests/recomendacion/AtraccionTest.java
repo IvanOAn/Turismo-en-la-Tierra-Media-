@@ -11,7 +11,7 @@ import usuario.Usuario;
 public class AtraccionTest {
 
 	@Test
-	public void agregaBienRecomendacionAItinierario() {
+	public void agregaBienAtraccionAItinierario() {
 		Atraccion atraccion = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
 
 		Usuario usuario = new Usuario("Frodo", 10, 20, TipoDeAtraccion.AVENTURA);
@@ -22,7 +22,7 @@ public class AtraccionTest {
 	}
 
 	@Test
-	public void agregaBienPromocionAItinierario() {
+	public void agregaBienAtraccionesDePromocionAItinierario() {
 		List<Atraccion> atracciones = new LinkedList<Atraccion>();
 
 		atracciones.add(new Atraccion("Minas Tirith", 10, 3, 20, TipoDeAtraccion.PAISAJES));
@@ -38,6 +38,5 @@ public class AtraccionTest {
 		Assert.assertTrue(usuario.tieneAtraccion(atracciones.get(0)));
 		Assert.assertTrue(usuario.tieneAtraccion(atracciones.get(1)));
 		Assert.assertTrue(usuario.tieneAtraccion(atracciones.get(2)));
-
 	}
 }

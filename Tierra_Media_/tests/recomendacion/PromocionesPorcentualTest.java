@@ -1,6 +1,6 @@
 package recomendacion;
 
-import static org.junit.Assert.*;
+import org.junit.Assert;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,9 +17,9 @@ public class PromocionesPorcentualTest {
 		atracciones.add(new Atraccion("Abismo de Helm", 25, 2, 50, TipoDeAtraccion.PAISAJES));
 		atracciones.add(new Atraccion("Erebor", 25, 2, 13, TipoDeAtraccion.PAISAJES));
 
-		PromocionesPorcentual promo = new PromocionesPorcentual("Pack Porcentual", atracciones, 50);
+		PromocionesPorcentual promoPorcentual = new PromocionesPorcentual("Pack Porcentual", atracciones, 50);
 
-		assertEquals(30, promo.getPrecio(), 0);
+		Assert.assertEquals(30, promoPorcentual.getPrecio(), 0.000001);
 	}
 
 }

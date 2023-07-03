@@ -9,7 +9,7 @@ import tiposDeRecomendaciones.TipoDeAtraccion;
 public class Usuario {
 	private String nombre;
 	private double presupuesto;
-	private double tiempoDisponible;
+	protected double tiempoDisponible;
 	private TipoDeAtraccion tipoDeAtraccionPreferida;
 	private HashMap<String, Atraccion> itinerario;
 	private final double presupuestoInicial;
@@ -62,7 +62,7 @@ public class Usuario {
 	}
 
 	public void comprarRecomendacion(Recomendacion recomendacion) {
-		recomendacion.agregarRecomendacionAItinierario(this); 
+		recomendacion.agregarRecomendacionAItinierario(this);
 		this.presupuesto -= recomendacion.getPrecio();
 		this.tiempoDisponible -= recomendacion.getDuracion();
 		recomendacion.decrementarCupo();
@@ -70,5 +70,9 @@ public class Usuario {
 
 	public void agregaAtraccion(Atraccion atraccion) {
 		this.itinerario.put(atraccion.getNombre(), atraccion);
+	}
+	
+	public boolean esVip(){
+		return false;
 	}
 }

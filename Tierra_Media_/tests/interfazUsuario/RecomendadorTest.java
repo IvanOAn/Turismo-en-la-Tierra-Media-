@@ -52,6 +52,7 @@ public class RecomendadorTest {
 		Atraccion atraccion = new Atraccion("Moria", 10, 2, 5, TipoDeAtraccion.AVENTURA);
 
 		Assert.assertTrue(recomendador.ofrecerRecomendacion(usuario, atraccion, inputAfirmativo));
+		inputAfirmativo.close();
 	}
 
 	@Test

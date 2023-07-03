@@ -1,6 +1,6 @@
 package recomendacion;
 
-import static org.junit.Assert.*;
+import org.junit.Assert;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,12 +20,11 @@ public class PromocionTest {
 
 		Promocion promocion = new Promocion("Pack Test", atracciones);
 
-		assertEquals(0, promocion.getCupo());
+		Assert.assertEquals(0, promocion.getCupo());
 	}
 
 	@Test
 	public void devuelveTiempoRequeridoBien() {
-
 		List<Atraccion> atracciones = new LinkedList<Atraccion>();
 
 		atracciones.add(new Atraccion("Comarca", 10, 3, 20, TipoDeAtraccion.DEGUSTACION));
@@ -33,7 +32,7 @@ public class PromocionTest {
 
 		Promocion promocion = new Promocion("Pack Test del Tiempo", atracciones);
 
-		assertEquals(5, promocion.getDuracion(), 0);
+		Assert.assertEquals(5, promocion.getDuracion(), 0.000001);
 	}
 
 	@Test
@@ -44,7 +43,7 @@ public class PromocionTest {
 
 		Promocion promocionAventura = new Promocion("Pack Paisajes", atraccionesAventura);
 
-		assertEquals(TipoDeAtraccion.AVENTURA, promocionAventura.getTipoDeAtraccion());
+		Assert.assertEquals(TipoDeAtraccion.AVENTURA, promocionAventura.getTipoDeAtraccion());
 	}
 
 	@Test
@@ -55,7 +54,7 @@ public class PromocionTest {
 
 		Promocion promocionPaisajes = new Promocion("Pack Paisajes", atraccionesPaisajes);
 
-		assertEquals(TipoDeAtraccion.PAISAJES, promocionPaisajes.getTipoDeAtraccion());
+		Assert.assertEquals(TipoDeAtraccion.PAISAJES, promocionPaisajes.getTipoDeAtraccion());
 	}
 
 	@Test
@@ -67,22 +66,39 @@ public class PromocionTest {
 
 		Promocion promocionDegustacion = new Promocion("Pack Paisajes", atraccionesDegustacion);
 
-		assertEquals(TipoDeAtraccion.DEGUSTACION, promocionDegustacion.getTipoDeAtraccion());
+		Assert.assertEquals(TipoDeAtraccion.DEGUSTACION, promocionDegustacion.getTipoDeAtraccion());
 	}
 
 	@Test
-	public void decrementaCupoBien() {
-		List<Atraccion> atraccion = new LinkedList<Atraccion>();
-		atraccion.add(new Atraccion("Abismo de Helm", 25, 2, 1, TipoDeAtraccion.PAISAJES));
+	public void igualaPromocionesConMetodoEqualsBien() {
+		List<Atraccion> atraccionesAventura = new LinkedList<Atraccion>();
+		atraccionesAventura.add(new Atraccion("Isildur", 25, 2, 0, TipoDeAtraccion.AVENTURA));
+		atraccionesAventura.add(new Atraccion("Gondor", 15, 4, 15, TipoDeAtraccion.AVENTURA));
 
-		Promocion promocion = new Promocion("Pack del Abismo", atraccion);
-		promocion.decrementarCupo();
+		Promocion promocion1 = new Promocion("Pack Aventura", atraccionesAventura);
+		Promocion promocion2 = new Promocion("Pack Aventura", atraccionesAventura);
 
-		assertEquals(0, promocion.getCupo(), 0);
+		Assert.assertTrue(promocion1.equals(promocion2));
 	}
 
 	@Test
-	public void detectaAtraccionesCompradas() {
+	public void diferenciaPromocionesConMetodoEqualsBien() {
+		List<Atraccion> atraccionesAventura = new LinkedList<Atraccion>();
+		atraccionesAventura.add(new Atraccion("Isildur", 25, 2, 0, TipoDeAtraccion.AVENTURA));
+		atraccionesAventura.add(new Atraccion("Gondor", 15, 4, 15, TipoDeAtraccion.AVENTURA));
+
+		List<Atraccion> atraccionesPaisajes = new LinkedList<Atraccion>();
+		atraccionesPaisajes.add(new Atraccion("Erebor 1", 15, 1, 23, TipoDeAtraccion.PAISAJES));
+		atraccionesPaisajes.add(new Atraccion("Erebor 2", 5, 4, 10, TipoDeAtraccion.PAISAJES));
+
+		Promocion promocion1 = new Promocion("Pack Aventura", atraccionesAventura);
+		Promocion promocion2 = new Promocion("Pack Paisajes", atraccionesPaisajes);
+
+		Assert.assertFalse(promocion1.equals(promocion2));
+	}
+
+	@Test
+	public void detectaAtraccionesCompradasEnPromocionBien() {
 		Usuario usuario = new Usuario("Frodo", 50, 10, TipoDeAtraccion.AVENTURA);
 
 		List<Atraccion> atracciones = new LinkedList<Atraccion>();
@@ -92,24 +108,34 @@ public class PromocionTest {
 		Promocion promocion = new Promocion("Pack Aventura", atracciones);
 		usuario.comprarRecomendacion(atracciones.get(0));
 
-		assertTrue(promocion.recomendacionIncluyeAtraccionComprada(usuario));
+		Assert.assertTrue(promocion.recomendacionIncluyeAtraccionComprada(usuario));
 	}
 
 	@Test
-	public void igualaPromocionesBien() {
-		List<Atraccion> atraccionesAventura = new LinkedList<Atraccion>();
-		atraccionesAventura.add(new Atraccion("Isildur", 25, 2, 0, TipoDeAtraccion.AVENTURA));
-		atraccionesAventura.add(new Atraccion("Gondor", 15, 4, 15, TipoDeAtraccion.AVENTURA));
+	public void decrementaCupoPromocionBien() {
+		List<Atraccion> atraccion = new LinkedList<Atraccion>();
+		atraccion.add(new Atraccion("Abismo de Helm", 25, 2, 1, TipoDeAtraccion.PAISAJES));
 
-		List<Atraccion> atraccionesPaisajes = new LinkedList<Atraccion>();
-		atraccionesPaisajes.add(new Atraccion("Erebor 1", 15, 1, 23, TipoDeAtraccion.PAISAJES));
-		atraccionesPaisajes.add(new Atraccion("Erebor 2", 5, 4, 10, TipoDeAtraccion.PAISAJES));
+		Promocion promocion = new Promocion("Pack del Abismo", atraccion);
+		promocion.decrementarCupo();
 
-		Promocion promocion1 = new Promocion("Primera Promocion", atraccionesAventura);
-		Promocion promocion2 = new Promocion("Segunda Promocion", atraccionesPaisajes);
+		Assert.assertEquals(0, promocion.getCupo(), 0);
+	}
 
-		promocion2 = new Promocion("Primera Promocion", atraccionesAventura);
+	@Test
+	public void decrementaCupoAtraccionDePromocionBien() {
+		Usuario usuario = new Usuario("Frodo", 50, 10, TipoDeAtraccion.AVENTURA);
 
-		assertTrue(promocion1.equals(promocion2));
+		Atraccion atraccionCupo20 = new Atraccion("Moria", 10, 3, 20, TipoDeAtraccion.AVENTURA);
+		Atraccion atraccionCupo1 = new Atraccion("Isildur", 25, 2, 1, TipoDeAtraccion.AVENTURA);
+
+		List<Atraccion> atracciones = new LinkedList<Atraccion>();
+		atracciones.add(atraccionCupo20);
+		atracciones.add(atraccionCupo1);
+
+		Promocion promocion = new Promocion("Pack Aventura", atracciones);
+		usuario.comprarRecomendacion(promocion);
+
+		Assert.assertEquals(0, atraccionCupo1.getCupo());
 	}
 }

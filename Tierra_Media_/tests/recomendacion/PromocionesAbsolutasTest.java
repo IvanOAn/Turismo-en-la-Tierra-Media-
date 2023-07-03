@@ -1,6 +1,6 @@
 package recomendacion;
 
-import static org.junit.Assert.*;
+import org.junit.Assert;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,9 +17,9 @@ public class PromocionesAbsolutasTest {
 		atracciones.add(new Atraccion("La Comarca", 5, 2, 20, TipoDeAtraccion.DEGUSTACION));
 		atracciones.add(new Atraccion("Valinor", 50, 15, 2, TipoDeAtraccion.DEGUSTACION));
 
-		PromocionesAbsolutas promo = new PromocionesAbsolutas("Pack Precio", atracciones, 45);
+		PromocionesAbsolutas promoAbsoluta = new PromocionesAbsolutas("Pack Degustacion", atracciones, 45);
 
-		assertEquals(45, promo.getPrecio(), 0);
+		Assert.assertEquals(45, promoAbsoluta.getPrecio(), 0);
 	}
 
 }

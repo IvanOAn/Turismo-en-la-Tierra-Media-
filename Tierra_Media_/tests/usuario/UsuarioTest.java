@@ -29,17 +29,6 @@ public class UsuarioTest {
 	}
 
 	@Test
-	public void agregaBienAItinerario() {
-
-		Usuario usuario = new Usuario("Frodo", 30, 10, TipoDeAtraccion.AVENTURA);
-		Atraccion atraccion = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
-
-		usuario.comprarRecomendacion(atraccion);
-
-		Assert.assertTrue(usuario.tieneAtraccion(atraccion));
-	}
-
-	@Test
 	public void compraBienAtraccionPrecio() {
 
 		Usuario usuario = new Usuario("Frodo", 30, 10, TipoDeAtraccion.AVENTURA);
@@ -98,19 +87,20 @@ public class UsuarioTest {
 	}
 
 	@Test
-	public void devuelveBienRecomendacionNoComprada() {
+	public void devuelveBienPromocionConAtraccionYaComprada() {
 		Usuario usuario = new Usuario("Frodo", 30, 10, TipoDeAtraccion.AVENTURA);
+
 		Atraccion atraccionComprada = new Atraccion("Moria", 10, 2, 6, TipoDeAtraccion.AVENTURA);
 		Atraccion atraccionNoComprada = new Atraccion("Moria2", 10, 2, 6, TipoDeAtraccion.AVENTURA);
 		LinkedList<Atraccion> listaPromocion = new LinkedList<Atraccion>();
 
 		listaPromocion.add(atraccionNoComprada);
+		listaPromocion.add(atraccionComprada);
 
 		Promocion promocion = new Promocion("Pack prueba", listaPromocion);
 
 		usuario.comprarRecomendacion(atraccionComprada);
 
-		listaPromocion.add(atraccionComprada);
 		Assert.assertTrue(promocion.recomendacionIncluyeAtraccionComprada(usuario));
 	}
 

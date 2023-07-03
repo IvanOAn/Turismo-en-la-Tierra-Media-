@@ -13,6 +13,7 @@ import archivo.Archivo;
 import recomendacion.Atraccion;
 import recomendacion.Recomendacion;
 import usuario.Usuario;
+import usuario.UsuarioVip;
 
 public class Recomendador {
 	private Queue<Usuario> colaDeUsuarios;
@@ -32,12 +33,12 @@ public class Recomendador {
 
 	private void cargarAtracciones(Map<String, Atraccion> mapaAtracciones) {
 		Archivo archivoAtracciones = new Archivo("Atracciones");
-		archivoAtracciones.cargarArchivoAtracciones(mapaAtracciones, listaRecomendaciones);
+		this.listaRecomendaciones.addAll(archivoAtracciones.cargarArchivoAtracciones(mapaAtracciones));
 	}
 
 	private void cargarPromociones(Map<String, Atraccion> mapaAtracciones) {
 		Archivo archivoPromociones = new Archivo("Promociones");
-		archivoPromociones.cargarArchivoPromociones(mapaAtracciones, listaRecomendaciones);
+		this.listaRecomendaciones.addAll(archivoPromociones.cargarArchivoPromociones(mapaAtracciones));
 	}
 
 	public void realizarSugerencia() {
@@ -99,7 +100,7 @@ public class Recomendador {
 		return false;
 	}
 
-	boolean validarRecomendacion(Scanner input) {
+	private boolean validarRecomendacion(Scanner input) {
 		String respuesta;
 
 		do {
@@ -119,6 +120,9 @@ public class Recomendador {
 		System.out.println("\nSituacion Inicial:");
 		System.out.printf(" -%-15s\t$%.2f\n", "Presupuesto:", usuario.getPresupuestoInicial());
 		System.out.printf(" -%-15s\t%.2f horas\n", "Tiempo Disponible:", usuario.getTiempoInicial());
+		if(usuario.esVip()){
+			System.out.printf(" -%-15s\t%d cupones\n", "Cupones Disponible:",((UsuarioVip) usuario).getCupones());
+		}
 
 		System.out.println("\nAtracciones compradas:");
 
@@ -139,7 +143,13 @@ public class Recomendador {
 				usuario.getPresupuestoInicial() - usuario.getPresupuesto());
 		System.out.printf(" -%-15s\t%.2f horas\n", "Duración total:",
 				(usuario.getTiempoInicial() - usuario.getTiempoDisponible()));
-		System.out.println("------------------------------------------------------------------------------------");
+		if(usuario.esVip()){
+			UsuarioVip usuarioV= (UsuarioVip) usuario;
+			
+			System.out.printf(" -%-15s\t %d"," CuponesGastados: \t",
+					(usuarioV.getCuponesIniciales() - usuarioV.getCupones()));
+		}
+		System.out.println("\n------------------------------------------------------------------------------------");
 		System.out.println("------------------------------------------------------------------------------------");
 
 	}

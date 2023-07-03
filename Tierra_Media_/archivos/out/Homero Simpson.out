@@ -3,6 +3,7 @@ Resumen del Usuario: Homero Simpson
 Situacion Inicial:
  -Presupuesto:   	$800,00
  -Tiempo Disponible:	10,00 horas
+ -Cupones Disponible:	0 cupones
 
 Atracciones compradas:
  -El Calabozo del Androide        	1,00 horas
@@ -13,3 +14,4 @@ Atracciones compradas:
 Situacion Final:
  -Costo total:   	$155,00
  -Duración total:	10,00 horas
+ - CuponesGastados 		 0

@@ -12,9 +12,10 @@ import recomendacion.Promocion;
 import recomendacion.PromocionesAbsolutas;
 import recomendacion.PromocionesAxB;
 import recomendacion.PromocionesPorcentual;
-import recomendacion.Recomendacion;
 import tiposDeRecomendaciones.TipoDeAtraccion;
 import usuario.Usuario;
+import usuario.UsuarioVip;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -47,8 +48,15 @@ public class Archivo {
 				String tipoAtraccionPreferida = vectordeDatos[3].toUpperCase(); // lees el tipo
 
 				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, tipoAtraccionPreferida); // asignas el tipo
-
-				Usuario usuario = new Usuario(nombre, presupuesto, tiempoDisponible, tipo);
+				
+				Usuario usuario = null;
+				
+				if(vectordeDatos[vectordeDatos.length-2].equals("VIP")){
+					int cupones =Integer.parseInt(vectordeDatos[vectordeDatos.length-1]);
+					usuario = new UsuarioVip(nombre, presupuesto, tiempoDisponible, tipo,cupones);
+				}else{
+					usuario = new Usuario(nombre, presupuesto, tiempoDisponible, tipo);
+				}
 				colaDeUsuarios.add(usuario);
 			}
 		} catch (Exception e) {
@@ -59,9 +67,9 @@ public class Archivo {
 		return colaDeUsuarios;
 	}
 
-	public void cargarArchivoAtracciones(Map<String, Atraccion> mapaAtracciones,
-			List<Recomendacion> listaRecomendaciones) {
+	public List<Atraccion> cargarArchivoAtracciones(Map<String, Atraccion> mapaAtracciones) {
 
+		List<Atraccion> listaAtracciones = new LinkedList<Atraccion>();
 		Scanner scanner = null;
 
 		try {
@@ -81,9 +89,9 @@ public class Archivo {
 				String nombreTipo = vectordeDatos[4].toUpperCase(); // lees el tipo
 
 				TipoDeAtraccion tipo = Enum.valueOf(TipoDeAtraccion.class, nombreTipo); // asignas el tipo
-
+				
 				Atraccion atraccionAux = new Atraccion(nombre, precio, duracion, cupoMaximo, tipo);
-				listaRecomendaciones.add(atraccionAux);
+				listaAtracciones.add(atraccionAux);
 				mapaAtracciones.put(nombre, atraccionAux);
 			}
 		} catch (Exception e) {
@@ -91,11 +99,12 @@ public class Archivo {
 		} finally {
 			scanner.close();
 		}
+		return listaAtracciones;
 	}
 
-	public void cargarArchivoPromociones(Map<String, Atraccion> mapaAtracciones,
-			List<Recomendacion> listaRecomendaciones) {
+	public List<Promocion> cargarArchivoPromociones(Map<String, Atraccion> mapaAtracciones) {
 
+		List<Promocion> listaPromociones = new LinkedList<Promocion>();
 		Scanner scanner = null;
 
 		try {
@@ -114,11 +123,6 @@ public class Archivo {
 				for (int i = 2; i < vectordeDatos.length - 1; i++) { // el for no lee la ultima posicion
 					Atraccion atraccionAux = mapaAtracciones.get(vectordeDatos[i]);
 					atraccionesIncluidas.add(atraccionAux);
-
-					if (atraccionAux == null) {
-						System.out.println(
-								"La atraccion incluida en la oferta no esta incluida en el archivo atracciones");
-					}
 				}
 
 				Promocion promocion = null;
@@ -139,13 +143,14 @@ public class Archivo {
 					promocion = new PromocionesAxB(nombre, atraccionesIncluidas, atraccionGratis);
 					break;
 				}
-				listaRecomendaciones.add(promocion);
+				listaPromociones.add(promocion);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			scanner.close();
 		}
+		return listaPromociones;
 	}
 
 	public void generarArchivoResumenUsuario(Usuario usuario, Map<String, Atraccion> mapaAtracciones) {
@@ -161,6 +166,9 @@ public class Archivo {
 			printerWriter.println("\nSituacion Inicial:");
 			printerWriter.printf(" -%-15s\t$%.2f\n", "Presupuesto:", usuario.getPresupuestoInicial());
 			printerWriter.printf(" -%-15s\t%.2f horas\n", "Tiempo Disponible:", usuario.getTiempoInicial());
+			if(usuario.esVip()){
+				printerWriter.printf(" -%-15s\t%d cupones\n", "Cupones Disponible:",((UsuarioVip) usuario).getCupones());
+			}
 
 			printerWriter.println("\nAtracciones compradas:");
 
@@ -181,6 +189,14 @@ public class Archivo {
 					usuario.getPresupuestoInicial() - usuario.getPresupuesto());
 			printerWriter.printf(" -%-15s\t%.2f horas\n", "Duración total:",
 					(usuario.getTiempoInicial() - usuario.getTiempoDisponible()));
+			
+			
+			if(usuario.esVip()){
+				UsuarioVip usuarioV= (UsuarioVip) usuario;
+				
+				printerWriter.printf(" -%-15s\t %d"," CuponesGastados \t",
+						(usuarioV.getCuponesIniciales() - usuarioV.getCupones()));
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
